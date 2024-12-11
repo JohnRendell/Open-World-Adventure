@@ -4,7 +4,11 @@ module.exports = {
     "./Public/*.{html,js}"
   ],
   theme: {
-    extend: {},
+    extend: {
+        fontFamily: {
+          "CourierPrime": ["Courier Prime", "Sans"]
+        }
+    },
   },
   plugins: [],
 }

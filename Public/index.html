@@ -10,11 +10,23 @@
     <!--Tailwind library-->
     <link rel="stylesheet" href="/Styles/style.css">
 
+    <!--Global css-->
+    <link rel="stylesheet" href="/Styles/global.css">
+
     <!--Web title-->
     <title>Open World Game stuff</title>
 </head>
-<body>
-    <p class="bg-yellow-800 font-bold font-PixelifySans">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates voluptatum consequuntur eveniet porro nobis, similique doloribus provident tenetur ipsum molestias accusamus molestiae commodi inventore exercitationem dolor. At cumque et neque?</p>
+<body class="bodyImage">
+   <div class="flex justify-center items-center flex-col space-y-2 w-screen h-screen">
+        <!--Game title-->
+        <h1 class="font-PixelifySans text-2xl text-white text-center">Open World Adventure Stuff</h1>
+
+        <!--Game buttons-->
+        <div class="flex flex-col space-y-4 items-center">
+            <button class="font-PixelifySans text-sm text-white underline">Start</button>
+            <button class="font-PixelifySans text-sm text-white underline">About</button>
+        </div>
+   </div>
 </body>
 </html>
 

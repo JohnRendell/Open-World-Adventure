@@ -1,0 +1,5 @@
+/*Background image for body in menu*/
+.bodyImage{
+    background-image: url('/ImageComponents/Menu Background.png');
+    background-size: cover;
+}

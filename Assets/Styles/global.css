@@ -2,4 +2,5 @@
 .bodyImage{
     background-image: url('/ImageComponents/Menu Background.png');
     background-size: cover;
+    background-position: center;
 }

@@ -1,1 +1,4 @@
-Pixel size: 300 x 350
+Pixel size: 350 x 300 - main contents
+object - any size
+
+Lobby sizes: w 900px h 500px

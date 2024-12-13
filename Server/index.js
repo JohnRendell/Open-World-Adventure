@@ -15,6 +15,9 @@ app.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname, '../Public', 'index.html'));
 });
 
+//routers
+app.use('/lobby', require('./lobbyRouter'));
+
 //for 404 pages
 app.get('*', (req, res)=>{
     res.sendFile(path.join(__dirname, '../404pages', 'index.html'));

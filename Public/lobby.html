@@ -6,7 +6,7 @@
     <title>Open World Adventure - Lobby</title>
 
     <!--Web logo-->
-    <link rel="stylesheet" href="/ImageComponents/Web Icon.png">
+    <link rel="icon" href="/ImageComponents/Web Icon.png">
 
     <!--Tailwind library-->
     <link rel="stylesheet" href="/Styles/style.css">
@@ -14,9 +14,14 @@
     <!--Global css-->
     <link rel="stylesheet" href="/Styles/global.css">
 </head>
-<body class="bg-black">
-    <div class="flex justify-center items-center w-full h-full mt-10">
-        <canvas id="canvas" class="border-2 border-red-500 w-[800px]" width="800" height="500"></canvas>
+<body class="overflow-hidden bg-white - lg:bg-black">
+    <div class="flex justify-center items-center">
+        <canvas id="canvas" class="border-2 border-red-500 hidden lg:block"></canvas>
+    </div>
+
+    <!--For mobiles-->
+    <div class="flex lg:hidden">
+        <p>You are not able to play this game on mobile due to the large canvas, most function here are only suitable for desktop and wider screen im sorry :(</p>
     </div>
 </body>
 </html>

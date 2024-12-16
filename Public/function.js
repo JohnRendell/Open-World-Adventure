@@ -2,4 +2,3 @@
 function clickStart(){
     window.location.href = '/lobby';
 }
-

@@ -2,3 +2,5 @@ Pixel size: 350 x 300 - main contents
 object - any size
 
 Lobby sizes: w 900px h 500px
+
+Character size: w 25px h 10px

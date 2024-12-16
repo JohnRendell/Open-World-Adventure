@@ -15,10 +15,15 @@
     <script src="/phaser/dist/phaser.js"></script>
 </head>
 <body>
-    <main class="w-screen h-screen flex justify-center items-center">
+    <main class="w-screen h-screen justify-center items-center hidden lg:flex">
         <canvas id="gameCanvas" class="border-2 border-red-500"></canvas>
     </main>
+
+   <div class="w-screen h-screen flex justify-center items-center lg:hidden">
+        <p class="font-PixelifySans text-black text-center">Im sorry this game can only be play on desktop/laptop, as
+        the most functions here can be done with keyboards.</p>
+   </div>
 </body>
 </html>
 
-<script src="lobby.js"></script>
+<script src="/lobby.js"></script>

@@ -1,6 +1,6 @@
 const canvasSize = {
-    width: 900,
-    height: 500
+    width: 800,
+    height: 400
 }
 
 const worldBounds = {
@@ -19,19 +19,37 @@ class gameLobby extends Phaser.Scene{
 
     // Create function (for initializing the game world)
     create() {
+        //set the world bounds
+        this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height)
+
         //lobby background
-        this.lobby = this.add.image(0,0, 'lobby').setOrigin(0.5);
-        this.lobby.setScale(100);
+        this.lobby = this.add.image(worldBounds.width / 2, worldBounds.height / 2, 'lobby').setOrigin(0.5);
+        this.lobby.setDisplaySize(worldBounds.width, worldBounds.height);
 
         //player
-        this.player = this.physics.add.sprite(canvasSize.width / 2, canvasSize.height / 2, 'guest_sprite').setOrigin(0.5);
+        this.player = this.physics.add.sprite(0,0, 'guest_sprite').setOrigin(0.5);
         this.player.setDisplaySize(40, 70);
         this.player.setCollideWorldBounds(true); 
 
-        //camera
-        this.playerCam = this.cameras.main;
+        //player name
+        this.playerName = this.add.text(0, -50, "Guest_Player", {
+            font: "16px Pixelify Sans",
+            fill: '#ffffff',
+            align: 'center'
+        }).setOrigin(0.5);
 
-        console.log('Game is ready!');
+        //player container
+        this.playerContainer = this.add.container(canvasSize.width / 2, canvasSize.height / 2, [this.player, this.playerName]);
+        this.physics.world.enable(this.playerContainer);
+
+        //Follow player
+        this.playerContainer.body.setCollideWorldBounds(true);
+        this.playerContainer.body.setSize(40, 70);
+        this.playerContainer.body.setOffset(-20, -35);
+
+        //camera
+        this.cameras.main.startFollow(this.playerContainer);
+        this.cameras.main.setBounds(0,0, worldBounds.width, worldBounds.height);
 
         //keys for movement of player/camera
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -43,34 +61,33 @@ class gameLobby extends Phaser.Scene{
 
     // Update function (for game logic and updates every frame)
     update() {
-        this.player.setVelocity(0);
+        this.playerContainer.body.setVelocity(0);
 
         if(this.cursors.left.isDown || this.A.isDown){
-            this.player.setVelocityX(-speed);
+            this.playerContainer.body.setVelocityX(-speed);
         }
         if(this.cursors.right.isDown || this.D.isDown){
-            this.player.setVelocityX(speed);
+            this.playerContainer.body.setVelocityX(speed);
         }
         if(this.cursors.up.isDown || this.W.isDown){
-            this.player.setVelocityY(-speed);
+           this.playerContainer.body.setVelocityY(-speed);
         }
         if(this.cursors.down.isDown || this.S.isDown){
-            this.player.setVelocityY(speed);
+            this.playerContainer.body.setVelocityY(speed);
         }
     }
 }
 
 // Game configuration
 const config = {
-    type: Phaser.WEBGL, // Automatically use WebGL or Canvas
-    width: canvasSize.width, // Game width
-    height: canvasSize.height, // Game height
-    backgroundColor: '#000000', // Black background
+    type: Phaser.WEBGL,
+    width: canvasSize.width,
+    height: canvasSize.height,
     canvas: gameCanvas,
     physics: {
-        default: 'arcade', // Simple physics engine
+        default: 'arcade',
         arcade: {
-            gravity: { y: 0 }, // No gravity by default
+            gravity: { y: 0 },
             debug: true
         }
     },

@@ -19,10 +19,11 @@
 </head>
 
 <body class="overflow-hidden">
-    <div class="w-screen h-screen justify-center items-center hidden lg:flex">
-        <main class="w-[80%] h-[80%] flex justify-center items-center border-2 border-blue-500 p-5 bg-black">
-            <canvas id="gameCanvas"></canvas>
-        </main>
+    <div class="bg-gray-600 w-screen h-screen justify-center items-center hidden lg:flex">
+        <div class="flex flex-col space-y-2">
+            <canvas id="gameCanvas" class="border-4 border-gray-800 rounded-2xl"></canvas>
+            <p class="font-PixelifySans text-sm text-center text-white">Press Arrow keys or WASD for movement</p>
+        </div>
     </div>
 
     <!--For mobile users-->
@@ -32,4 +33,6 @@
 </body>
 </html>
 
+<script src="/lobbyUI.js"></script>
 <script src="/lobby.js"></script>
+<script src="/lobbyConfig.js"></script>

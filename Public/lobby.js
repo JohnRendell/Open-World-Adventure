@@ -17,6 +17,10 @@ gameLobby.preload = function() {
     this.load.image('lobby', '/ImageComponents/Lobby/Lobby Hall.png');
     this.load.image('guest_sprite', '/ImageComponents/Lobby/guest player.png');
     this.load.image('spawner_pod', '/ImageComponents/Lobby/Spawner Pod.png');
+    this.load.spritesheet('spawn_smoke', '/ImageComponents/Lobby/Sprite Sheets/spawn smoke sprite sheet.png', {
+        frameWidth: 4800 / 5,
+        frameHeight: 1600 / 2
+    });
 }
 
 // Create function (for initializing the game world)
@@ -28,10 +32,23 @@ gameLobby.create = function() {
     this.lobby = this.add.image(worldBounds.width / 2, worldBounds.height / 2, 'lobby').setOrigin(0.5);
     this.lobby.setDisplaySize(worldBounds.width, worldBounds.height);
 
+    //spawn smoke
+    this.spawnSmoke = this.add.sprite(canvasSize.width / 2, canvasSize.height / 2, "spawn_smoke").setOrigin(0.5);
+    this.spawnSmoke.setDisplaySize(60, 80);
+
+    //create animation for spawn smoke
+    this.anims.create({
+        key: 'spawn',            // Animation name
+        frames: this.anims.generateFrameNumbers('spawn_smoke', { start: 0, end: 6 }),
+        frameRate: 12,           // Frames per second
+        repeat: 0              // Repeat forever (-1 means infinite loop)
+    });
+
     //player
     this.player = this.physics.add.sprite(0,0, 'guest_sprite').setOrigin(0.5);
     this.player.setDisplaySize(40, 70);
     this.player.setCollideWorldBounds(true); 
+    this.player.setVisible(false);
 
     //player name
     this.playerName = this.add.text(0, -50, "Guest_Player", {
@@ -40,8 +57,17 @@ gameLobby.create = function() {
         align: 'center'
     }).setOrigin(0.5);
 
+    // Play the animation
+    this.spawnSmoke.play('spawn');
+
+    this.spawnSmoke.on('animationcomplete', ()=>{
+        this.spawnSmoke.destroy();
+        this.player.setVisible(true);
+    });
+
     //player container
     this.playerContainer = this.add.container(canvasSize.width / 2, canvasSize.height / 2, [this.player, this.playerName]);
+
     this.physics.world.enable(this.playerContainer);
 
     //add the spawner pod

@@ -33,7 +33,7 @@ class gameLobby extends Phaser.Scene{
 
         //player name
         this.playerName = this.add.text(0, -50, "Guest_Player", {
-            font: "16px Pixelify Sans",
+            font: "16px 'Pixelify Sans'",
             fill: '#ffffff',
             align: 'center'
         }).setOrigin(0.5);
@@ -93,6 +93,13 @@ const config = {
     },
     scene: gameLobby
 };
+
+//webfont loader
+WebFont.load({
+    google: {
+        families: ['Pixelify Sans']
+    }
+})
 
 // Initialize the Phaser Game
 const game = new Phaser.Game(config);

@@ -14,13 +14,20 @@
     <!--Phaser Library-->
     <script src="/phaser/dist/phaser.js"></script>
 
+    <!--Web font loader library-->
+    <script src="/webfontloader/webfontloader.js"></script>
 </head>
 
 <body class="overflow-hidden">
-    <div class="w-screen h-screen flex justify-center items-center">
+    <div class="w-screen h-screen justify-center items-center hidden lg:flex">
         <main class="w-[80%] h-[80%] flex justify-center items-center border-2 border-blue-500 p-5 bg-black">
             <canvas id="gameCanvas"></canvas>
         </main>
+    </div>
+
+    <!--For mobile users-->
+    <div class="flex w-screen h-screen justify-center items-center p-4 lg:hidden">
+        <p class="font-PixelifySans text-black text-sm text-center">The game can only be played to the desktop or any wider screen because most of the stuff here require keyboards, like a lot.</p>
     </div>
 </body>
 </html>

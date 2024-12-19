@@ -14,7 +14,7 @@ const gameLobby = new Phaser.Scene("Game Lobby");
 
 // Preload function (for loading assets)
 gameLobby.preload = function() {
-    this.load.image('lobby', '/ImageComponents/Lobby/Lobby Hall.png');
+    this.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
     this.load.image('guest_sprite', '/ImageComponents/Lobby/guest player.png');
     this.load.image('spawner_pod', '/ImageComponents/Objects/Spawner Pod.png');
     this.load.image('table', '/ImageComponents/Objects/Long table.png')
@@ -35,14 +35,36 @@ gameLobby.preload = function() {
 // Create function (for initializing the game world)
 gameLobby.create = function() {
     //set the world bounds
-    this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height)
+    this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
     //lobby background
     this.lobby = this.add.image(worldBounds.width / 2, worldBounds.height / 2, 'lobby').setOrigin(0.5);
     this.lobby.setDisplaySize(worldBounds.width, worldBounds.height);
 
+    //zone
+    this.topZone = this.physics.add.staticSprite(0, 100).setOrigin(0.5);
+    this.topZone.setDisplaySize(worldBounds.width, 100);
+    this.topZone.body.setSize(worldBounds.width, 100, true);
+    this.topZone.body.setOffset(0,0);
+
+    this.bottomZone = this.physics.add.staticSprite(0, 770).setOrigin(0.5);
+    this.bottomZone.setDisplaySize(worldBounds.width, 100);
+    this.bottomZone.body.setSize(worldBounds.width, 100, true);
+    this.bottomZone.body.setOffset(0,0);
+
+    this.leftZone = this.physics.add.staticSprite(100, 0).setOrigin(0.5);
+    this.leftZone.setDisplaySize(100, worldBounds.height);
+    this.leftZone.body.setSize(100, worldBounds.height, true);
+    this.leftZone.body.setOffset(0,0);
+
+    this.rightZone = this.physics.add.staticSprite(1000, 0).setOrigin(0.5);
+    this.rightZone.setDisplaySize(100, worldBounds.height);
+    this.rightZone.body.setSize(100, worldBounds.height, true);
+    this.rightZone.body.setOffset(0,0);
+    
+
     //spawn smoke
-    this.spawnSmoke = this.add.sprite(canvasSize.width / 2, canvasSize.height / 2, "spawn_smoke").setOrigin(0.5);
+    this.spawnSmoke = this.add.sprite(worldBounds.width / 2, worldBounds.height / 2, "spawn_smoke").setOrigin(0.5);
     this.spawnSmoke.setDisplaySize(60, 80);
 
     //create animation for spawn smoke
@@ -75,18 +97,18 @@ gameLobby.create = function() {
     });
 
     //player container
-    this.playerContainer = this.add.container(canvasSize.width / 2, canvasSize.height / 2, [this.player, this.playerName]);
+    this.playerContainer = this.add.container((worldBounds.width / 2) + 50, worldBounds.height / 2, [this.player, this.playerName]);
 
     this.physics.world.enable(this.playerContainer);
 
     //add the spawner pod
-    this.spawner = this.physics.add.staticSprite((canvasSize.width / 2) - 50, canvasSize.height / 2, 'spawner_pod').setOrigin(0.5);
+    this.spawner = this.physics.add.staticSprite((worldBounds.width / 2), worldBounds.height / 2, 'spawner_pod').setOrigin(0.5);
     this.spawner.setDisplaySize(50, 70);
     this.spawner.body.setSize(50, 20, true);
     this.spawner.body.setOffset(200, 420);
 
     //spawner Label
-    this.spawnerLabel = this.add.text((canvasSize.width / 2) - 50, (canvasSize.height / 2) - 50, "Spawner Pod", {
+    this.spawnerLabel = this.add.text((worldBounds.width / 2), (worldBounds.height / 2) - 50, "Spawner Pod", {
         font: "16px 'Pixelify Sans",
         fill: "#ffffff",
         align: "center"
@@ -149,6 +171,12 @@ gameLobby.create = function() {
     //collider for table
     this.physics.add.collider(this.playerContainer, this.rupertTable);
 
+    //collision for zone
+    this.physics.add.collider(this.playerContainer, this.topZone);
+    this.physics.add.collider(this.playerContainer, this.bottomZone);
+    this.physics.add.collider(this.playerContainer, this.leftZone);
+    this.physics.add.collider(this.playerContainer, this.rightZone);
+
     //Follow player
     this.playerContainer.body.setCollideWorldBounds(true);
     this.playerContainer.body.setSize(40, 70);
@@ -186,8 +214,8 @@ gameLobby.update = function() {
         this.playerContainer.body.setVelocityY(speed);
     }
 
-    // Check if player is outside the overlap
+    // on exit for NPCs
     if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds())) {
-        this.rupertText.setVisible(false); // Hide text if player leaves the NPC
+        this.rupertText.setVisible(false);
     }
 }

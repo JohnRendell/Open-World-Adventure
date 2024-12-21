@@ -4,4 +4,3 @@ object - any size
 Lobby sizes: w 500px h 500px
 
 Character size: w 10px h 25px
-Spawner Size: w 14px h 25px

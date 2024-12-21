@@ -21,10 +21,10 @@ const gameLobby = new Phaser.Scene("Game Lobby");
 gameLobby.preload = function() {
     //objecs
     this.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
-    this.load.image('guest_sprite', '/ImageComponents/Lobby/guest player.png');
     this.load.image('spawner_pod', '/ImageComponents/Objects/Spawner Pod.png');
     this.load.image('table', '/ImageComponents/Objects/Long table.png');
     this.load.image('rock', '/ImageComponents/Objects/Rock.png');
+    this.load.image('tree', '/ImageComponents/Objects/Tree.png');
     this.load.spritesheet('portal', '/ImageComponents/Sprite Sheets/Portal Machine Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
@@ -171,11 +171,20 @@ gameLobby.create = function() {
         align: 'center'
     }).setOrigin(0.5);
 
+    //tree 245 350
+    this.tree = this.physics.add.staticSprite(centerWorld.width + 245, centerWorld.height - 350, 'tree').setOrigin(0.5);
+    this.tree.setDisplaySize(330, 400);
+    this.tree.body.setSize(80, 10, true);
+    this.tree.body.setOffset(750, 750);
+
+    this.physics.add.collider(this.playerContainer, this.tree);
+
     //add the spawner pod
     this.spawner = this.physics.add.staticSprite(centerWorld.width, centerWorld.height, 'spawner_pod').setOrigin(0.5);
     this.spawner.setDisplaySize(50, 70);
     this.spawner.body.setSize(50, 20, true);
     this.spawner.body.setOffset(200, 420);
+    this.spawner.setDepth(2);
 
     //spawner Label
     this.spawnerLabel = this.add.text(centerWorld.width, centerWorld.height - 50, "Spawner Pod", {
@@ -209,6 +218,7 @@ gameLobby.create = function() {
             fill: "#ffffff",
             align: "center"
         }).setOrigin(0.5);
+        this.NPCLabel.setDepth(2);
 
         const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
             font: "16px 'Pixelify Sans",
@@ -216,6 +226,7 @@ gameLobby.create = function() {
             align: "center"
         }).setOrigin(0.5);
         instructionText.setVisible(false);
+        instructionText.setDepth(2);
 
         //animation idle for npc
         this.anims.create({
@@ -263,6 +274,7 @@ gameLobby.create = function() {
         rock.setDisplaySize(80, 60);
         rock.body.setSize(60, 20, true);
         rock.body.setOffset(490 + i * 2, 520);
+        rock.setDepth(2);
 
         //collider for rock
         this.physics.add.collider(this.playerContainer, rock);
@@ -339,5 +351,14 @@ gameLobby.update = function() {
     // on exit for NPCs
     if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds())) {
         this.rupertText.setVisible(false);
+    }
+
+    let playerY = this.playerContainer.y - 130;
+    if (playerY < this.tree.y) {
+        this.playerContainer.setDepth(1);
+        this.tree.setDepth(2);
+    } else {
+        this.playerContainer.setDepth(2);
+        this.tree.setDepth(1);
     }
 }

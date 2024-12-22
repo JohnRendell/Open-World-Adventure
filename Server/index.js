@@ -21,10 +21,7 @@ app.get('/', (req, res)=>{
 app.use(bodyParser.json());
 
 //for socket connections
-socketServer.on('connect', (socket)=>{
-    console.log('connected to socket');
-});
-//require('./lobbySocket')(socketServer);
+require('./lobbySocket')(socketServer);
 
 //routers
 app.use('/lobby', require('./lobbyRouter'));

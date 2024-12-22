@@ -104,7 +104,7 @@ gameLobby.create = function() {
     this.rightZone.body.setSize(100, worldBounds.height, true);
     this.rightZone.body.setOffset(0,0);
 
-    //player
+    //main player
     this.player = this.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
     this.player.setDisplaySize(40, 70);
     this.player.setCollideWorldBounds(true); 
@@ -130,6 +130,10 @@ gameLobby.create = function() {
         frameRate: 4,
         repeat: -1
     });
+
+    //call the scene for the socket phaser
+    //TODO: fix this, not getting the centerworld on other class, suggestion setter and getter
+    this.scene.launch('Socket Phaser');
 
     //player name
     this.playerName = this.add.text(0, -50, "Guest_Player", {
@@ -166,12 +170,10 @@ gameLobby.create = function() {
 
     // Play the animation
     this.spawnSmoke.play('spawnDust');
-
     this.spawnSmoke.on('animationcomplete', ()=>{
         this.spawnSmoke.destroy();
         this.player.setVisible(true);
     });
-
 
     //add the spawner pod
     this.spawner = this.physics.add.staticSprite(centerWorld.width, centerWorld.height, 'spawner').setOrigin(0.5);

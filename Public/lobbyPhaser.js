@@ -19,6 +19,19 @@ let isTalking = false;
 
 // Preload function (for loading assets)
 gameLobby.preload = function() {
+    //show loading div
+    document.getElementById('loadingDiv').style.display = 'flex';
+
+     // Update text as assets are loaded
+    this.load.on('progress', (value) => {
+        let percentage = parseInt(value * 100);
+        document.getElementById('loadingProgressText').innerText = `${percentage} %`;
+    });
+
+    this.load.on('complete', () => {
+        document.getElementById('loadingProgressText').innerText = 'Starting game...';
+    });
+
     //objecs
     this.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
     this.load.image('rock', '/ImageComponents/Objects/Rock.png');
@@ -59,6 +72,9 @@ gameLobby.preload = function() {
 
 // Create function (for initializing the game world)
 gameLobby.create = function() {
+    //hide the loading once the game finished load
+    document.getElementById('loadingDiv').style.display = 'none';
+
     //set the world bounds
     this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
@@ -308,15 +324,14 @@ gameLobby.update = function() {
 
     if(isTalking){
         this.input.keyboard.on('keydown', function (event) {
-            if(event.key == 'a'){
-                this.element.getChildByName('nameField').value+=event.key;
-            }else if(event.key == 's'){
-                this.element.getChildByName('nameField').value+=event.key;
-            }else if(event.key == 'd'){
-                this.element.getChildByName('nameField').value+=event.key;
-            }else if(event.key == 'w'){
-                this.element.getChildByName('nameField').value+=event.key;
-            }
+            let inputField = this.element.getChildByName('nameField');
+                if (event.key === ' ') {
+                    // Add a space character when the Space key is pressed
+                    inputField.value += ' ';
+                } else if (event.key.length === 1) {
+                    // Add regular characters like 'a', 's', 'd', 'w', etc.
+                    inputField.value += event.key;
+                }
         }.bind(this));
     }
 

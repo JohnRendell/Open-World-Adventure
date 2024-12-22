@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
 
 //get the env keys
 require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
@@ -15,8 +16,11 @@ app.get('/', (req, res)=>{
     res.sendFile(path.join(__dirname, '../Public', 'index.html'));
 });
 
+app.use(bodyParser.json());
+
 //routers
 app.use('/lobby', require('./lobbyRouter'));
+app.use('/promptNPC', require('./geminiAI'));
 
 //for 404 pages
 app.get('*', (req, res)=>{

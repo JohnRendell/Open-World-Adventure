@@ -16,6 +16,7 @@ const centerWorld = {
 const speed = 200;
 const gameLobby = new Phaser.Scene("Game Lobby");
 let isTalking = false;
+let isPanelOpen = false;
 
 // Preload function (for loading assets)
 gameLobby.preload = function() {
@@ -237,9 +238,10 @@ gameLobby.create = function() {
 
         npcObj.setInteractive();
         npcObj.on('pointerdown', () => {
-            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds())) {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
                 document.getElementById('rupertDialog').style.display = 'flex';
                 isTalking = true;
+                isPanelOpen = true;
             }
         });
    }
@@ -324,7 +326,7 @@ gameLobby.update = function() {
 
     if(isTalking){
         this.input.keyboard.on('keydown', function (event) {
-            let inputField = this.element.getChildByName('nameField');
+            let inputField = this.element.getChildByName('npcMessageInput');
                 if (event.key === ' ') {
                     // Add a space character when the Space key is pressed
                     inputField.value += ' ';

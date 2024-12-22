@@ -21,6 +21,8 @@ app.use(bodyParser.json());
 //routers
 app.use('/lobby', require('./lobbyRouter'));
 app.use('/promptNPC', require('./geminiAI'));
+app.use('/login', require('./accountLoginValidation'));
+app.use('/signin', require('./accountSigninValidation'));
 
 //for 404 pages
 app.get('*', (req, res)=>{

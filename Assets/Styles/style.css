@@ -610,14 +610,6 @@ video {
   margin-top: -60rem;
 }
 
-.mt-\[0rem\]{
-  margin-top: 0rem;
-}
-
-.block{
-  display: block;
-}
-
 .flex{
   display: flex;
 }

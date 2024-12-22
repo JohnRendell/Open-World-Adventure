@@ -1,3 +1,21 @@
+function npcGreet(containerID, greetMsg){
+    var container = document.getElementById(containerID);
+    var wrapperContainer = document.createElement('div');
+    wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-start');
+    container.appendChild(wrapperContainer);
+
+    var messageWrapper = document.createElement('div');
+    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
+    wrapperContainer.appendChild(messageWrapper);
+
+    var textContent = document.createElement('p');
+    textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+    textContent.appendChild(document.createTextNode(greetMsg));
+    messageWrapper.appendChild(textContent);
+
+    container.scrollTo(0, container.scrollHeight);
+}
+
 function typeMessage(incrementID, inputID, max){
     var input = document.getElementById(inputID);
 
@@ -25,7 +43,7 @@ function showPass(inputPassID, checkBoxID){
     }
 }
 
-function playGame(containerID){
+function playGame(containerID, npcGreet){
     isTalking = false;
     isPanelOpen = false;
 
@@ -34,28 +52,8 @@ function playGame(containerID){
     while (container.hasChildNodes()) {
         container.removeChild(container.firstChild);
     }
-    npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.');
+    npcGreet('npcConversationDiv', npcGreet);
 }
-
-function npcGreet(containerID, greetMsg){
-    var container = document.getElementById(containerID);
-    var wrapperContainer = document.createElement('div');
-    wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-start');
-    container.appendChild(wrapperContainer);
-
-    var messageWrapper = document.createElement('div');
-    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
-    wrapperContainer.appendChild(messageWrapper);
-
-    var textContent = document.createElement('p');
-    textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
-    textContent.appendChild(document.createTextNode(greetMsg));
-    messageWrapper.appendChild(textContent);
-
-    container.scrollTo(0, container.scrollHeight);
-}
-
-npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.');
 
 function messageSend(containerID, inputID, incrementID, max){
     var container = document.getElementById(containerID);

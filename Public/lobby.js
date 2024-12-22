@@ -57,3 +57,5 @@ async function validateCreateAccount(){
         console.log(err);
     }
 }
+
+npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.');

@@ -50,7 +50,7 @@
                 <div class="w-full h-auto">
                     <h1 class="font-PixelifySans text-black text-center text-lg">Rupert (NPC)</h1>
                 </div>
-                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('rupertDialog', 'none', null); playGame('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.')">
+                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('rupertDialog', 'none', null); playGame('npcConversationDiv'); npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.');">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -106,7 +106,7 @@
                     <h1 class="font-PixelifySans text-black text-center text-lg" id="containerTitle">Log in</h1>
                 </div>
                 <button class="w-fit h-fit cursor-pointer"
-                    onclick="modalStatus('loginDiv', 'none', null); playGame('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.')">
+                    onclick="modalStatus('loginDiv', 'none', null); playGame('npcConversationDiv'); npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.')">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -223,7 +223,7 @@
                 <div class="w-full h-auto">
                     <h1 class="font-PixelifySans text-black text-center text-lg">Guest</h1>
                 </div>
-                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('guestDiv', 'none', null); playGame('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.')">
+                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('guestDiv', 'none', null); playGame('npcConversationDiv'); npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.')">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -265,6 +265,7 @@
 
 <!--Phasers-->
 <script src="/lobbyUI.js"></script>
+<script src="/scenePreloadPhaser.js"></script>
 <script src="/lobbyPhaser.js"></script>
 <script src="/lobbyPhaserSocket.js"></script>
 <script src="/lobbyConfig.js"></script>

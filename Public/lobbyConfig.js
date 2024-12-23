@@ -11,7 +11,7 @@ const config = {
             debug: true
         }
     },
-    scene: [gameLobby, gameUI, socketPhaser]
+    scene: [gameLobby]
 };
 
 //webfont loader

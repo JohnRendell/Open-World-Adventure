@@ -10,5 +10,9 @@ module.exports = (server)=>{
         }
         console.table(players);
         socket.broadcast.emit('spawnPlayer');
+
+        socket.on('playerMove', (x, y, isBack, isFront, isFlip)=>{
+            socket.broadcast.emit('playerMove', x, y, isBack, isFront, isFlip);
+        });
     });
 }

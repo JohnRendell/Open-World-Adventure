@@ -43,7 +43,7 @@ function showPass(inputPassID, checkBoxID){
     }
 }
 
-function playGame(containerID, npcGreet){
+function playGame(containerID){
     isTalking = false;
     isPanelOpen = false;
 
@@ -52,7 +52,6 @@ function playGame(containerID, npcGreet){
     while (container.hasChildNodes()) {
         container.removeChild(container.firstChild);
     }
-    npcGreet('npcConversationDiv', npcGreet);
 }
 
 function messageSend(containerID, inputID, incrementID, max){

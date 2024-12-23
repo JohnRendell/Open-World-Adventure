@@ -1,55 +1,67 @@
 let isOtherPlayerFront = false;
 let isOtherPlayerBack = false;
 
-function createScene(scene){
-    socket.on('spawnPlayer', () => {
-        scene.otherPlayer = scene.physics.add.staticSprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-        scene.otherPlayer.setDisplaySize(40, 70);
-        scene.otherPlayer.setVisible(false);
+   //TODO: make a way to dynamic joining
+function sceneSocket(scene){
+    scene.playerCollection = new Map();
 
-        //player name
-        scene.otherPlayerName = scene.add.text(0, -50, "Guest_Player 2", {
-            font: "16px 'Pixelify Sans'",
-            fill: '#ffffff',
-            align: 'center'
-        }).setOrigin(0.5);
+    socket.on('spawnPlayer', (playerName) => {
+        if(localStorage.getItem('tempPlayerName') !== playerName){
+            let otherPlayer = scene.physics.add.staticSprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
+            otherPlayer.setDisplaySize(40, 70);
+            otherPlayer.setVisible(false);
 
-        //player container
-        scene.otherPlayerContainer = scene.add.container(centerWorld.width + 50, centerWorld.height, [scene.otherPlayer, scene.otherPlayerName]);
+            //player name
+            let otherPlayerName = scene.add.text(0, -50, playerName, {
+                font: "16px 'Pixelify Sans'",
+                fill: '#ffffff',
+                align: 'center'
+            }).setOrigin(0.5);
 
-        //spawn smoke
-        scene.spawnSmoke = scene.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
-        scene.spawnSmoke.setDisplaySize(2, 5);
-        scene.spawnSmoke.setDepth(2);
+            //player container
+            let otherPlayerContainer = scene.add.container(centerWorld.width + 50, centerWorld.height, [otherPlayer, otherPlayerName]);
+            otherPlayerContainer.setDepth(2);
 
-        //animation for spawn effect
-        scene.anims.create({
-            key: 'spawnDust', 
-            frames: scene.anims.generateFrameNumbers('spawnEffect', { start: 0, end: 8 }),
-            frameRate: 12, 
-            repeat: 0
-        });
+            //add player data to the map
+            scene.playerCollection.set(playerName, {
+                container: otherPlayerContainer,
+                playerSprite: otherPlayer
+            });
 
-        // Play the animation
-        scene.spawnSmoke.play('spawnDust');
-        scene.spawnSmoke.on('animationcomplete', ()=>{
-            scene.spawnSmoke.destroy();
-            scene.otherPlayer.setVisible(true);
-        });
+            //spawn smoke
+            scene.spawnSmoke = scene.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
+            scene.spawnSmoke.setDisplaySize(2, 5);
+            scene.spawnSmoke.setDepth(3);
+
+            // Play the animation
+            scene.spawnSmoke.play('spawnDust');
+            scene.spawnSmoke.on('animationcomplete', ()=>{
+                scene.spawnSmoke.destroy();
+                otherPlayer.setVisible(true);
+            });
+        }
     });
 
-    socket.on('playerMove', (x, y, isBack, isFront, isFlip)=>{
-        scene.otherPlayerContainer.setPosition(x, y);
-        scene.otherPlayer.flipX = isFlip;
+    socket.on('playerMove', (playerData)=>{
+        const { playerID, x, y, isBack, isFront, spriteX } = playerData;
 
-        if (isFront) {
-            scene.otherPlayer.play('playerFront', true);
-        } 
-        else if (isBack) {
-            scene.otherPlayer.play('playerBack', true);
-        } 
-        else {
-            scene.otherPlayer.play('playerIdle', true);
+        const findPlayer = scene.playerCollection.get(playerID);
+
+        if(findPlayer){
+            const { container, playerSprite } = findPlayer;
+
+            container.setPosition(x, y);
+            playerSprite.flipX = spriteX;
+
+            if (isFront) {
+                playerSprite.play('playerFront', true);
+            } 
+            else if (isBack) {
+                playerSprite.play('playerBack', true);
+            } 
+            else {
+                playerSprite.play('playerIdle', true);
+            }
         }
     });
 }

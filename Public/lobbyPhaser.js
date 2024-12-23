@@ -90,7 +90,7 @@ class gameLobby extends Phaser.Scene{
         });
 
         //player name
-        this.playerName = this.add.text(0, -50, "Guest_Player", {
+        this.playerName = this.add.text(0, -50, localStorage.getItem('tempPlayerName'), {
             font: "16px 'Pixelify Sans'",
             fill: '#ffffff',
             align: 'center'
@@ -243,11 +243,11 @@ class gameLobby extends Phaser.Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        //call the UI scene
-        lobbyUI(this);
+        lobbyUI(this, playerCount);
 
-        //call the other player scene
-        createScene(this);
+        //call the socket scene
+        //TODO: make a way to dynamic joining
+        sceneSocket(this);
     }
 
     // Update function (for game logic and updates every frame)
@@ -319,6 +319,14 @@ class gameLobby extends Phaser.Scene{
         }
 
         //for other player movement
-        socket.emit('playerMove', this.playerContainer.x, this.playerContainer.y, isBack, isFront, this.player.flipX);
+        const playerData = {
+            playerID: localStorage.getItem('tempPlayerName'),
+            x: this.playerContainer.x,
+            y: this.playerContainer.y,
+            isBack: isBack,
+            isFront: isFront,
+            spriteX: this.player.flipX
+        }
+        socket.emit('playerMove', playerData);
     }
 }

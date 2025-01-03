@@ -248,6 +248,7 @@ class gameLobby extends Phaser.Scene{
         //call the socket scene
         //TODO: make a way to dynamic joining
         sceneSocket(this);
+        socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
     }
 
     // Update function (for game logic and updates every frame)

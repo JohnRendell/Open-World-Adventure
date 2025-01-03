@@ -5,4 +5,5 @@ function lobbyUI(scene, count){
         fill: "#ffffff",
         align: "center"
     }).setOrigin(0).setScrollFactor(0);
+    scene.playerCountLabel.setDepth(5);
 }

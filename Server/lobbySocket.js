@@ -16,7 +16,7 @@ module.exports = (server)=>{
                 players.push(data);
             }
             //count players
-            socket.emit('playerCount', players.length);
+            server.emit('playerCount', players.length);
         });
 
         console.log('Current Players: ');
@@ -28,8 +28,8 @@ module.exports = (server)=>{
         });
 
         //spawn the player
-        socket.on('spawnPlayer', (playerName, scene)=>{
-            socket.broadcast.emit('spawnPlayer', playerName, scene);
+        socket.on('spawnPlayer', (playerName)=>{
+            socket.broadcast.emit('spawnPlayer', playerName);
         });
 
         //when player disconnected

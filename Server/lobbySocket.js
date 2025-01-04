@@ -1,6 +1,5 @@
 const players = [];
 
-   //TODO: make a way to dynamic joining
 module.exports = (server)=>{
     //for connection established
     server.on('connect', (socket)=>{
@@ -30,6 +29,16 @@ module.exports = (server)=>{
         //spawn the player
         socket.on('spawnPlayer', (playerName)=>{
             socket.broadcast.emit('spawnPlayer', playerName);
+        });
+
+        //spawn the existing player
+        socket.on('existingPlayer', (playerData)=>{
+           socket.broadcast.emit('existingPlayer', playerData);
+        });
+
+        //for clearning map
+        socket.on('playerConnect', ()=>{
+            socket.broadcast.emit('playerConnect');
         });
 
         //when player disconnected

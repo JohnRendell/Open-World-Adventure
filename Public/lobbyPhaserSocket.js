@@ -25,10 +25,15 @@ socket.on('playerCount', (count)=>{
     playerCount = count;
 });
 
-   //TODO: make a way to dynamic joining
 function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
+
+    //TODO: fix this one, clear all players when reconnecting
+    socket.on('playerConnect', ()=>{
+        alert('map cleared')
+        scene.playerCollection.clear();
+    });
 
     socket.on('spawnPlayer', (playerName) => {
         if(localStorage.getItem('tempPlayerName') !== playerName){
@@ -66,8 +71,36 @@ function sceneSocket(scene){
                 container: scene.joinedPlayerContainer,
                 playerSprite: scene.joinedPlayer
             });
+        }
+    });
 
-            isRenderToClient = true;
+    //for rendering player data
+    socket.on('existingPlayer', (playerData)=>{
+        const { playerID, playerX, playerY } = playerData;
+
+        if(!scene.playerCollection.has(playerID)){
+
+            //joined Player
+            scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
+            scene.joinedPlayer.setDisplaySize(40, 70);
+            scene.joinedPlayer.setCollideWorldBounds(true); 
+            scene.joinedPlayer.setVisible(true);
+
+            //joined Player name
+            scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
+                font: "16px 'Pixelify Sans'",
+                fill: '#ffffff',
+                align: 'center'
+            }).setOrigin(0.5);
+
+            //joined Player container
+            scene.joinedPlayerContainer = scene.add.container(playerX, playerY, [scene.joinedPlayer, scene.joinedPlayerName]);
+
+            //add player to the collection
+            scene.playerCollection.set(playerID, {
+                container: scene.joinedPlayerContainer,
+                playerSprite: scene.joinedPlayer
+            });
         }
     });
 

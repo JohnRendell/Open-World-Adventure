@@ -93,7 +93,7 @@ class gameLobby extends Phaser.Scene{
         //player name
         this.playerName = this.add.text(0, -50, localStorage.getItem('tempPlayerName'), {
             font: "16px 'Pixelify Sans'",
-            fill: '#ffffff',
+            fill: '#06402b',
             align: 'center'
         }).setOrigin(0.5);
 
@@ -247,8 +247,10 @@ class gameLobby extends Phaser.Scene{
         lobbyUI(this, playerCount);
 
         //call the socket scene
-        //TODO: make a way to dynamic joining
         sceneSocket(this);
+
+        //clear the map on clients
+        socket.emit('playerConnect');
     }
 
     // Update function (for game logic and updates every frame)
@@ -329,8 +331,6 @@ class gameLobby extends Phaser.Scene{
             spriteX: this.player.flipX
         }
         socket.emit('playerMove', playerData);
-
-        //TODO: fix this, keep spawning multiple players
-        socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
+        socket.emit('existingPlayer', playerData);
     }
 }

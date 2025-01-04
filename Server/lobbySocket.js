@@ -36,14 +36,9 @@ module.exports = (server)=>{
            socket.broadcast.emit('existingPlayer', playerData);
         });
 
-        //for clearning map
-        socket.on('playerConnect', ()=>{
-            socket.broadcast.emit('playerConnect');
-        });
-
         //when player disconnected
-        socket.on('disconnected', ()=>{
-
+        socket.on('playerDisconnect', (playerName)=>{
+            socket.broadcast.emit('playerDisconnect', playerName);
         });
     });
 }

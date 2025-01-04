@@ -17,6 +17,8 @@ socket.on('connect', ()=>{
     if(!localStorage.getItem('tempPlayerName')){
         localStorage.setItem('tempPlayerName', playerName);
     }
+    socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
+
     socket.emit('playerConnected', localStorage.getItem('tempPlayerName'));
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
 });
@@ -29,10 +31,17 @@ function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
 
-    //TODO: fix this one, clear all players when reconnecting
-    socket.on('playerConnect', ()=>{
-        alert('map cleared')
-        scene.playerCollection.clear();
+    socket.on('playerDisconnect', (playerName)=>{
+        //search player to the collection
+        const findPlayer = scene.playerCollection.get(playerName);
+
+        if(findPlayer){
+            const { playerName, container, playerSprite } = findPlayer;
+            playerName.destroy();
+            playerSprite.destroy();
+            container.destroy();
+            scene.playerCollection.delete(playerName);
+        }
     });
 
     socket.on('spawnPlayer', (playerName) => {
@@ -52,11 +61,12 @@ function sceneSocket(scene){
 
             //joined Player container
             scene.joinedPlayerContainer = scene.add.container(centerWorld.width + 50, centerWorld.height, [scene.joinedPlayer, scene.joinedPlayerName]);
+            scene.joinedPlayerContainer.setDepth(2);
 
             //spawn smoke
             scene.spawnSmoke = scene.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
             scene.spawnSmoke.setDisplaySize(2, 5);
-            scene.spawnSmoke.setDepth(2);
+            scene.spawnSmoke.setDepth(1);
 
             // Play the animation
             scene.spawnSmoke.play('spawnDust');
@@ -68,6 +78,7 @@ function sceneSocket(scene){
 
             //add player to the collection
             scene.playerCollection.set(playerName, {
+                playerName: scene.joinedPlayerName,
                 container: scene.joinedPlayerContainer,
                 playerSprite: scene.joinedPlayer
             });
@@ -95,9 +106,11 @@ function sceneSocket(scene){
 
             //joined Player container
             scene.joinedPlayerContainer = scene.add.container(playerX, playerY, [scene.joinedPlayer, scene.joinedPlayerName]);
+            scene.joinedPlayerContainer.setDepth(1);
 
             //add player to the collection
             scene.playerCollection.set(playerID, {
+                playerName: scene.joinedPlayerName,
                 container: scene.joinedPlayerContainer,
                 playerSprite: scene.joinedPlayer
             });
@@ -126,16 +139,5 @@ function sceneSocket(scene){
                 playerSprite.play('playerIdle', true);
             }
         }
-
-        //for tree, to make a illusion of back and front player
-        //TODO: fix the tree one
-        /*let playerY = scene.container.y - 130;
-        if (playerY < scene.tree.y) {
-            scene.container.setDepth(1);
-            scene.tree.setDepth(2);
-        } else {
-            scene.container.setDepth(2);
-            scene.tree.setDepth(1);
-        }*/
     });
 }

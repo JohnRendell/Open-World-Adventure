@@ -105,14 +105,10 @@ class gameLobby extends Phaser.Scene{
         this.playerContainer.body.setCollideWorldBounds(true);
         this.playerContainer.body.setSize(40, 70);
         this.playerContainer.body.setOffset(-20, -35);
+        this.playerContainer.setDepth(1);
 
         //tree
-        this.tree = this.physics.add.staticSprite(centerWorld.width + 245, centerWorld.height - 350, 'tree').setOrigin(0.5);
-        this.tree.setDisplaySize(330, 400);
-        this.tree.body.setSize(80, 10, true);
-        this.tree.body.setOffset(750, 750);
-
-        this.physics.add.collider(this.playerContainer, this.tree);
+        this.tree = this.add.sprite(centerWorld.width + 245, centerWorld.height - 480, 'tree').setOrigin(0.5).setDisplaySize(300, 380).setDepth(0);
 
         //spawn smoke
         this.spawnSmoke = this.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
@@ -248,9 +244,6 @@ class gameLobby extends Phaser.Scene{
 
         //call the socket scene
         sceneSocket(this);
-
-        //clear the map on clients
-        socket.emit('playerConnect');
     }
 
     // Update function (for game logic and updates every frame)
@@ -310,15 +303,6 @@ class gameLobby extends Phaser.Scene{
         // on exit for NPCs
         if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds())) {
             this.rupertText.setVisible(false);
-        }
-
-        let playerY = this.playerContainer.y - 130;
-        if (playerY < this.tree.y) {
-            this.playerContainer.setDepth(1);
-            this.tree.setDepth(2);
-        } else {
-            this.playerContainer.setDepth(2);
-            this.tree.setDepth(1);
         }
 
         //for other player movement

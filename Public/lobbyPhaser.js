@@ -19,6 +19,7 @@ let isPanelOpen = false;
 
 let isFront = false;
 let isBack = false;
+let isRenderToClient = false;
 
 class gameLobby extends Phaser.Scene{
     constructor(){
@@ -248,7 +249,6 @@ class gameLobby extends Phaser.Scene{
         //call the socket scene
         //TODO: make a way to dynamic joining
         sceneSocket(this);
-        socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
     }
 
     // Update function (for game logic and updates every frame)
@@ -329,5 +329,8 @@ class gameLobby extends Phaser.Scene{
             spriteX: this.player.flipX
         }
         socket.emit('playerMove', playerData);
+
+        //TODO: fix this, keep spawning multiple players
+        socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
     }
 }

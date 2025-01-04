@@ -18,6 +18,7 @@ socket.on('connect', ()=>{
         localStorage.setItem('tempPlayerName', playerName);
     }
     socket.emit('playerConnected', localStorage.getItem('tempPlayerName'));
+    socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
 });
 
 socket.on('playerCount', (count)=>{
@@ -64,7 +65,9 @@ function sceneSocket(scene){
             scene.playerCollection.set(playerName, {
                 container: scene.joinedPlayerContainer,
                 playerSprite: scene.joinedPlayer
-            })
+            });
+
+            isRenderToClient = true;
         }
     });
 
@@ -93,13 +96,13 @@ function sceneSocket(scene){
 
         //for tree, to make a illusion of back and front player
         //TODO: fix the tree one
-        let playerY = scene.container.y - 130;
+        /*let playerY = scene.container.y - 130;
         if (playerY < scene.tree.y) {
             scene.container.setDepth(1);
             scene.tree.setDepth(2);
         } else {
             scene.container.setDepth(2);
             scene.tree.setDepth(1);
-        }
+        }*/
     });
 }

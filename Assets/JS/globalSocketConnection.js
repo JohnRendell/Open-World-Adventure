@@ -1,5 +1,5 @@
 const socket = io();
 
-socket.on('connect', ()=>{
+socket.on('globalMessage', (containerID, receiver, msg)=>{
     
 });

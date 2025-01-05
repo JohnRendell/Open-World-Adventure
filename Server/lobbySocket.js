@@ -1,3 +1,5 @@
+const CryptoJS = require('crypto-js');
+
 const players = [];
 
 module.exports = (server)=>{
@@ -6,7 +8,9 @@ module.exports = (server)=>{
         console.log('Connected to the socketIO: ' + socket.id);
 
         socket.on('playerConnected', (playerName)=>{
-            var data = { playerName: playerName };
+            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+            var data = { playerName: decryptPlayerName };
 
             //add the player to the array
             const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
@@ -28,7 +32,9 @@ module.exports = (server)=>{
 
         //spawn the player
         socket.on('spawnPlayer', (playerName)=>{
-            socket.broadcast.emit('spawnPlayer', playerName);
+            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+            
+            socket.broadcast.emit('spawnPlayer', decryptPlayerName);
         });
 
         //spawn the existing player
@@ -38,7 +44,8 @@ module.exports = (server)=>{
 
         //when player disconnected
         socket.on('playerDisconnect', (playerName)=>{
-            socket.broadcast.emit('playerDisconnect', playerName);
+            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+            socket.broadcast.emit('playerDisconnect', decryptPlayerName);
         });
     });
 }

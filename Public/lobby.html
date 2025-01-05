@@ -21,7 +21,10 @@
     <script src="/webfontloader/webfontloader.js"></script>
 
     <!--Web socket library-->
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.min.js"></script>
+
+    <!--Crypto js Library-->
+    <script src="/crypto-js/crypto-js.js"></script>
 </head>
 
 <!--Style for scrollbar only-->
@@ -44,7 +47,7 @@
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="rupertDialog" style="display: none;">
         <img src="/ImageComponents/NPC/Rupert NPC.png" alt="Rupert Npc" class="absolute right-0 top-0">
 
-        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2">
+        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0" id="rupertDialog_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
                 <div class="w-full h-auto">
@@ -56,7 +59,7 @@
             </div>
 
            <!--Conversation Div-->
-           <div class="border-2 border-gray-800 rounded-lg m-2 overflow-y-auto w-[30rem] h-[20rem] scroll-smooth" id="npcConversationDiv">
+           <div class="border-2 border-gray-800 rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth" id="npcConversationDiv">
 
                 <!--Placeholder for the message, so the tailwind wont forget about this
                 <div class="w-full h-fit flex justify-start">
@@ -77,11 +80,65 @@
                 <div class="flex justify-between items-center gap-2">
                     <textarea type="text" placeholder="Type Message"
                         class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none" minlength="0" maxlength="80" oninput="typeMessage('messageIncrementNPC', 'npcMessageInput', 80)" id="npcMessageInput"></textarea>
-                    <button
-                        class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700" onclick="messageSend('npcConversationDiv', 'npcMessageInput', 'messageIncrementNPC', 80)">Send</button>
+                    <div class="flex flex-col space-y-2 m-2">
+                        <button class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700"
+                            onclick="messageSend('npcConversationDiv', 'npcMessageInput', 'messageIncrementNPC', 80, true)">Send</button>
+                        <p class="font-PixelifySans text-sm text-black text-center" id="messageIncrementNPC">0/80</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Global Chat-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="globalChatModal"
+        style="display: none;">    
+        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0" id="globalChatModal_panel">
+            <!--Header-->
+            <div class="w-full h-fit flex justify-between p-2">
+                <div class="w-full h-auto">
+                    <h1 class="font-PixelifySans text-black text-center text-lg">Global Chat</h1>
+                </div>
+                <button class="w-fit h-fit cursor-pointer"
+                    onclick="modalStatus('globalChatModal', 'none', null); playGame(null)">
+                    <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
+                </button>
+            </div>
+    
+            <!--Conversation Div-->
+            <div class="border-2 border-gray-800 rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+                id="globalContainerDiv">
+    
+                <!--Placeholder for the message, so the tailwind wont forget about this--
+                <div class="w-full h-fit flex justify-start">
+                    <div class="w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2">
+                        <p class="font-PixelifySans text-sm text-black text-left font-bold"></p>
+                        <p class="font-PixelifySans text-sm text-black text-left text-wrap"></p>
+                    </div>
                 </div>
 
-                <p class="font-PixelifySans text-sm text-black text-right" id="messageIncrementNPC">0/80</p>
+                <div class="w-full h-fit flex justify-end">
+                    <div class="w-[10rem] h-fit p-2 rounded-lg bg-blue-300 m-2">
+                        <p class="font-PixelifySans text-sm text-black text-right font-bold"></p>
+                        <p class="font-PixelifySans text-sm text-black text-left text-wrap"></p>
+                    </div>
+                </div>-->
+            </div>
+    
+            <!--Input message-->
+            <div class="flex flex-col space-y-2 h-fit">
+                <div class="flex justify-between items-center gap-2">
+                    <textarea type="text" placeholder="Type Message"
+                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none"
+                        minlength="0" maxlength="80" oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80)"
+                        id="globalMessageInput"></textarea>
+                    
+                    <div class="flex flex-col space-y-2 m-2">
+                        <button class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700"
+                            onclick="messageSend('globalContainerDiv', 'globalMessageInput', 'globalMessageIncrement', 80, false)">Send</button>
+                        <p class="font-PixelifySans text-sm text-black text-center" id="globalMessageIncrement">0/80</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

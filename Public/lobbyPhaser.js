@@ -91,7 +91,9 @@ class gameLobby extends Phaser.Scene{
         });
 
         //player name
-        this.playerName = this.add.text(0, -50, localStorage.getItem('tempPlayerName'), {
+        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+        this.playerName = this.add.text(0, -50, decryptPlayerName, {
             font: "16px 'Pixelify Sans'",
             fill: '#06402b',
             align: 'center'
@@ -193,10 +195,10 @@ class gameLobby extends Phaser.Scene{
             this[npcKey] = npcObj;
             this[`${npcKey}Text`] = instructionText;
 
-            npcObj.setInteractive();
+            npcObj.setInteractive({ useHandCursor: true });
             npcObj.on('pointerdown', () => {
                 if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
-                    document.getElementById('rupertDialog').style.display = 'flex';
+                    modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
                     isTalking = true;
                     isPanelOpen = true;
                 }
@@ -306,8 +308,10 @@ class gameLobby extends Phaser.Scene{
         }
 
         //for other player movement
+        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+        
         const playerData = {
-            playerID: localStorage.getItem('tempPlayerName'),
+            playerID: decryptPlayerName,
             x: this.playerContainer.x,
             y: this.playerContainer.y,
             isBack: isBack,

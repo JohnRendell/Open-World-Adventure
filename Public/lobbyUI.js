@@ -26,8 +26,8 @@ function lobbyUI(scene, count){
 
     scene.button_GlobalChat.setInteractive({ useHandCursor: true });
     scene.button_GlobalChat.on('pointerdown', () => {
-        /*isTalking = true;
-        isPanelOpen = true;*/
-        alert('opening chat box')
+        isTalking = true;
+        isPanelOpen = true;
+        modalStatus('globalChatModal', 'flex', 'modalAnimation');
     });
 }

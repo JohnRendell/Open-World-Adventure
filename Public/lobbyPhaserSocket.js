@@ -14,11 +14,15 @@ socket.on('connect', ()=>{
     }
 
     let playerName = 'Guest_' + guestID(5);
-    if(!localStorage.getItem('tempPlayerName')){
-        localStorage.setItem('tempPlayerName', playerName);
-    }
-    socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
 
+    //encrypt the temporary player name
+    let encryptPlayerName = CryptoJS.AES.encrypt(playerName, 'tempPlayerName').toString();
+    
+    if(!localStorage.getItem('tempPlayerName')){
+        localStorage.setItem('tempPlayerName', encryptPlayerName);
+    }
+
+    socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
     socket.emit('playerConnected', localStorage.getItem('tempPlayerName'));
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
 });

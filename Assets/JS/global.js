@@ -47,14 +47,18 @@ function playGame(containerID){
     isTalking = false;
     isPanelOpen = false;
 
-    const container = document.getElementById(containerID);
+   if(containerID){
+        const container = document.getElementById(containerID);
 
-    while (container.hasChildNodes()) {
-        container.removeChild(container.firstChild);
-    }
+        while (container.hasChildNodes()) {
+            container.removeChild(container.firstChild);
+        }
+   }
 }
 
-function messageSend(containerID, inputID, incrementID, max){
+function messageSend(containerID, inputID, incrementID, max, isNPC){
+    let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+    
     var container = document.getElementById(containerID);
     var messageInput = document.getElementById(inputID);
     var incrementText = document.getElementById(incrementID);
@@ -68,12 +72,24 @@ function messageSend(containerID, inputID, incrementID, max){
         messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-300 m-2');
         wrapperContainer.appendChild(messageWrapper);
 
+        if(!isNPC){
+            var sender = document.createElement('p');
+            sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-right font-bold');
+            sender.appendChild(document.createTextNode(decryptPlayerName + '(You)'));
+            messageWrapper.appendChild(sender);
+        }
+
         var textContent = document.createElement('p');
         textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
         textContent.appendChild(document.createTextNode(messageInput.value));
         messageWrapper.appendChild(textContent);
 
-        promptNPC(messageInput.value, container.id, npcPromptInstruction);
+        if(isNPC){
+            promptNPC(messageInput.value, container.id, npcPromptInstruction);
+        }
+        else{
+            socket.emit('globalMessage', containerID, decryptPlayerName, messageInput.value);
+        }
 
         document.getElementById(inputID).value = "";
         incrementText.innerText = 0 + '/' + max;

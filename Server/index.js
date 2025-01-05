@@ -4,9 +4,28 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const expressServer = require('http').createServer(app);
 const socketServer = require('socket.io')(expressServer);
+const mongoose = require('mongoose');
 
 //get the env keys
 require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
+
+//connect to the mongoose database
+const uri = process.env.URI;
+const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
+
+async function run() {
+  try {
+    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
+    await mongoose.connect(uri, clientOptions);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } 
+  catch(err) {
+    console.log(err);
+  }
+}
+run().catch(console.dir);
+
 
 //serve the static folders
 app.use(express.static(path.join(__dirname, '../Public')));

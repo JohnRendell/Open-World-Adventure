@@ -242,10 +242,11 @@ class gameLobby extends Phaser.Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        lobbyUI(this);
-
         //call the socket scene
         sceneSocket(this);
+
+        //call the UI scene
+        lobbyUI(this);
     }
 
     // Update function (for game logic and updates every frame)

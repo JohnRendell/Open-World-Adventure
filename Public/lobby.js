@@ -58,4 +58,4 @@ async function validateCreateAccount(){
     }
 }
 
-npcGreet('npcConversationDiv', 'Hi i am Rupert, are you going to login or play as guest? If you have any question you can ask anything.');
+npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');

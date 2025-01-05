@@ -18,11 +18,13 @@ module.exports = (server)=>{
             if(findPlayerIndex == -1){
                 players.push(data);
             }
-
-            //count players
-            console.log('player Count: ' + players.length);
+            console.log('players:');
             console.table(players);
-            server.emit('playerCount', players.length);
+        });
+
+        //player counts
+        socket.on('playerCount', (count)=>{
+            socket.emit('playerCount', count);
         });
 
         //player move
@@ -39,7 +41,8 @@ module.exports = (server)=>{
 
         //spawn the existing player
         socket.on('existingPlayer', (playerData)=>{
-           socket.broadcast.emit('existingPlayer', playerData);
+            socket.emit('playerCount', players.length);
+            socket.broadcast.emit('existingPlayer', playerData);
         });
 
         //when player disconnected

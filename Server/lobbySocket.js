@@ -13,17 +13,17 @@ module.exports = (server)=>{
             var data = { playerName: decryptPlayerName };
 
             //add the player to the array
-            const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
+            const findPlayerIndex = players.findIndex(player => decryptPlayerName == player['playerName']);
 
             if(findPlayerIndex == -1){
                 players.push(data);
             }
+
             //count players
+            console.log('player Count: ' + players.length);
+            console.table(players);
             server.emit('playerCount', players.length);
         });
-
-        console.log('Current Players: ');
-        console.table(players);
 
         //player move
         socket.on('playerMove', (playerData)=>{

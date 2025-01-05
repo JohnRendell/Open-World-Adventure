@@ -7,5 +7,9 @@ module.exports = (server)=>{
         socket.on('incrementGlobalMessage', (count)=>{
             socket.emit('incrementGlobalMessage', count);
         });
+
+        socket.on('clearGlobalMessageCounter', ()=>{
+            socket.emit('clearGlobalMessageCounter');
+        })
     });
 }

@@ -1,6 +1,3 @@
-let playerCount = 0;
-let messageGlobalIncrement = 0;
-
 socket.on('connect', ()=>{
     function guestID(length) {
         let result = '';
@@ -28,15 +25,6 @@ socket.on('connect', ()=>{
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
 });
 
-socket.on('playerCount', (count)=>{
-    playerCount = count;
-});
-
-//TODO: fix this one, the message global not incrementing properly
-socket.on('incrementGlobalMessage', (count)=>{
-    messageGlobalIncrement = count;
-});
-
 function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
@@ -55,7 +43,9 @@ function sceneSocket(scene){
     });
 
     socket.on('spawnPlayer', (playerName) => {
-        if(localStorage.getItem('tempPlayerName') !== playerName){
+        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+        if(decryptPlayerName !== playerName){
             //joined Player
             scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
             scene.joinedPlayer.setDisplaySize(40, 70);

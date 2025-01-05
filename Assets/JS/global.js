@@ -58,6 +58,7 @@ function playGame(containerID){
 
 function resetGlobalMessageCounter(){
     globalMessageCounter = 0;
+    socket.emit('clearGlobalMessageCounter');
 }
 
 function messageSend(containerID, inputID, incrementID, max, isNPC){
@@ -155,7 +156,7 @@ async function promptNPC(promptMsg, containerID, systemInstruction){
 
             if(loginOutput.substring(0, 5) === 'GUEST'){
                 modalStatus('rupertDialog', 'none', null);
-                modalStatus('guestDiv', 'flex', 'modalAnimation');
+                //modalStatus('guestDiv', 'flex', 'modalAnimation');
             }
         }
         else{

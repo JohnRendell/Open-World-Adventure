@@ -3,5 +3,9 @@ module.exports = (server)=>{
         socket.on('globalMessage', (containerID, sender, msg)=>{
             socket.broadcast.emit('globalMessage', containerID, sender, msg);
         });
+
+        socket.on('incrementGlobalMessage', (count)=>{
+            socket.emit('incrementGlobalMessage', count);
+        });
     });
 }

@@ -56,6 +56,10 @@ function playGame(containerID){
    }
 }
 
+function resetGlobalMessageCounter(){
+    globalMessageCounter = 0;
+}
+
 function messageSend(containerID, inputID, incrementID, max, isNPC){
     let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
     

@@ -1,4 +1,5 @@
 let playerCount = 0;
+let messageGlobalIncrement = 0;
 
 socket.on('connect', ()=>{
     function guestID(length) {
@@ -16,10 +17,10 @@ socket.on('connect', ()=>{
     let playerName = 'Guest_' + guestID(5);
 
     //encrypt the temporary player name
-    let encryptPlayerName = CryptoJS.AES.encrypt(playerName, 'tempPlayerName').toString();
+    let encryptPlayerName = CryptoJS.AES.encrypt(playerName, 'tempPlayerName');
     
     if(!localStorage.getItem('tempPlayerName')){
-        localStorage.setItem('tempPlayerName', encryptPlayerName);
+        localStorage.setItem('tempPlayerName', encryptPlayerName.toString());
     }
 
     socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
@@ -29,6 +30,11 @@ socket.on('connect', ()=>{
 
 socket.on('playerCount', (count)=>{
     playerCount = count;
+});
+
+//TODO: fix this one, the message global not incrementing properly
+socket.on('incrementGlobalMessage', (count)=>{
+    messageGlobalIncrement = count;
 });
 
 function sceneSocket(scene){

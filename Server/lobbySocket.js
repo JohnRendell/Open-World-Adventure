@@ -33,7 +33,7 @@ module.exports = (server)=>{
         //spawn the player
         socket.on('spawnPlayer', (playerName)=>{
             let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-            
+
             socket.broadcast.emit('spawnPlayer', decryptPlayerName);
         });
 
@@ -45,6 +45,7 @@ module.exports = (server)=>{
         //when player disconnected
         socket.on('playerDisconnect', (playerName)=>{
             let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
             socket.broadcast.emit('playerDisconnect', decryptPlayerName);
         });
     });

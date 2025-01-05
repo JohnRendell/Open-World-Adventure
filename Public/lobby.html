@@ -100,7 +100,7 @@
                     <h1 class="font-PixelifySans text-black text-center text-lg">Global Chat</h1>
                 </div>
                 <button class="w-fit h-fit cursor-pointer"
-                    onclick="modalStatus('globalChatModal', 'none', null); playGame(null)">
+                    onclick="modalStatus('globalChatModal', 'none', null); playGame(null); resetGlobalMessageCounter()">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -319,6 +319,9 @@
 
 <!--Connection for the socket-->
 <script src="/JS/globalSocketConnection.js"></script>
+
+<!--Global sockets-->
+<script src="/JS/globalSocket.js"></script>
 
 <!--Phasers-->
 <script src="/lobbyUI.js"></script>

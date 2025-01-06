@@ -3,6 +3,13 @@ const router = express.Router();
 const sanitizeHtml = require('sanitize-html');
 const accountModel = require('./accountMongoose');
 const bcryptJS = require('bcryptjs');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const CryptoJS = require('crypto-js');
+
+require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
+
+router.use(cookieParser(process.env.COOKIE_KEY));
 
 router.post('/', async (req, res)=>{
     const username = sanitizeHtml(req.body.username);
@@ -54,7 +61,10 @@ router.post('/', async (req, res)=>{
                     const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: 'none' });
 
                     if(createAcc){
-                        res.status(200).json({ message: 'success' });
+                        let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();
+
+                        res.cookie('username', encryptPlayerName, { signed: true, httpOnly: true, maxAge: 90000 });
+                        res.status(200).json({ message: 'success', username: encryptPlayerName });
                     }
                 }
             }

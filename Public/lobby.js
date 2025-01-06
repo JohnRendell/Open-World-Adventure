@@ -16,8 +16,11 @@ async function validateAccount(){
 
         const accountValidate_data = await accountValidate.json();
 
-        if(accountValidate_data.message == 'success'){
-            loginWarningText.innerText = accountValidate_data.message;
+        if(accountValidate_data.message === 'success'){
+            socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
+            localStorage.removeItem('tempPlayerName');
+
+            window.location.href = '/Game/Base/' + accountValidate_data.username;
         }
         else{
             loginWarningText.innerText = accountValidate_data.message;
@@ -46,8 +49,11 @@ async function validateCreateAccount(){
 
         const accountCreateValidate_data = await accountCreateValidate.json();
 
-        if(accountCreateValidate_data.message == 'success'){
-            signinWarningText.innerText = accountCreateValidate_data.message;
+        if(accountCreateValidate_data.message === 'success'){
+            socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
+            localStorage.removeItem('tempPlayerName');
+            
+            window.location.href = '/Game/Base/' + accountCreateValidate_data.username;
         }
         else{
             signinWarningText.innerText = accountCreateValidate_data.message;

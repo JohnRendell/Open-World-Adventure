@@ -31,6 +31,7 @@ run().catch(console.dir);
 app.use(express.static(path.join(__dirname, '../Public')));
 app.use(express.static(path.join(__dirname, '../Assets')));
 app.use(express.static(path.join(__dirname, '../404pages')));
+app.use(express.static(path.join(__dirname, '../Game')));
 
 //get the main html file
 app.get('/', (req, res)=>{
@@ -48,6 +49,12 @@ app.use('/lobby', require('./lobbyRouter'));
 app.use('/promptNPC', require('./geminiAI'));
 app.use('/login', require('./accountLoginValidation'));
 app.use('/signin', require('./accountSigninValidation'));
+
+//for cookie
+app.use('/cookie', require('./cookieStatus'));
+
+//game routers
+app.use('/game', require('./gameRouter'));
 
 //for 404 pages
 app.get('*', (req, res)=>{

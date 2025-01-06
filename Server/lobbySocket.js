@@ -45,6 +45,13 @@ module.exports = (server)=>{
             socket.broadcast.emit('existingPlayer', playerData);
         });
 
+        //when player logged in, remove it to the lobby
+        socket.on('redirectToBase', (playerName)=>{
+            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+            socket.broadcast.emit('redirectToBase', decryptPlayerName);
+        });
+
         //when player disconnected
         socket.on('playerDisconnect', (playerName)=>{
             let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);

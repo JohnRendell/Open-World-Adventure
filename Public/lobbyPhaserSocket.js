@@ -140,4 +140,18 @@ function sceneSocket(scene){
             }
         }
     });
+
+    //when player logged in
+    socket.on('redirectToBase', (playerName)=>{
+        //search player to the collection
+        const findPlayer = scene.playerCollection.get(playerName);
+
+        if(findPlayer){
+            const { playerName, container, playerSprite } = findPlayer;
+            playerName.destroy();
+            playerSprite.destroy();
+            container.destroy();
+            scene.playerCollection.delete(playerName);
+        }
+    });
 }

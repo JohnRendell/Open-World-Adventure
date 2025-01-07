@@ -19,6 +19,9 @@ router.post('/getCookie', (req, res)=>{
                 let decryptPlayerName = CryptoJS.AES.decrypt(usernameCookie, 'token').toString(CryptoJS.enc.Utf8);
                 res.status(200).json({ message: 'success', decryptPlayerName: decryptPlayerName });
             }
+            else{
+                res.status(200).json({ message: 'no cookie' });
+            }
         }
     }
     catch(err){

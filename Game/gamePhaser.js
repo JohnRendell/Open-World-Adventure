@@ -33,6 +33,7 @@ async function getPlayerName(scene){
     const getUserToken_Data = await getUserToken.json();
 
     if(getUserToken_Data.message === 'success'){
+        loggedIn_playerName = getUserToken_Data.decryptPlayerName;
         scene.playerName.setText(getUserToken_Data.decryptPlayerName);
     }
     else{
@@ -174,6 +175,72 @@ class homeBase extends Phaser.Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        this.input.keyboard.enableGlobalCapture();
+
+        //npc functions
+        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY)=>{
+            //add the NPC
+            const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
+            npcObj.setDisplaySize(40, 70);
+            npcObj.body.setSize(40, 70, true);
+            npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
+
+            //NPC Label
+            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 100) + 50, objectLabel, {
+                font: "16px 'Pixelify Sans",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+            this.NPCLabel.setDepth(2);
+
+            const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
+                font: "16px 'Pixelify Sans",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+            instructionText.setVisible(false);
+            instructionText.setDepth(2);
+
+            //animation idle for npc
+            this.anims.create({
+                key: npcKey,
+                frames: this.anims.generateFrameNumbers(imageLabel, { start: 0, end: 1 }),
+                frameRate: 4,
+                repeat: -1
+            });
+
+            npcObj.play(npcKey);
+
+            //trigger for this npc, on enter
+            this.physics.add.overlap(this.playerContainer, npcObj, () => {
+                instructionText.setVisible(true);
+            });
+
+            //collider for npc
+            this.physics.add.collider(this.playerContainer, npcObj);
+
+            this[npcKey] = npcObj;
+            this[`${npcKey}Text`] = instructionText;
+
+            npcObj.setInteractive({ useHandCursor: true });
+            npcObj.on('pointerdown', () => {
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
+                    modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
+                    isTalking = true;
+                    isPanelOpen = true;
+
+                    switch(npcKey){
+                        case 'bimbo':
+                            bimboPrompt();
+                        break;
+                    }
+                }
+            });
+        }
+
+        npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 100, worldBounds.height - 50);
+        this.bimbo.flipX = true;
+
         lobbyUI(this);
     }
 
@@ -207,16 +274,7 @@ class homeBase extends Phaser.Scene{
         }
 
         if(isTalking){
-            this.input.keyboard.on('keydown', function (event) {
-                let inputField = this.element.getChildByName('npcMessageInput');
-                    if (event.key === ' ') {
-                        // Add a space character when the Space key is pressed
-                        inputField.value += ' ';
-                    } else if (event.key.length === 1) {
-                        // Add regular characters like 'a', 's', 'd', 'w', etc.
-                        inputField.value += event.key;
-                    }
-            }.bind(this));
+            this.input.keyboard.disableGlobalCapture();
         }
 
         if(isFront){
@@ -229,6 +287,11 @@ class homeBase extends Phaser.Scene{
 
         if(!isFront && !isBack){
             this.player.play('playerIdle', true);
+        }
+
+        // on exit for NPCs
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bimbo.getBounds())) {
+            this.bimboText.setVisible(false);
         }
 
         //for other player movement

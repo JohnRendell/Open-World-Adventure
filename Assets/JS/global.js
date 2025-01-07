@@ -61,46 +61,46 @@ function resetGlobalMessageCounter(){
     socket.emit('clearGlobalMessageCounter');
 }
 
-function messageSend(containerID, inputID, incrementID, max, isNPC){
-    let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-    
-    var container = document.getElementById(containerID);
-    var messageInput = document.getElementById(inputID);
-    var incrementText = document.getElementById(incrementID);
+function messageSend(containerID, inputID, incrementID, max, isNPC, npcName){    
+   try{
+        var container = document.getElementById(containerID);
+        var messageInput = document.getElementById(inputID);
+        var incrementText = document.getElementById(incrementID);
 
-    if(container && messageInput && incrementText && messageInput.value){
-        var wrapperContainer = document.createElement('div');
-        wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-end');
-        container.appendChild(wrapperContainer);
+        if(container && messageInput && incrementText && messageInput.value){
+            var wrapperContainer = document.createElement('div');
+            wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-end');
+            container.appendChild(wrapperContainer);
 
-        var messageWrapper = document.createElement('div');
-        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-300 m-2');
-        wrapperContainer.appendChild(messageWrapper);
+            var messageWrapper = document.createElement('div');
+            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-300 m-2');
+            wrapperContainer.appendChild(messageWrapper);
 
-        if(!isNPC){
-            var sender = document.createElement('p');
-            sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-right font-bold');
-            sender.appendChild(document.createTextNode(decryptPlayerName + '(You)'));
-            messageWrapper.appendChild(sender);
+            if(!isNPC){
+                var sender = document.createElement('p');
+                sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-right font-bold');
+                sender.appendChild(document.createTextNode(loggedIn_playerName + '(You)'));
+                messageWrapper.appendChild(sender);
+                socket.emit('globalMessage', containerID, loggedIn_playerName, messageInput.value);
+            }
+
+            var textContent = document.createElement('p');
+            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+            textContent.appendChild(document.createTextNode(messageInput.value));
+            messageWrapper.appendChild(textContent);
+
+            if(isNPC){
+                promptNPC(messageInput.value, container.id, npcPromptInstruction, npcName);
+            }
+
+            document.getElementById(inputID).value = "";
+            incrementText.innerText = 0 + '/' + max;
+
+            container.scrollTo(0, container.scrollHeight);
         }
-
-        var textContent = document.createElement('p');
-        textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
-        textContent.appendChild(document.createTextNode(messageInput.value));
-        messageWrapper.appendChild(textContent);
-
-        if(isNPC){
-            promptNPC(messageInput.value, container.id, npcPromptInstruction);
-        }
-        else{
-            socket.emit('globalMessage', containerID, decryptPlayerName, messageInput.value);
-        }
-
-        document.getElementById(inputID).value = "";
-        incrementText.innerText = 0 + '/' + max;
-
-        container.scrollTo(0, container.scrollHeight);
-    }
+   } catch(err){
+        console.log(err);
+   }
 }
 
 function replaceTitle(titleID, replacement){
@@ -113,7 +113,7 @@ function togglePanel(panelAID, panelBID){
 }
 
 //prompt for NPC (Gemini AI)
-async function promptNPC(promptMsg, containerID, systemInstruction){
+async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
     try{
         const prompt = await fetch('/promptNPC', {
             method: "POST",
@@ -149,14 +149,16 @@ async function promptNPC(promptMsg, containerID, systemInstruction){
 
             let loginOutput = prompt_data.output;
 
-            if(loginOutput.substring(0, 5) === 'LOGIN'){
-                modalStatus('rupertDialog', 'none', null);
-                modalStatus('loginDiv', 'flex', 'modalAnimation');
-            }
+            if(npcName === 'Rupert'){
+                if(loginOutput.substring(0, 5) === 'LOGIN'){
+                    modalStatus('rupertDialog', 'none', null);
+                    modalStatus('loginDiv', 'flex', 'modalAnimation');
+                }
 
-            if(loginOutput.substring(0, 5) === 'GUEST'){
-                modalStatus('rupertDialog', 'none', null);
-                //modalStatus('guestDiv', 'flex', 'modalAnimation');
+                if(loginOutput.substring(0, 5) === 'GUEST'){
+                    modalStatus('rupertDialog', 'none', null);
+                    //modalStatus('guestDiv', 'flex', 'modalAnimation');
+                }
             }
         }
         else{

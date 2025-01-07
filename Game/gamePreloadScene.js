@@ -44,4 +44,10 @@ function loadAssets(scene){
         frameWidth: 5120 / 5,
         frameHeight: 2048 / 2
     });
+
+    //NPC
+    scene.load.spritesheet('Bimbo_NPC', '/ImageComponents/Sprite Sheets/Bimbo Idle sprite sheet.png', {
+        frameWidth: 1600 / 5,
+        frameHeight: 800 / 1
+    });
 }

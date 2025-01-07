@@ -1,3 +1,7 @@
+function replaceSlashWithUnderscore(inputString) {
+    return inputString.replace(/\//g, '_');
+}
+
 //for login account
 async function validateAccount(){
     var username = document.getElementById('login_userID');
@@ -20,7 +24,7 @@ async function validateAccount(){
             socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
             localStorage.removeItem('tempPlayerName');
 
-            window.location.href = '/Game/Base/' + accountValidate_data.username;
+            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountValidate_data.username);
         }
         else{
             loginWarningText.innerText = accountValidate_data.message;
@@ -53,7 +57,7 @@ async function validateCreateAccount(){
             socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
             localStorage.removeItem('tempPlayerName');
             
-            window.location.href = '/Game/Base/' + accountCreateValidate_data.username;
+            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountCreateValidate_data.username);
         }
         else{
             signinWarningText.innerText = accountCreateValidate_data.message;

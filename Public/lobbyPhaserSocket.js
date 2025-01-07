@@ -1,3 +1,5 @@
+let loggedIn_playerName;
+
 socket.on('connect', ()=>{
     function guestID(length) {
         let result = '';
@@ -23,6 +25,8 @@ socket.on('connect', ()=>{
     socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
     socket.emit('playerConnected', localStorage.getItem('tempPlayerName'));
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
+
+    loggedIn_playerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 });
 
 function sceneSocket(scene){

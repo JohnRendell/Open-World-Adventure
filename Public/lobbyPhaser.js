@@ -242,6 +242,8 @@ class gameLobby extends Phaser.Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        this.input.keyboard.enableGlobalCapture();
+
         //call the socket scene
         sceneSocket(this);
 
@@ -279,16 +281,7 @@ class gameLobby extends Phaser.Scene{
         }
 
         if(isTalking){
-            this.input.keyboard.on('keydown', function (event) {
-                let inputField = this.element.getChildByName('npcMessageInput');
-                    if (event.key === ' ') {
-                        // Add a space character when the Space key is pressed
-                        inputField.value += ' ';
-                    } else if (event.key.length === 1) {
-                        // Add regular characters like 'a', 's', 'd', 'w', etc.
-                        inputField.value += event.key;
-                    }
-            }.bind(this));
+            this.input.keyboard.disableGlobalCapture();
         }
 
         if(isFront){

@@ -36,6 +36,7 @@ async function getPlayerName(scene){
     if(getUserToken_Data.message === 'success'){
         loggedIn_playerName = getUserToken_Data.decryptPlayerName;
         scene.playerName.setText(getUserToken_Data.decryptPlayerName);
+        homeBaseUI(scene, getUserToken_Data.decryptPlayerName);
     }
     else{
         scene.playerName.setText('cant read token');
@@ -157,6 +158,58 @@ class homeBase extends Phaser.Scene{
         });
 
         this.spawner.play('spawnerPod');
+
+        //walls
+        this.groupWalls = this.physics.add.staticGroup();
+
+        const upperWalls = [];
+        const lowerWalls = [];
+        const leftSideWalls = [];
+        const rightSideWalls = [];
+
+        const wallNumber = 12;
+        const sideWallNumber = 5;
+
+        for(let i = 0; i < wallNumber; i++){
+            const upperWall = this.groupWalls.create(100 + (200 * i), 300, 'front_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+
+            const lowerWall = this.groupWalls.create(100 + (200 * i), worldBounds.height - 80, 'front_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(2);
+            
+            upperWalls.push(upperWall);
+            lowerWalls.push(lowerWall);
+        }
+
+        for(let i = 0; i < sideWallNumber; i++){
+            const leftSideWall = this.groupWalls.create(40, 380 + (120 * i), 'side_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+
+            const rightSideWall = this.groupWalls.create(1150, 380 + (120 * i), 'side_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+
+            leftSideWalls.push(leftSideWall);
+            rightSideWalls.push(rightSideWall);
+        }
+        
+        upperWalls.forEach(obj => {
+            obj.body.setSize(200, 20, true);
+            obj.body.setOffset(414, 470);
+        });
+
+        lowerWalls.forEach(obj => {
+            obj.body.setSize(200, 20, true);
+            obj.body.setOffset(414, 530);
+        });
+
+        leftSideWalls.forEach(obj => {
+            obj.body.setSize(24, 164, true);
+            obj.body.setOffset(500, 436);
+        });
+
+        rightSideWalls.forEach(obj => {
+            obj.body.setSize(24, 164, true);
+            obj.body.setOffset(500, 436);
+        });
+
+        //collider for walls
+        this.physics.add.collider(this.groupWalls, this.playerContainer);
 
         //collider for spawner
         this.physics.add.collider(this.playerContainer, this.spawner);

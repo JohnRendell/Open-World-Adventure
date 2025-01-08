@@ -15,7 +15,7 @@ window.onload = async function(){
     const getUserToken_Data = await getUserToken.json();
 
     if(getUserToken_Data.message === 'no cookie'){
-        alert('Cookie expired');
-        window.location.href = '/lobby';
+        //alert('Cookie expired');
+        //window.location.href = '/lobby';
     }
 }

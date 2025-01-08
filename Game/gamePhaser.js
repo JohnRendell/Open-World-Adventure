@@ -3,6 +3,7 @@ const canvasSize = {
     height: 500
 }
 
+//max base size 4000, min is 1200
 const worldBounds = {
     width: 1200,
     height: 1000
@@ -66,13 +67,12 @@ class homeBase extends Phaser.Scene{
         this.topZone.body.setOffset(0,0);
 
         //add the river
-        this.river = this.add.sprite(0, 0, 'river').setOrigin(0.5);
-        this.river.setDisplaySize(3000, 1000);
-        this.river.setDepth(1);
+        this.river = this.add.sprite(0, 100, 'river').setOrigin(0.5);
+        this.river.setDisplaySize(2500, 900);
 
         this.anims.create({
             key: 'riverFlow', 
-            frames: this.anims.generateFrameNumbers('river', { start: 0, end: 2 }),
+            frames: this.anims.generateFrameNumbers('river', { start: 0, end: 4 }),
             frameRate: 6, 
             repeat: -1
         });
@@ -113,7 +113,7 @@ class homeBase extends Phaser.Scene{
         }).setOrigin(0.5);
 
         //player container
-        this.playerContainer = this.add.container(centerWorld.width + 50, centerWorld.height, [this.player, this.playerName]);
+        this.playerContainer = this.add.container(650, 500, [this.player, this.playerName]);
 
         this.physics.world.enable(this.playerContainer);
 
@@ -123,7 +123,7 @@ class homeBase extends Phaser.Scene{
         this.playerContainer.setDepth(1);
 
         //spawn smoke
-        this.spawnSmoke = this.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
+        this.spawnSmoke = this.add.sprite(600, 450, "spawn_smoke").setOrigin(0.5);
         this.spawnSmoke.setDisplaySize(2, 5);
         this.spawnSmoke.setDepth(2);
 
@@ -143,7 +143,7 @@ class homeBase extends Phaser.Scene{
         });
 
         //add the spawner pod
-        this.spawner = this.physics.add.staticSprite(centerWorld.width, centerWorld.height, 'spawner').setOrigin(0.5);
+        this.spawner = this.physics.add.staticSprite(600, 500, 'spawner').setOrigin(0.5);
         this.spawner.setDisplaySize(60, 50);
         this.spawner.body.setSize(60, 20, true);
         this.spawner.body.setOffset(500, 400);
@@ -238,8 +238,22 @@ class homeBase extends Phaser.Scene{
             });
         }
 
-        npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 100, worldBounds.height - 50);
+        npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 123, 700);
         this.bimbo.flipX = true;
+
+        //tables
+        this.groupTable = this.physics.add.staticGroup();
+
+        const tables = [
+            this.groupTable.create(110, 730, 'table').setOrigin(0.5).setDisplaySize(80,60).setDepth(0),
+        ]
+        
+        tables.forEach(obj => {
+            obj.body.setSize(65, 30, true);
+            obj.body.setOffset(288, 130);
+        });
+
+        this.physics.add.collider(this.groupTable, this.playerContainer);
 
         lobbyUI(this);
     }

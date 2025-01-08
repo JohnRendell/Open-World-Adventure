@@ -14,10 +14,11 @@ function loadAssets(scene){
 
     scene.load.spritesheet('river', '/ImageComponents/Sprite Sheets/River Sprite Sheet.png', {
         frameWidth: 9600 / 5,
-        frameHeight: 1920 / 1
+        frameHeight: 1280 / 1
     });
 
     //objects
+    scene.load.image('table', '/ImageComponents/Objects/Long table.png');
     scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1

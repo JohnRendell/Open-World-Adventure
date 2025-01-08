@@ -1,7 +1,3 @@
-function replaceSlashWithUnderscore(inputString) {
-    return inputString.replace(/\//g, '_');
-}
-
 //for login account
 async function validateAccount(){
     var username = document.getElementById('login_userID');

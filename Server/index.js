@@ -55,6 +55,7 @@ app.use('/cookie', require('./cookieStatus'));
 
 //game routers
 app.use('/game', require('./gameRouter'));
+app.use('/playerData', require('./playerData'));
 
 //for 404 pages
 app.get('*', (req, res)=>{

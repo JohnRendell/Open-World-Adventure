@@ -21,7 +21,7 @@ let isPanelOpen = false;
 let isFront = false;
 let isBack = false;
 
-async function getPlayerName(scene){
+async function getPlayerCookie(scene){
     const getUserToken = await fetch('/cookie/getCookie', {
         method: "POST",
         headers: {
@@ -36,7 +36,7 @@ async function getPlayerName(scene){
     if(getUserToken_Data.message === 'success'){
         loggedIn_playerName = getUserToken_Data.decryptPlayerName;
         scene.playerName.setText(getUserToken_Data.decryptPlayerName);
-        homeBaseUI(scene, getUserToken_Data.decryptPlayerName);
+        //homeBaseUI(scene, getUserToken_Data.decryptPlayerName);
     }
     else{
         scene.playerName.setText('cant read token');
@@ -49,11 +49,14 @@ class homeBase extends Phaser.Scene{
     }
 
     preload = function(){
+        //TODO: fix this
+        this.load.image('playerProfile', 'https://i.imgur.com/ajVzRmV.jpg');
         loadAssets(this);
     }
 
     create = function(){
-        getPlayerName(this);
+        homeBaseUI(this, 'test');
+        getPlayerCookie(this);
         
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';

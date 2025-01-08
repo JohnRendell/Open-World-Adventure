@@ -1,3 +1,7 @@
+function replaceSlashWithUnderscore(inputString) {
+    return inputString.replace(/\//g, '_');
+}
+
 function npcGreet(containerID, greetMsg){
     var container = document.getElementById(containerID);
     var wrapperContainer = document.createElement('div');
@@ -157,7 +161,27 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
                 if(loginOutput.substring(0, 5) === 'GUEST'){
                     modalStatus('rupertDialog', 'none', null);
-                    //modalStatus('guestDiv', 'flex', 'modalAnimation');
+                    
+                    try{
+                        const setCookie = await fetch('/cookie/setCookie', {
+                            method: "POST",
+                            headers: {
+                                "Accept": "Application/json",
+                                "Content-Type": "Application/json"
+                            },
+                            body: JSON.stringify({ username: localStorage.getItem('tempPlayerName') })
+                        });
+
+                        const setCookie_data = await setCookie.json();
+
+                        if(setCookie_data.message === 'success'){
+                            localStorage.removeItem('tempPlayerName');
+                            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(setCookie_data.username);
+                        }
+                    }
+                    catch(err){
+                        console.log(err);
+                    }
                 }
             }
         }

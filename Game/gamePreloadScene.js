@@ -19,9 +19,6 @@ function loadAssets(scene){
 
     //texture images
     scene.load.image('floor', '/ImageComponents/Texture/Wooden Floor.png');
-    scene.load.image('wall_house', '/ImageComponents/Texture/Dry Wall.png');
-    scene.load.image('wall_house_sides', '/ImageComponents/Texture/Dry Wall Sides.png');
-
     //UI images
     scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
     scene.load.image('inventoryIcon', '/ImageComponents/UI/Inventory Icon.png');

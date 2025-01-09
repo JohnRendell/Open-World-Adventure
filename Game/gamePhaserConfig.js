@@ -4,7 +4,7 @@ const config = {
     width: canvasSize.width,
     height: canvasSize.height,
     canvas: gameCanvas,
-    backgroundColor: '#00BB1F',
+    backgroundColor: '#000000',
     physics: {
         default: 'arcade',
         arcade: {

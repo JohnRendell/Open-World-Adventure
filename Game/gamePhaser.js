@@ -264,28 +264,22 @@ class homeBase extends Phaser.Scene{
         //this.bimbo.flipX = true;
 
         //wall of the house
-        this.wallHouse = this.physics.add.staticSprite(460, 20, 'wall_house').setOrigin(0.5).setDisplaySize(825, 500).setDepth(0);
-
-        this.wallHouse.body.setSize(600, 90, true);
-        this.wallHouse.body.setOffset(350, 640);
-
-        //collider for wall front house
-        this.physics.add.collider(this.playerContainer, this.wallHouse);
-        this.wallGroup = this.physics.add.staticGroup();
+        this.frontWallHouse = this.add.rectangle(470, 95, 720, 150, 0xa7a7a7).setDepth(0);
+        this.physics.add.existing(this.frontWallHouse, true);
+        this.physics.add.collider(this.frontWallHouse, this.playerContainer);
 
         const walls = [
-            this.wallGroup.create(140, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0),
-            this.wallGroup.create(800, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0),
-            //TODO: fix this
-            //this.wallGroup.create(800, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0).setRotation(-160),
+            this.add.rectangle(140, 470, 60, 600, 0xa7a7a7).setDepth(0),
+            this.add.rectangle(800, 470, 60, 600, 0xa7a7a7).setDepth(0),
         ];
-
         walls.forEach(obj =>{
-            obj.body.setSize(60, 680, true);
-            obj.body.setOffset(610, 300);
+            this.physics.add.existing(obj, true);
+            this.physics.add.collider(obj, this.playerContainer);
         });
 
-        this.physics.add.collider(this.wallGroup, this.playerContainer);
+        this.bottomWallHouse = this.add.rectangle(470, 800, 600, 60, 0xa7a7a7).setDepth(2);
+        this.physics.add.existing(this.bottomWallHouse, true);
+        this.physics.add.collider(this.bottomWallHouse, this.playerContainer);
 
         //floors
         this.groupFloor = this.add.group();
@@ -302,7 +296,7 @@ class homeBase extends Phaser.Scene{
         this.groupTable = this.physics.add.staticGroup();
 
         const tables = [
-            this.groupTable.create(110, 730, 'table').setOrigin(0.5).setDisplaySize(80,60).setDepth(0),
+            this.groupTable.create(220, 170, 'table').setOrigin(0.5).setDisplaySize(80,60).setDepth(0),
         ]
         
         tables.forEach(obj => {

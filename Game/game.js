@@ -1,6 +1,6 @@
 npcGreet('npcConversationDiv', 'Hi i am Bimbo, a seller of various weapons and other stuff.');
 
-let loggedIn_playerName;
+let validateUser;
 
 async function checkCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
@@ -15,14 +15,13 @@ async function checkCookie(){
     const getUserToken_Data = await getUserToken.json();
 
     if(getUserToken_Data.message === 'no cookie'){
-        //alert('Cookie expired');
+        alert('Cookie expired');
         //window.location.href = '/lobby';
     }
     else{
-        loadProfile(getUserToken_Data.decryptPlayerName);
+        validateUser = getUserToken_Data.decryptPlayerName;
     }
 }
-window.onload = checkCookie()
 
 async function loadProfile(playerName){
     try{
@@ -32,17 +31,22 @@ async function loadProfile(playerName){
                 "Accept": "Application/json",
                 "Content-Type": "Application/json"
             },
-            body: JSON.stringify({ username: playerName })
+            body: JSON.stringify({ playerName: playerName })
         });
 
         const getPlayerProfile_data = await getPlayerProfile.json();
 
         if(getPlayerProfile_data.message === 'success'){
-            loadPlayerName = playerName;
-            loadPlayerProfile = getPlayerProfile_data.profile;
+            socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }
     catch(err){
         console.log(err);
     }
 }
+
+window.onload = 
+        checkCookie(), 
+        setTimeout(()=>{
+            loadProfile(validateUser)
+        }, 1000);

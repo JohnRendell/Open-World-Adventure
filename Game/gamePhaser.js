@@ -21,43 +21,16 @@ let isPanelOpen = false;
 let isFront = false;
 let isBack = false;
 
-async function getPlayerCookie(scene){
-    const getUserToken = await fetch('/cookie/getCookie', {
-        method: "POST",
-        headers: {
-            "Accept": "Application/json",
-            "Content-Type": "Application/json"
-        },
-        body: JSON.stringify({ guaranteedAccess: true })
-    });
-
-    const getUserToken_Data = await getUserToken.json();
-
-    if(getUserToken_Data.message === 'success'){
-        loggedIn_playerName = getUserToken_Data.decryptPlayerName;
-        scene.playerName.setText(getUserToken_Data.decryptPlayerName);
-        //homeBaseUI(scene, getUserToken_Data.decryptPlayerName);
-    }
-    else{
-        scene.playerName.setText('cant read token');
-    }
-}
-
 class homeBase extends Phaser.Scene{
     constructor(){
         super("Home Base");
     }
 
     preload = function(){
-        //TODO: fix this
-        this.load.image('playerProfile', 'https://i.imgur.com/ajVzRmV.jpg');
         loadAssets(this);
     }
 
-    create = function(){
-        homeBaseUI(this, 'test');
-        getPlayerCookie(this);
-        
+    create = function(){        
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
         
@@ -170,22 +143,24 @@ class homeBase extends Phaser.Scene{
         const leftSideWalls = [];
         const rightSideWalls = [];
 
+        //TODO: do something with the gate and walls
+
         const wallNumber = 12;
         const sideWallNumber = 5;
 
         for(let i = 0; i < wallNumber; i++){
-            const upperWall = this.groupWalls.create(100 + (200 * i), 300, 'front_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+            const upperWall = this.groupWalls.create(100 + (200 * i), 300, i == 1 ? 'gate' : 'front_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
 
-            const lowerWall = this.groupWalls.create(100 + (200 * i), worldBounds.height - 80, 'front_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(2);
+            const lowerWall = this.groupWalls.create(100 + (200 * i), worldBounds.height - 80, 'front_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(2);
             
             upperWalls.push(upperWall);
             lowerWalls.push(lowerWall);
         }
 
         for(let i = 0; i < sideWallNumber; i++){
-            const leftSideWall = this.groupWalls.create(40, 380 + (120 * i), 'side_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+            const leftSideWall = this.groupWalls.create(40, 380 + (120 * i), 'side_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
 
-            const rightSideWall = this.groupWalls.create(1150, 380 + (120 * i), 'side_woodenWall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
+            const rightSideWall = this.groupWalls.create(1150, 380 + (120 * i), 'side_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
 
             leftSideWalls.push(leftSideWall);
             rightSideWalls.push(rightSideWall);
@@ -312,6 +287,7 @@ class homeBase extends Phaser.Scene{
         this.physics.add.collider(this.groupTable, this.playerContainer);
 
         lobbyUI(this);
+        loadPlayerInfo(this);
     }
 
     // Update function (for game logic and updates every frame)

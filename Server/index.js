@@ -43,6 +43,7 @@ app.use(bodyParser.json());
 //for socket connections
 require('./lobbySocket')(socketServer);
 require('./globalSocket')(socketServer);
+require('./gameSocket')(socketServer);
 
 //routers
 app.use('/lobby', require('./lobbyRouter'));

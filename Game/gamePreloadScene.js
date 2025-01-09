@@ -17,6 +17,11 @@ function loadAssets(scene){
         frameHeight: 1280 / 1
     });
 
+    //UI images
+    scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
+    scene.load.image('inventoryIcon', '/ImageComponents/UI/Inventory Icon.png');
+    scene.load.image('meatIcon', '/ImageComponents/UI/meat icon.png');
+
     //objects
     scene.load.image('table', '/ImageComponents/Objects/Long table.png');
     scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {

@@ -5,8 +5,8 @@ const canvasSize = {
 
 //max base size 4000, min is 1200
 const worldBounds = {
-    width: 1200,
-    height: 1000
+    width: 800,
+    height: 800
 }
 
 const centerWorld = {
@@ -37,14 +37,8 @@ class homeBase extends Phaser.Scene{
         //set the world bounds
         this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
-        //zone
-        this.topZone = this.physics.add.staticSprite(0, 100).setOrigin(0.5);
-        this.topZone.setDisplaySize(worldBounds.width + 100, 100);
-        this.topZone.body.setSize(worldBounds.width + 100, 100, true);
-        this.topZone.body.setOffset(0,0);
-
         //add the river
-        this.river = this.add.sprite(0, 100, 'river').setOrigin(0.5);
+        /*this.river = this.add.sprite(0, 100, 'river').setOrigin(0.5);
         this.river.setDisplaySize(2500, 900);
 
         this.anims.create({
@@ -53,7 +47,7 @@ class homeBase extends Phaser.Scene{
             frameRate: 6, 
             repeat: -1
         });
-        this.river.play('riverFlow');
+        this.river.play('riverFlow');*/
 
         //main player
         this.player = this.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
@@ -90,7 +84,7 @@ class homeBase extends Phaser.Scene{
         }).setOrigin(0.5);
 
         //player container
-        this.playerContainer = this.add.container(650, 500, [this.player, this.playerName]);
+        this.playerContainer = this.add.container(499, 296, [this.player, this.playerName]);
 
         this.physics.world.enable(this.playerContainer);
 
@@ -100,7 +94,7 @@ class homeBase extends Phaser.Scene{
         this.playerContainer.setDepth(1);
 
         //spawn smoke
-        this.spawnSmoke = this.add.sprite(600, 450, "spawn_smoke").setOrigin(0.5);
+        this.spawnSmoke = this.add.sprite(447, 266, "spawn_smoke").setOrigin(0.5);
         this.spawnSmoke.setDisplaySize(2, 5);
         this.spawnSmoke.setDepth(2);
 
@@ -120,7 +114,7 @@ class homeBase extends Phaser.Scene{
         });
 
         //add the spawner pod
-        this.spawner = this.physics.add.staticSprite(600, 500, 'spawner').setOrigin(0.5);
+        this.spawner = this.physics.add.staticSprite(447, 320, 'spawner').setOrigin(0.5);
         this.spawner.setDisplaySize(60, 50);
         this.spawner.body.setSize(60, 20, true);
         this.spawner.body.setOffset(500, 400);
@@ -136,7 +130,7 @@ class homeBase extends Phaser.Scene{
         this.spawner.play('spawnerPod');
 
         //walls
-        this.groupWalls = this.physics.add.staticGroup();
+        /*this.groupWalls = this.physics.add.staticGroup();
 
         const upperWalls = [];
         const lowerWalls = [];
@@ -187,13 +181,10 @@ class homeBase extends Phaser.Scene{
         });
 
         //collider for walls
-        this.physics.add.collider(this.groupWalls, this.playerContainer);
+        this.physics.add.collider(this.groupWalls, this.playerContainer);*/
 
         //collider for spawner
         this.physics.add.collider(this.playerContainer, this.spawner);
-
-        //collider for zone
-        this.physics.add.collider(this.playerContainer, this.topZone);
 
         //camera follow main player
         this.cameras.main.startFollow(this.playerContainer);
@@ -269,8 +260,43 @@ class homeBase extends Phaser.Scene{
             });
         }
 
-        npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 123, 700);
-        this.bimbo.flipX = true;
+        //npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 123, 700);
+        //this.bimbo.flipX = true;
+
+        //wall of the house
+        this.wallHouse = this.physics.add.staticSprite(460, 20, 'wall_house').setOrigin(0.5).setDisplaySize(825, 500).setDepth(0);
+
+        this.wallHouse.body.setSize(600, 90, true);
+        this.wallHouse.body.setOffset(350, 640);
+
+        //collider for wall front house
+        this.physics.add.collider(this.playerContainer, this.wallHouse);
+        this.wallGroup = this.physics.add.staticGroup();
+
+        const walls = [
+            this.wallGroup.create(140, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0),
+            this.wallGroup.create(800, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0),
+            //TODO: fix this
+            //this.wallGroup.create(800, 450, 'wall_house_sides').setOrigin(0.5).setDisplaySize(400, 800).setDepth(0).setRotation(-160),
+        ];
+
+        walls.forEach(obj =>{
+            obj.body.setSize(60, 680, true);
+            obj.body.setOffset(610, 300);
+        });
+
+        this.physics.add.collider(this.wallGroup, this.playerContainer);
+
+        //floors
+        this.groupFloor = this.add.group();
+
+        for(let i = 0; i < 10; i++){
+            for(let j = 0; j < 10; j++){
+                const floor = this.groupFloor.create(200 + (60 * i), (200 + (60 * j)), 'floor').setOrigin(0.5).setDisplaySize(60,60).setDepth(0);
+
+                this.groupFloor.add(floor);
+            }
+        }
 
         //tables
         this.groupTable = this.physics.add.staticGroup();
@@ -336,9 +362,9 @@ class homeBase extends Phaser.Scene{
         }
 
         // on exit for NPCs
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bimbo.getBounds())) {
+        /*if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bimbo.getBounds())) {
             this.bimboText.setVisible(false);
-        }
+        }*/
 
         //for other player movement
         /*

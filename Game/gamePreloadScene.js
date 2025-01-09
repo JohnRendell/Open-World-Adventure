@@ -17,6 +17,11 @@ function loadAssets(scene){
         frameHeight: 1280 / 1
     });
 
+    //texture images
+    scene.load.image('floor', '/ImageComponents/Texture/Wooden Floor.png');
+    scene.load.image('wall_house', '/ImageComponents/Texture/Dry Wall.png');
+    scene.load.image('wall_house_sides', '/ImageComponents/Texture/Dry Wall Sides.png');
+
     //UI images
     scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
     scene.load.image('inventoryIcon', '/ImageComponents/UI/Inventory Icon.png');
@@ -28,9 +33,9 @@ function loadAssets(scene){
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
-    scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall lvl 1.png');
-    scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall lvl 1.png');
-    scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate lvl 1.png')
+    //scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall lvl 1.png');
+    //scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall lvl 1.png');
+    //scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate lvl 1.png')
 
     //player
     scene.load.spritesheet('guestPlayerIdle', '/ImageComponents/Sprite Sheets/guest player Idle Sprite Sheet.png', {
@@ -55,8 +60,8 @@ function loadAssets(scene){
     });
 
     //NPC
-    scene.load.spritesheet('Bimbo_NPC', '/ImageComponents/Sprite Sheets/Bimbo Idle sprite sheet.png', {
+    /*scene.load.spritesheet('Bimbo_NPC', '/ImageComponents/Sprite Sheets/Bimbo Idle sprite sheet.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
-    });
+    });*/
 }

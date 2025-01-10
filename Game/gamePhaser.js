@@ -197,41 +197,80 @@ class homeBase extends Phaser.Scene{
         //npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 123, 700);
         //this.bimbo.flipX = true;
 
+        var door = (doorName, doorText, posX, posY, depth, forPlayer, path, roomObj)=>{
+            //door
+            const doorObj = this.physics.add.staticSprite(posX, posY, 'door').setOrigin(0.5).setDisplaySize(80, 100).setDepth(depth);
+            doorObj.body.setSize(47, 120, true);
+            doorObj.body.setOffset(138, 110);
+
+            //door status
+            const label = this.add.text(posX, (posY + 50) - 50, doorText, {
+                font: "16px 'Pixelify Sans",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+            label.setDepth(2).setVisible(false);
+
+            //door interactions
+            doorObj.setInteractive({ useHandCursor: true });
+            doorObj.on('pointerdown', () => {
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), doorObj.getBounds())) {
+                    if(forPlayer){
+                        const offsetY = roomObj.body.offset.y > 0 ? 0 : 80;
+                        const wallDepth = offsetY === 0 ? 0 : 2;
+                        const newPlayerY = offsetY === 0 ? posY + 100 : posY - 100;
+                        const colliderSize = offsetY === 0 ? 80 : 50;
+                        const doorLabel = offsetY === 0 ? 'Click to go outside the Room' : doorText;
+
+                        label.setText(doorLabel);
+                        
+                        roomObj.setDepth(wallDepth);
+                        doorObj.setDepth(wallDepth);
+                        this.playerContainer.setY(newPlayerY);
+
+                        roomObj.body.setSize(240, colliderSize, true);
+                        roomObj.body.setOffset(0, offsetY);
+                    }
+                    else{
+                        alert(path);
+                    }
+                }
+            });
+            this.physics.add.overlap(this.playerContainer, doorObj, () => {
+                label.setVisible(true);
+            });
+
+            //passing data
+            this[doorName] = doorObj;
+            this[`${doorName}_label`] = label;
+        }
+
         //wall of the house
         this.frontWallHouse = this.add.rectangle(470, 95, 720, 150, 0xa7a7a7).setDepth(0);
         this.physics.add.existing(this.frontWallHouse, true);
+        this.frontWallHouse.body.setSize(720, 100, true);
+        this.frontWallHouse.body.setOffset(0, 0);
+
+        this.frontRoomWall = this.add.rectangle(650, 535, 240, 130, 0xa7a7a7).setDepth(2);
+        this.physics.add.existing(this.frontRoomWall, true);
+        this.frontRoomWall.body.setSize(240, 50, true);
+        this.frontRoomWall.body.setOffset(0, 80);
+
         this.physics.add.collider(this.frontWallHouse, this.playerContainer);
+        this.physics.add.collider(this.frontRoomWall, this.playerContainer);
+
+        //door for front house
+        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null);
+
+        //door for room
+        door.call(this, 'roomDoor', 'Click the door to go wardrobe', 700, 550, 2, true, null, this.frontRoomWall);
 
         //window
         this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
 
-        //door
-        this.door = this.physics.add.staticSprite(600, 120, 'door').setOrigin(0.5)
-        this.door.setDisplaySize(80, 100);
-        this.door.body.setSize(47, 120, true);
-        this.door.body.setOffset(138, 110);
-
-        //door status
-        this.doorLabel = this.add.text(600, 50, 'Click the door to go outside', {
-            font: "16px 'Pixelify Sans",
-            fill: "#ffffff",
-            align: "center"
-        }).setOrigin(0.5);
-        this.doorLabel.setDepth(2).setVisible(false);
-
-        //door interactions
-        this.door.setInteractive({ useHandCursor: true });
-        this.door.on('pointerdown', () => {
-            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
-                alert('going outside')
-            }
-        });
-        this.physics.add.overlap(this.playerContainer, this.door, () => {
-            this.doorLabel.setVisible(true);
-        });
-
         const walls = [
             this.add.rectangle(140, 470, 60, 600, 0xa7a7a7).setDepth(0),
+            this.add.rectangle(500, 620, 60, 300, 0xa7a7a7).setDepth(2),
             this.add.rectangle(800, 470, 60, 600, 0xa7a7a7).setDepth(0),
         ];
         walls.forEach(obj =>{
@@ -266,7 +305,32 @@ class homeBase extends Phaser.Scene{
             obj.body.setOffset(288, 130);
         });
 
+        //chest
+        this.chest = this.physics.add.staticSprite(700, 300, 'chest').setOrigin(0.5).setDisplaySize(100, 80).setDepth(2);
+        this.chest.body.setSize(100, 45, true);
+        this.chest.body.setOffset(270, 300);
+
+        this.chestLabel = this.add.text(700, 250, 'Click the chest to open', {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.chestLabel.setDepth(2).setVisible(false);
+
+        //chest interactions
+        this.chest.setInteractive({ useHandCursor: true });
+        this.chest.on('pointerdown', () => {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
+                alert('Opening Chest')
+            }
+        });
+        this.physics.add.overlap(this.playerContainer, this.chest, () => {
+            this.chestLabel.setVisible(true);
+        });
+
+        //object colliders
         this.physics.add.collider(this.groupTable, this.playerContainer);
+        this.physics.add.collider(this.chest, this.playerContainer);
 
         lobbyUI(this);
         loadPlayerInfo(this);
@@ -318,8 +382,17 @@ class homeBase extends Phaser.Scene{
         }
 
         //exiting door
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
-            this.doorLabel.setVisible(false);
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.frontDoor.getBounds())) {
+            this.frontDoor_label.setVisible(false);
+        }
+
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.roomDoor.getBounds())) {
+            this.roomDoor_label.setVisible(false);
+        }
+
+        //leaving chest
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
+            this.chestLabel.setVisible(false);
         }
 
         // on exit for NPCs

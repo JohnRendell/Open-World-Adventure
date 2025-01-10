@@ -19,6 +19,7 @@ function loadAssets(scene){
 
     //texture images
     scene.load.image('floor', '/ImageComponents/Texture/Wooden Floor.png');
+
     //UI images
     scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
     scene.load.image('inventoryIcon', '/ImageComponents/UI/Inventory Icon.png');
@@ -26,6 +27,8 @@ function loadAssets(scene){
 
     //objects
     scene.load.image('table', '/ImageComponents/Objects/Long table.png');
+    scene.load.image('door', '/ImageComponents/Objects/Wooden Door.png');
+    scene.load.image('window', '/ImageComponents/Objects/window day.png');
     scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1

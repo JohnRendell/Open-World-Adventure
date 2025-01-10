@@ -37,18 +37,6 @@ class homeBase extends Phaser.Scene{
         //set the world bounds
         this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
-        //add the river
-        /*this.river = this.add.sprite(0, 100, 'river').setOrigin(0.5);
-        this.river.setDisplaySize(2500, 900);
-
-        this.anims.create({
-            key: 'riverFlow', 
-            frames: this.anims.generateFrameNumbers('river', { start: 0, end: 4 }),
-            frameRate: 6, 
-            repeat: -1
-        });
-        this.river.play('riverFlow');*/
-
         //main player
         this.player = this.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
         this.player.setDisplaySize(40, 70);
@@ -128,60 +116,6 @@ class homeBase extends Phaser.Scene{
         });
 
         this.spawner.play('spawnerPod');
-
-        //walls
-        /*this.groupWalls = this.physics.add.staticGroup();
-
-        const upperWalls = [];
-        const lowerWalls = [];
-        const leftSideWalls = [];
-        const rightSideWalls = [];
-
-        //TODO: do something with the gate and walls
-
-        const wallNumber = 12;
-        const sideWallNumber = 5;
-
-        for(let i = 0; i < wallNumber; i++){
-            const upperWall = this.groupWalls.create(100 + (200 * i), 300, i == 1 ? 'gate' : 'front_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
-
-            const lowerWall = this.groupWalls.create(100 + (200 * i), worldBounds.height - 80, 'front_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(2);
-            
-            upperWalls.push(upperWall);
-            lowerWalls.push(lowerWall);
-        }
-
-        for(let i = 0; i < sideWallNumber; i++){
-            const leftSideWall = this.groupWalls.create(40, 380 + (120 * i), 'side_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
-
-            const rightSideWall = this.groupWalls.create(1150, 380 + (120 * i), 'side_Wall').setOrigin(0.5).setDisplaySize(200, 200).setDepth(0);
-
-            leftSideWalls.push(leftSideWall);
-            rightSideWalls.push(rightSideWall);
-        }
-        
-        upperWalls.forEach(obj => {
-            obj.body.setSize(200, 20, true);
-            obj.body.setOffset(414, 470);
-        });
-
-        lowerWalls.forEach(obj => {
-            obj.body.setSize(200, 20, true);
-            obj.body.setOffset(414, 530);
-        });
-
-        leftSideWalls.forEach(obj => {
-            obj.body.setSize(24, 164, true);
-            obj.body.setOffset(500, 436);
-        });
-
-        rightSideWalls.forEach(obj => {
-            obj.body.setSize(24, 164, true);
-            obj.body.setOffset(500, 436);
-        });
-
-        //collider for walls
-        this.physics.add.collider(this.groupWalls, this.playerContainer);*/
 
         //collider for spawner
         this.physics.add.collider(this.playerContainer, this.spawner);
@@ -268,6 +202,34 @@ class homeBase extends Phaser.Scene{
         this.physics.add.existing(this.frontWallHouse, true);
         this.physics.add.collider(this.frontWallHouse, this.playerContainer);
 
+        //window
+        this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
+
+        //door
+        this.door = this.physics.add.staticSprite(600, 120, 'door').setOrigin(0.5)
+        this.door.setDisplaySize(80, 100);
+        this.door.body.setSize(47, 120, true);
+        this.door.body.setOffset(138, 110);
+
+        //door status
+        this.doorLabel = this.add.text(600, 50, 'Click the door to go outside', {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.doorLabel.setDepth(2).setVisible(false);
+
+        //door interactions
+        this.door.setInteractive({ useHandCursor: true });
+        this.door.on('pointerdown', () => {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
+                alert('going outside')
+            }
+        });
+        this.physics.add.overlap(this.playerContainer, this.door, () => {
+            this.doorLabel.setVisible(true);
+        });
+
         const walls = [
             this.add.rectangle(140, 470, 60, 600, 0xa7a7a7).setDepth(0),
             this.add.rectangle(800, 470, 60, 600, 0xa7a7a7).setDepth(0),
@@ -353,6 +315,11 @@ class homeBase extends Phaser.Scene{
 
         if(!isFront && !isBack){
             this.player.play('playerIdle', true);
+        }
+
+        //exiting door
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
+            this.doorLabel.setVisible(false);
         }
 
         // on exit for NPCs

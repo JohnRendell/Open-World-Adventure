@@ -4,5 +4,6 @@ object - any size
 Lobby sizes: w 500px h 500px
 
 walls: w 32 px h 32px
+door: w 6px h 10px
 
 Character size: w 10px h 25px

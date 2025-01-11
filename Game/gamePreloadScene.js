@@ -61,8 +61,8 @@ function loadAssets(scene){
     });
 
     //NPC
-    /*scene.load.spritesheet('Bimbo_NPC', '/ImageComponents/Sprite Sheets/Bimbo Idle sprite sheet.png', {
-        frameWidth: 1600 / 5,
-        frameHeight: 800 / 1
-    });*/
+    scene.load.spritesheet('Bob_NPC', '/ImageComponents/Sprite Sheets/Guide Robot Sprite sheet.png', {
+        frameWidth: 4800 / 5,
+        frameHeight: 960 / 1
+    });
 }

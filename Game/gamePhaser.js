@@ -134,11 +134,12 @@ class homeBase extends Phaser.Scene{
         this.input.keyboard.enableGlobalCapture();
 
         //npc functions
-        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY)=>{
+        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY, width, height)=>{
             //add the NPC
             const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
-            npcObj.setDisplaySize(40, 70);
-            npcObj.body.setSize(40, 70, true);
+            npcObj.setDisplaySize(width, height);
+            npcObj.setDepth(2);
+            npcObj.body.setSize(width, height, true);
             npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
 
             //NPC Label
@@ -189,13 +190,17 @@ class homeBase extends Phaser.Scene{
                         case 'bimbo':
                             bimboPrompt();
                         break;
+
+                        case 'bob':
+                            npcGreet('npcConversationDiv', 'Hi i Bob *beep boop*, your robot guide');
+                            bobPrompt();
+                        break;
                     }
                 }
             });
         }
 
-        //npc.call(this, 'bimbo', 'Bimbo_NPC', 'Bimbo (NPC)', 140, 365, 123, 700);
-        //this.bimbo.flipX = true;
+        npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', 450, 430, 200, 300, 70, 80);
 
         var door = (doorName, doorText, posX, posY, depth, forPlayer, path, roomObj)=>{
             //door
@@ -263,7 +268,7 @@ class homeBase extends Phaser.Scene{
         door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null);
 
         //door for room
-        door.call(this, 'roomDoor', 'Click the door to go wardrobe', 700, 550, 2, true, null, this.frontRoomWall);
+        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 2, true, null, this.frontRoomWall);
 
         //window
         this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
@@ -396,9 +401,9 @@ class homeBase extends Phaser.Scene{
         }
 
         // on exit for NPCs
-        /*if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bimbo.getBounds())) {
-            this.bimboText.setVisible(false);
-        }*/
+        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
+            this.bobText.setVisible(false);
+        }
 
         //for other player movement
         /*

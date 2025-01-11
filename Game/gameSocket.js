@@ -13,7 +13,7 @@ function loadPlayerInfo(scene){
 //this is for pressing buttons, keys
 function pressKeysStuff(){
     document.onkeydown = (event)=>{
-        if(event.key === 'i'){
+        if(event.key === 'i' && !isPanelOpen){
             alert('opened inventory');
         }
     }

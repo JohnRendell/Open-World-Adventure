@@ -1,4 +1,4 @@
-npcGreet('npcConversationDiv', 'Hi i am Bimbo, a seller of various weapons and other stuff.');
+//npcGreet('npcConversationDiv', 'Hi i am Bimbo, a seller of various weapons and other stuff.');
 
 let validateUser;
 

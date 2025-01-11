@@ -1,5 +1,3 @@
-//npcGreet('npcConversationDiv', 'Hi i am Bimbo, a seller of various weapons and other stuff.');
-
 let validateUser;
 
 async function checkCookie(){
@@ -20,6 +18,29 @@ async function checkCookie(){
     }
     else{
         validateUser = getUserToken_Data.decryptPlayerName;
+    }
+}
+
+function checkValidUrl(){
+    function replaceUnderscoreWithSlash(inputString) {
+        return inputString.replace(/_/g, '/');
+    }
+
+    let url = window.location.href;
+    let splitUrl = url.split('/')
+    let checkPlayerNameURL = splitUrl[5];
+
+    try{
+        let validatePlayerNameGuest =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+        let validatePlayerNameLoggedIn =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'token').toString(CryptoJS.enc.Utf8);
+
+        if(!validatePlayerNameLoggedIn && !validatePlayerNameGuest){
+            window.location.href = '/Invalid_URL';
+        }
+    }
+    catch(err){
+        console.log(err);
     }
 }
 
@@ -46,7 +67,8 @@ async function loadProfile(playerName){
 }
 
 window.onload = 
-        checkCookie(), 
+        checkCookie(),
+        checkValidUrl(),
         setTimeout(()=>{
             loadProfile(validateUser)
         }, 1000);

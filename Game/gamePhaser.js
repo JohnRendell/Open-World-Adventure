@@ -192,7 +192,7 @@ class homeBase extends Phaser.Scene{
                         break;
 
                         case 'bob':
-                            npcGreet('npcConversationDiv', 'Hi i Bob *beep boop*, your robot guide');
+                            npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
                             bobPrompt();
                         break;
                     }

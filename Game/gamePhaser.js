@@ -370,7 +370,7 @@ class homeBase extends Phaser.Scene{
             }
         }
 
-        if(isTalking){
+        if(isTalking || isPanelOpen){
             this.input.keyboard.disableGlobalCapture();
         }
 

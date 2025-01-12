@@ -14,7 +14,9 @@ function loadPlayerInfo(scene){
 function pressKeysStuff(){
     document.onkeydown = (event)=>{
         if(event.key === 'i' && !isPanelOpen){
-            alert('opened inventory');
+            modalStatus('inventoryModal', 'flex', 'modalAnimation');
+            isTalking = true;
+            isPanelOpen = true;
         }
     }
 }

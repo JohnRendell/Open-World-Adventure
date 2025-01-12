@@ -31,7 +31,7 @@ function modalStatus(modalID, status, animationName){
     document.getElementById(modalID).style.display = status;
 
     if(animationName){
-        document.getElementById(modalID + '_panel').style.animation = `${animationName} 2s forwards`;
+        document.getElementById(modalID + '_panel').style.animation = `${animationName} 1s forwards`;
     }
 }
 

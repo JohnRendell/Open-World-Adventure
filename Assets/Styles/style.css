@@ -590,28 +590,8 @@ video {
   }
 }
 
-.visible{
-  visibility: visible;
-}
-
-.collapse{
-  visibility: collapse;
-}
-
-.static{
-  position: static;
-}
-
-.fixed{
-  position: fixed;
-}
-
 .absolute{
   position: absolute;
-}
-
-.relative{
-  position: relative;
 }
 
 .right-0{
@@ -630,28 +610,12 @@ video {
   margin-top: -60rem;
 }
 
-.mt-\[0rem\]{
-  margin-top: 0rem;
-}
-
-.block{
-  display: block;
-}
-
 .flex{
   display: flex;
 }
 
 .table{
   display: table;
-}
-
-.grid{
-  display: grid;
-}
-
-.contents{
-  display: contents;
 }
 
 .hidden{
@@ -666,8 +630,8 @@ video {
   height: 20rem;
 }
 
-.h-\[28rem\]{
-  height: 28rem;
+.h-\[24rem\]{
+  height: 24rem;
 }
 
 .h-\[30rem\]{
@@ -685,14 +649,6 @@ video {
 
 .h-screen{
   height: 100vh;
-}
-
-.h-\[26rem\]{
-  height: 26rem;
-}
-
-.h-\[24rem\]{
-  height: 24rem;
 }
 
 .w-\[10rem\]{
@@ -732,20 +688,8 @@ video {
   width: 100vw;
 }
 
-.border-collapse{
-  border-collapse: collapse;
-}
-
-.transform{
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .cursor-pointer{
   cursor: pointer;
-}
-
-.resize{
-  resize: both;
 }
 
 .flex-col{
@@ -820,10 +764,6 @@ video {
   border-width: 4px;
 }
 
-.border{
-  border-width: 1px;
-}
-
 .border-gray-500{
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));
@@ -832,6 +772,11 @@ video {
 .border-gray-800{
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));
+}
+
+.bg-\[\#c1c1c1\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(193 193 193 / var(--tw-bg-opacity, 1));
 }
 
 .bg-blue-300{
@@ -857,25 +802,6 @@ video {
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-\[w\]{
-  background-color: w;
-}
-
-.bg-\[\#ffffff\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-}
-
-.bg-\[\#fefefe\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(254 254 254 / var(--tw-bg-opacity, 1));
-}
-
-.bg-\[\#c1c1c1\]{
-  --tw-bg-opacity: 1;
-  background-color: rgb(193 193 193 / var(--tw-bg-opacity, 1));
 }
 
 .p-2{
@@ -941,10 +867,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.underline{
-  text-decoration-line: underline;
-}
-
 .opacity-0{
   opacity: 0;
 }
@@ -954,26 +876,8 @@ video {
   outline-offset: 2px;
 }
 
-.outline{
-  outline-style: solid;
-}
-
-.blur{
-  --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.filter{
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
 .backdrop-blur-sm{
   --tw-backdrop-blur: blur(4px);
-  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-
-.backdrop-filter{
   -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
   backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }

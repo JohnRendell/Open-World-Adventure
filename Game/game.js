@@ -58,6 +58,7 @@ async function loadProfile(playerName){
         const getPlayerProfile_data = await getPlayerProfile.json();
 
         if(getPlayerProfile_data.message === 'success'){
+            playerName = getPlayerProfile_data.username;
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }

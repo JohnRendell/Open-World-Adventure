@@ -30,6 +30,7 @@ function loadAssets(scene){
     scene.load.image('door', '/ImageComponents/Objects/Wooden Door.png');
     scene.load.image('window', '/ImageComponents/Objects/window day.png');
     scene.load.image('chest', '/ImageComponents/Objects/Wooden chest.png');
+    scene.load.image('Cabinet', '/ImageComponents/Objects/Cabinet.png');
     scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1

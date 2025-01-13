@@ -15,8 +15,10 @@ const centerWorld = {
 }
 
 const speed = 200;
+
 let isTalking = false;
 let isPanelOpen = false;
+let playerName;
 
 let isFront = false;
 let isBack = false;
@@ -79,7 +81,7 @@ class homeBase extends Phaser.Scene{
         this.playerContainer.body.setCollideWorldBounds(true);
         this.playerContainer.body.setSize(40, 70);
         this.playerContainer.body.setOffset(-20, -35);
-        this.playerContainer.setDepth(1);
+        this.playerContainer.setDepth(3);
 
         //spawn smoke
         this.spawnSmoke = this.add.sprite(447, 266, "spawn_smoke").setOrigin(0.5);
@@ -106,7 +108,7 @@ class homeBase extends Phaser.Scene{
         this.spawner.setDisplaySize(60, 50);
         this.spawner.body.setSize(60, 20, true);
         this.spawner.body.setOffset(500, 400);
-        this.spawner.setDepth(2);
+        this.spawner.setDepth(4);
 
         this.anims.create({
             key: 'spawnerPod',        
@@ -138,7 +140,7 @@ class homeBase extends Phaser.Scene{
             //add the NPC
             const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
             npcObj.setDisplaySize(width, height);
-            npcObj.setDepth(2);
+            npcObj.setDepth(3);
             npcObj.body.setSize(width, height, true);
             npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
 
@@ -148,7 +150,7 @@ class homeBase extends Phaser.Scene{
                 fill: "#ffffff",
                 align: "center"
             }).setOrigin(0.5);
-            this.NPCLabel.setDepth(2);
+            this.NPCLabel.setDepth(4);
 
             const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
                 font: "16px 'Pixelify Sans",
@@ -156,7 +158,7 @@ class homeBase extends Phaser.Scene{
                 align: "center"
             }).setOrigin(0.5);
             instructionText.setVisible(false);
-            instructionText.setDepth(2);
+            instructionText.setDepth(4);
 
             //animation idle for npc
             this.anims.create({
@@ -202,7 +204,7 @@ class homeBase extends Phaser.Scene{
 
         npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', 450, 430, 200, 300, 70, 80);
 
-        var door = (doorName, doorText, posX, posY, depth, forPlayer, path, roomObj)=>{
+        var door = (doorName, doorText, posX, posY, depth, forPlayer, path, roomObj, roomStuff)=>{
             //door
             const doorObj = this.physics.add.staticSprite(posX, posY, 'door').setOrigin(0.5).setDisplaySize(80, 100).setDepth(depth);
             doorObj.body.setSize(47, 120, true);
@@ -214,7 +216,7 @@ class homeBase extends Phaser.Scene{
                 fill: "#ffffff",
                 align: "center"
             }).setOrigin(0.5);
-            label.setDepth(2).setVisible(false);
+            label.setDepth(5).setVisible(false);
 
             //door interactions
             doorObj.setInteractive({ useHandCursor: true });
@@ -222,12 +224,35 @@ class homeBase extends Phaser.Scene{
                 if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), doorObj.getBounds())) {
                     if(forPlayer){
                         const offsetY = roomObj.body.offset.y > 0 ? 0 : 80;
-                        const wallDepth = offsetY === 0 ? 0 : 2;
+                        const wallDepth = offsetY === 0 ? 0 : 4;
                         const newPlayerY = offsetY === 0 ? posY + 100 : posY - 100;
                         const colliderSize = offsetY === 0 ? 80 : 50;
                         const doorLabel = offsetY === 0 ? 'Click to go outside the Room' : doorText;
 
                         label.setText(doorLabel);
+
+                        //stuff in the rooms
+                        let roomStuffCount = roomStuff.length;
+
+                        for(let i = 0; i < roomStuffCount; i++){
+                            let obj = roomStuff[i];
+                            obj.setDepth(wallDepth);
+
+                            label.setDepth(5).setVisible(false);
+
+                            if(wallDepth === 0){
+                                if(obj.name === 'Cabinet'){ 
+                                    obj.on('pointerdown', () => {
+                                        if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), obj.getBounds())) {
+                                            alert('You are clicking cabinet ' + wallDepth);
+                                        }
+                                    });
+                                }
+                            }
+                            else{
+                                label.setDepth(5).setVisible(false);
+                            }
+                        }
                         
                         roomObj.setDepth(wallDepth);
                         doorObj.setDepth(wallDepth);
@@ -256,7 +281,7 @@ class homeBase extends Phaser.Scene{
         this.frontWallHouse.body.setSize(720, 100, true);
         this.frontWallHouse.body.setOffset(0, 0);
 
-        this.frontRoomWall = this.add.rectangle(650, 535, 240, 130, 0xa7a7a7).setDepth(2);
+        this.frontRoomWall = this.add.rectangle(650, 535, 240, 130, 0xa7a7a7).setDepth(4);
         this.physics.add.existing(this.frontRoomWall, true);
         this.frontRoomWall.body.setSize(240, 50, true);
         this.frontRoomWall.body.setOffset(0, 80);
@@ -264,11 +289,24 @@ class homeBase extends Phaser.Scene{
         this.physics.add.collider(this.frontWallHouse, this.playerContainer);
         this.physics.add.collider(this.frontRoomWall, this.playerContainer);
 
+        //stuff in rooms
+        this.roomStuff = this.physics.add.staticGroup();
+
+        const stuff = [
+            this.roomStuff.create(600, 560, 'Cabinet').setOrigin(0.5).setDisplaySize(100, 130).setDepth(4).setName('Cabinet'),
+        ]
+
+        stuff.forEach(obj =>{
+            obj.body.setSize(65, 90, true);
+            obj.body.setOffset(480, 470);
+            obj.setInteractive({ useHandCursor: true });
+        });
+
         //door for front house
-        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null);
+        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null, null);
 
         //door for room
-        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 2, true, null, this.frontRoomWall);
+        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 4, true, null, this.frontRoomWall, stuff);
 
         //window
         this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
@@ -303,6 +341,7 @@ class homeBase extends Phaser.Scene{
 
         const tables = [
             this.groupTable.create(220, 170, 'table').setOrigin(0.5).setDisplaySize(80,60).setDepth(0),
+            this.groupTable.create(600, 700, 'table').setOrigin(0.5).setDisplaySize(80,60).setDepth(0),
         ]
         
         tables.forEach(obj => {
@@ -311,7 +350,7 @@ class homeBase extends Phaser.Scene{
         });
 
         //chest
-        this.chest = this.physics.add.staticSprite(700, 300, 'chest').setOrigin(0.5).setDisplaySize(100, 80).setDepth(2);
+        this.chest = this.physics.add.staticSprite(700, 300, 'chest').setOrigin(0.5).setDisplaySize(100, 80).setDepth(4);
         this.chest.body.setSize(100, 45, true);
         this.chest.body.setOffset(270, 300);
 
@@ -320,7 +359,7 @@ class homeBase extends Phaser.Scene{
             fill: "#ffffff",
             align: "center"
         }).setOrigin(0.5);
-        this.chestLabel.setDepth(2).setVisible(false);
+        this.chestLabel.setDepth(4).setVisible(false);
 
         //chest interactions
         this.chest.setInteractive({ useHandCursor: true });
@@ -339,6 +378,10 @@ class homeBase extends Phaser.Scene{
 
         lobbyUI(this);
         loadPlayerInfo(this);
+        sceneSocket(this);
+
+        //spawn the player
+        socket.emit('game_spawnPlayer', this.playerName.text);
     }
 
     // Update function (for game logic and updates every frame)
@@ -405,19 +448,16 @@ class homeBase extends Phaser.Scene{
             this.bobText.setVisible(false);
         }
 
-        //for other player movement
-        /*
-        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-        
+        //for other player movement        
         const playerData = {
-            playerID: decryptPlayerName,
+            playerID: playerName,
             x: this.playerContainer.x,
             y: this.playerContainer.y,
             isBack: isBack,
             isFront: isFront,
             spriteX: this.player.flipX
         }
-        socket.emit('playerMove', playerData);
-        socket.emit('existingPlayer', playerData);*/
+        socket.emit('game_playerMove', playerData);
+        socket.emit('game_existingPlayer', playerData);
     }
 }

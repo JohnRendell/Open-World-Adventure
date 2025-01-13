@@ -1,4 +1,8 @@
 function loadPlayerInfo(scene){
+    socket.on('connect', ()=>{
+        //socket.emit('game_playerDisconnect', playerName);
+    });
+
      socket.on('loadPlayerData', (playerName, playerProfile)=>{
         scene.playerName.setText(playerName ? playerName : 'cookie expired');
 

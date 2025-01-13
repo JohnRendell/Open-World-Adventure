@@ -8,6 +8,11 @@ function loadPlayerInfo(scene){
 
         setTimeout(() => {
             homeBaseUI(scene, playerProfile);
+
+            //spawn the player
+            game_PlayerName = playerName;
+            loggedIn_playerName = playerName;
+            socket.emit('game_spawnPlayer', playerName);
         }, 1500);
 
         pressKeysStuff();

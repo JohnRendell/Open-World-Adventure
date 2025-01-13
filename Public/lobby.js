@@ -17,9 +17,9 @@ async function validateAccount(){
         const accountValidate_data = await accountValidate.json();
 
         if(accountValidate_data.message === 'success'){
-            socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
             localStorage.removeItem('tempPlayerName');
 
+            socket.emit('redirectToBase', accountValidate_data.username);
             window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountValidate_data.username);
         }
         else{
@@ -50,9 +50,9 @@ async function validateCreateAccount(){
         const accountCreateValidate_data = await accountCreateValidate.json();
 
         if(accountCreateValidate_data.message === 'success'){
-            socket.emit('redirectToBase', localStorage.getItem('tempPlayerName'));
             localStorage.removeItem('tempPlayerName');
             
+            socket.emit('redirectToBase', accountCreateValidate_data.username);
             window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountCreateValidate_data.username);
         }
         else{

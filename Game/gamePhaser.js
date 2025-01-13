@@ -18,7 +18,7 @@ const speed = 200;
 
 let isTalking = false;
 let isPanelOpen = false;
-let playerName;
+let game_PlayerName, loggedIn_playerName;
 
 let isFront = false;
 let isBack = false;
@@ -379,9 +379,6 @@ class homeBase extends Phaser.Scene{
         lobbyUI(this);
         loadPlayerInfo(this);
         sceneSocket(this);
-
-        //spawn the player
-        socket.emit('game_spawnPlayer', this.playerName.text);
     }
 
     // Update function (for game logic and updates every frame)
@@ -450,7 +447,7 @@ class homeBase extends Phaser.Scene{
 
         //for other player movement        
         const playerData = {
-            playerID: playerName,
+            playerID: game_PlayerName,
             x: this.playerContainer.x,
             y: this.playerContainer.y,
             isBack: isBack,

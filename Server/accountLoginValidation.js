@@ -29,7 +29,8 @@ router.post('/', async (req, res)=>{
                 if(checkPass){
                     let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();
   
-                    res.cookie('username', encryptPlayerName, { signed: true, httpOnly: true, maxAge: 90000 });
+                    //add httpOnly: true later on
+                    res.cookie('username', encryptPlayerName, { signed: true, maxAge: 90000 });
                     res.status(200).json({ message: 'success', username: encryptPlayerName });
                 }
                 else{

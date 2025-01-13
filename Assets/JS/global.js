@@ -176,6 +176,8 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
                         if(setCookie_data.message === 'success'){
                             localStorage.removeItem('tempPlayerName');
+
+                            socket.emit('redirectToBase', setCookie_data.username);
                             window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(setCookie_data.username);
                         }
                     }

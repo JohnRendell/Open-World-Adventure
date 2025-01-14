@@ -12,13 +12,12 @@ async function checkCookie(){
 
     const getUserToken_Data = await getUserToken.json();
 
-    if(getUserToken_Data.message === 'no cookie'){
-        alert('Cookie expired');
-        //window.location.href = '/lobby';
+    if(getUserToken_Data.message === 'success'){
+        validateUser = getUserToken_Data.decryptPlayerName;
     }
     else{
-        validateUser = getUserToken_Data.decryptPlayerName;
-        alert(validateUser)
+        alert('Cookie expired');
+        //window.location.href = '/lobby';
     }
 }
 
@@ -73,4 +72,4 @@ window.onload =
         checkValidUrl(),
         setTimeout(()=>{
             loadProfile(validateUser)
-        }, 1000);
+        }, 2000);

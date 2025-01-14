@@ -1,6 +1,6 @@
 // Game configuration
 const config = {
-    type: Phaser.WEBGL,
+    type: Phaser.CANVAS,
     width: canvasSize.width,
     height: canvasSize.height,
     canvas: gameCanvas,

@@ -47,10 +47,7 @@ module.exports = (server)=>{
 
         //when player logged in, remove it to the lobby
         socket.on('redirectToBase', (playerName)=>{
-            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'token').toString(CryptoJS.enc.Utf8);
-
-           //TODO: this socket not working properly
-            socket.broadcast.emit('redirectToBase', decryptPlayerName);
+            socket.broadcast.emit('redirectToBase', playerName);
         });
 
         //when player disconnected

@@ -19,7 +19,6 @@ let isPanelOpen = false;
 
 let isFront = false;
 let isBack = false;
-let isRenderToClient = false;
 
 class gameLobby extends Phaser.Scene{
     constructor(){

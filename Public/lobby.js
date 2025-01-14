@@ -17,10 +17,13 @@ async function validateAccount(){
         const accountValidate_data = await accountValidate.json();
 
         if(accountValidate_data.message === 'success'){
-            localStorage.removeItem('tempPlayerName');
+            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
-            socket.emit('redirectToBase', accountValidate_data.username);
-            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountValidate_data.username);
+            if(decryptPlayerName){
+                socket.emit('redirectToBase', decryptPlayerName);
+                window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountValidate_data.username);
+                localStorage.removeItem('tempPlayerName');
+            }
         }
         else{
             loginWarningText.innerText = accountValidate_data.message;
@@ -50,10 +53,14 @@ async function validateCreateAccount(){
         const accountCreateValidate_data = await accountCreateValidate.json();
 
         if(accountCreateValidate_data.message === 'success'){
-            localStorage.removeItem('tempPlayerName');
-            
-            socket.emit('redirectToBase', accountCreateValidate_data.username);
-            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountCreateValidate_data.username);
+            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+            if(decryptPlayerName){
+                socket.emit('redirectToBase', decryptPlayerName);
+                window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(accountCreateValidate_data.username);
+
+                localStorage.removeItem('tempPlayerName');
+            }
         }
         else{
             signinWarningText.innerText = accountCreateValidate_data.message;

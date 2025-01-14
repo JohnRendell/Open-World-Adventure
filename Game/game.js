@@ -18,6 +18,7 @@ async function checkCookie(){
     }
     else{
         validateUser = getUserToken_Data.decryptPlayerName;
+        alert(validateUser)
     }
 }
 

@@ -175,10 +175,13 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
                         const setCookie_data = await setCookie.json();
 
                         if(setCookie_data.message === 'success'){
-                            localStorage.removeItem('tempPlayerName');
+                            let decryptPlayerName = CryptoJS.AES.decrypt(setCookie_data.username, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
-                            socket.emit('redirectToBase', setCookie_data.username);
-                            window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(setCookie_data.username);
+                            if(decryptPlayerName){
+                                socket.emit('redirectToBase', decryptPlayerName);
+                                window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(setCookie_data.username);
+                                localStorage.removeItem('tempPlayerName');
+                            }
                         }
                     }
                     catch(err){

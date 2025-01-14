@@ -13,12 +13,12 @@ function sceneSocket(scene){
             playerName.destroy();
             playerSprite.destroy();
             container.destroy();
-            scene.playerCollection.delete(playerName);
+            scene.playerCollection.delete(game_PlayerName);
         }
     });
 
     socket.on('game_spawnPlayer', (playerUser) => {
-        if(playerName !== playerUser){
+        if(game_PlayerName !== playerUser){
             //joined Player
             scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
             scene.joinedPlayer.setDisplaySize(40, 70);

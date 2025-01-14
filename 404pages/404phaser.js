@@ -106,7 +106,7 @@ class notFoundClass extends Phaser.Scene{
 
 // Game configuration
 const config = {
-    type: Phaser.WEBGL,
+    type: Phaser.CANVAS,
     width: window.innerWidth,
     height: window.innerHeight,
     backgroundColor: 0xffffff,

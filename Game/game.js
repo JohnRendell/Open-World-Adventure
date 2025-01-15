@@ -30,6 +30,7 @@ function checkValidUrl(){
     let splitUrl = url.split('/')
     let checkPlayerNameURL = splitUrl[5];
 
+    //TODO: investigate this one
     try{
         let validatePlayerNameGuest =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 

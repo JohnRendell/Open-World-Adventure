@@ -1,6 +1,6 @@
 function loadPlayerInfo(scene){
-    socket.on('disconnect', ()=>{
-        socket.emit('game_playerDisconnect', game_PlayerName);
+    socket.on('connect', ()=>{
+        socket.emit('game_playerDisconnect');
     });
 
     socket.on('loadPlayerData', (playerName, playerProfile)=>{
@@ -12,7 +12,9 @@ function loadPlayerInfo(scene){
             //spawn the player
             game_PlayerName = playerName;
             loggedIn_playerName = playerName;
+
             socket.emit('game_spawnPlayer', playerName);
+            socket.emit('game_playerConnected', playerName);
         }, 1500);
 
         pressKeysStuff();

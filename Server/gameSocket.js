@@ -1,23 +1,35 @@
 const CryptoJS = require('crypto-js');
 
+const players = [];
+
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
         //when player disconnected
-        socket.on('game_playerDisconnect', (playerName)=>{
-            try{
-                let decryptPlayerNameGuest = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                let decryptPlayerNameLoggedIn = CryptoJS.AES.decrypt(playerName, 'token').toString(CryptoJS.enc.Utf8);
-
-                if(decryptPlayerNameGuest || decryptPlayerNameLoggedIn){
-                    let decryptPlayerName = decryptPlayerNameGuest ? decryptPlayerNameGuest : decryptPlayerNameLoggedIn;
-
-                    socket.broadcast.emit('game_playerDisconnect', decryptPlayerName);
-                }
-            }
-            catch(err){
-                console.log(err);
-            }
+        socket.on('game_playerDisconnect', ()=>{
+            socket.broadcast.emit('game_playerDisconnect');
         });
+
+        socket.on('game_playerConnected', (playerName)=>{
+            var data = { playerName: playerName };
+
+            //add the player to the array
+            const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
+
+            if(findPlayerIndex == -1){
+                players.push(data);
+            }
+            console.log('players in lobby:');
+            console.table(players);
+        });
+
+        //player counts
+        socket.on('playerCount', (count)=>{
+            socket.emit('playerCount', count);
+
+            console.log('Player in lobby count: ');
+            console.table(players);
+        });
+
 
         //passing player data upon loading
         socket.on('loadPlayerData', (playerName, playerProfile)=>{
@@ -48,7 +60,7 @@ module.exports = (server)=>{
 
         //spawn the existing player
         socket.on('game_existingPlayer', (playerData)=>{
-            //socket.emit('playerCount', players.length);
+            socket.emit('playerCount', players.length);
             socket.broadcast.emit('game_existingPlayer', playerData);
         });
 

@@ -1,33 +1,18 @@
 function sceneSocket(scene){
-    //TODO: fix the disconnect, the sprite should be gone when the player goes into lobby
-    
     //map collection for players joined
     scene.playerCollection = new Map();
 
-    socket.on('game_playerDisconnect', (playerName)=>{
+    socket.on('game_playerDisconnect', ()=>{
         //search player to the collection
-        const findPlayer = scene.playerCollection.get(playerName);
-
-        if(findPlayer){
-            const { playerName, container, playerSprite } = findPlayer;
-            playerName.destroy();
-            playerSprite.destroy();
-            container.destroy();
-            scene.playerCollection.delete(playerName);
-        }
-    });
-
-    socket.on('game_playerDisconnect', (playerName)=>{
-        //search player to the collection
-        const findPlayer = scene.playerCollection.get(playerName);
-
-        if(findPlayer){
-            const { playerName, container, playerSprite } = findPlayer;
-            playerName.destroy();
-            playerSprite.destroy();
-            container.destroy();
-            scene.playerCollection.delete(game_PlayerName);
-        }
+        scene.playerCollection.forEach((player, name) => {
+            if(name !== game_PlayerName){
+                const { playerName, container, playerSprite } = player;
+                playerName.destroy();
+                playerSprite.destroy();
+                container.destroy();
+                scene.playerCollection.delete(name);
+            } 
+        });
     });
 
     socket.on('game_spawnPlayer', (playerUser) => {

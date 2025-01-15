@@ -244,7 +244,7 @@ class homeBase extends Phaser.Scene{
                                 if(obj.name === 'Cabinet'){ 
                                     obj.on('pointerdown', () => {
                                         if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), obj.getBounds())) {
-                                            alert('You are clicking cabinet ' + wallDepth);
+                                            modalStatus('cosmeticModal', 'flex', 'modalAnimation');
                                         }
                                     });
                                 }

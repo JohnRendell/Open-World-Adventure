@@ -16,7 +16,8 @@ router.post('/setCookie', (req, res)=>{
         let decryptPlayerName = CryptoJS.AES.decrypt(user, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
         if(decryptPlayerName){
-            res.cookie('username', user, { signed: true, httpOnly: true, maxAge: 90000 });
+            //add httpOnly: true later on
+            res.cookie('username', user, { signed: true, maxAge: 3600000, secure: true });
             res.status(200).json({ message: 'success', username: user });
         }
     }

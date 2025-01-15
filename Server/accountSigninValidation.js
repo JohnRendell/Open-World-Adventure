@@ -63,7 +63,7 @@ router.post('/', async (req, res)=>{
                     if(createAcc){
                         let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();
 
-                        res.cookie('username', encryptPlayerName, { signed: true, httpOnly: true, maxAge: 90000 });
+                        res.cookie('username', encryptPlayerName, { signed: true, httpOnly: true, maxAge: 3600000, secure: true });
                         res.status(200).json({ message: 'success', username: encryptPlayerName });
                     }
                 }

@@ -68,6 +68,24 @@ async function loadProfile(playerName){
     }
 }
 
+//download piskel template
+function piskelTemp(){
+    const url = [
+        { link: '/ImageComponents/Templates for players/Front Template.piskel', name: 'Front Template.piskel' },
+        { link: '/ImageComponents/Templates for players/Back Template.piskel', name: 'Back Template.piskel' },
+        { link: '/ImageComponents/Templates for players/Side Template.piskel', name: 'Side Template.piskel'}
+    ]
+
+    for(let i = 0; i < url.length; i++){
+        let a = document.createElement('a');
+        a.setAttribute('href', url[i]['link']);
+        a.setAttribute('download', url[i]['name']);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+}
+
 window.onload = 
         checkCookie(),
         checkValidUrl(),

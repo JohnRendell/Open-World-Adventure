@@ -1,3 +1,16 @@
+function destroyNoNameSprite(scene){
+    //search player to the collection
+    scene.playerCollection.forEach((player, name) => {
+        if(!name){
+            const { playerName, container, playerSprite } = player;
+            playerName.destroy();
+            playerSprite.destroy();
+            container.destroy();
+            scene.playerCollection.delete(name);
+        } 
+    });
+}
+
 function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
@@ -54,6 +67,8 @@ function sceneSocket(scene){
                     container: scene.joinedPlayerContainer,
                     playerSprite: scene.joinedPlayer
                 });
+
+                destroyNoNameSprite(scene);
             }
         }, 1000);
     });
@@ -91,6 +106,8 @@ function sceneSocket(scene){
                     container: scene.joinedPlayerContainer,
                     playerSprite: scene.joinedPlayer
                 });
+
+                destroyNoNameSprite(scene);
             }
         }, 1000);
     });

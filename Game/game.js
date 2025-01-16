@@ -60,6 +60,9 @@ async function loadProfile(playerName){
 
         if(getPlayerProfile_data.message === 'success'){
             playerName = getPlayerProfile_data.username;
+
+            //add player profile
+            document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }

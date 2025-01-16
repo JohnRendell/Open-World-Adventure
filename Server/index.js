@@ -50,6 +50,7 @@ app.use('/lobby', require('./lobbyRouter'));
 app.use('/promptNPC', require('./geminiAI'));
 app.use('/login', require('./accountLoginValidation'));
 app.use('/signin', require('./accountSigninValidation'));
+app.use('/changeProfile', require('./accountChangeProfile'));
 
 //for cookie
 app.use('/cookie', require('./cookieStatus'));

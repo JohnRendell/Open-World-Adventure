@@ -71,6 +71,31 @@ async function loadProfile(playerName){
     }
 }
 
+//to upload new profile
+function changeProfile(){
+    var profileFileID = document.getElementById('profileChangeID');
+
+    profileFileID.addEventListener('change', async (event)=>{
+        document.getElementById('validatingDiv').style.display = 'flex';
+
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+
+        const uploadProfile = await fetch('/changeProfile', {
+            method: "POST",
+            body: formData
+        });
+
+        const uploadProfile_data = await uploadProfile.json();
+
+        if(uploadProfile_data.message === 'success'){
+            alert(file.name);
+            document.getElementById('validatingDiv').style.display = 'none';
+        }
+    });
+}
+
 //download piskel template
 function piskelTemp(){
     const url = [

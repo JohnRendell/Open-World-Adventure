@@ -646,6 +646,10 @@ video {
   height: 30rem;
 }
 
+.h-\[35rem\]{
+  height: 35rem;
+}
+
 .h-auto{
   height: auto;
 }
@@ -657,18 +661,6 @@ video {
 
 .h-screen{
   height: 100vh;
-}
-
-.h-\[50rem\]{
-  height: 50rem;
-}
-
-.h-\[40rem\]{
-  height: 40rem;
-}
-
-.h-\[35rem\]{
-  height: 35rem;
 }
 
 .w-20{

@@ -1,9 +1,38 @@
 const CryptoJS = require('crypto-js');
+const accountModel = require('./accountMongoose');
 
 const players = [];
 
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
+        //when player change profile
+        socket.on('updateProfile', async (profile, playerName)=>{
+            try{
+                const changeProfile = await accountModel.findOneAndUpdate(
+                    { username: playerName },
+                    { $set: { profile: profile } },
+                    { new: true }
+                )
+
+                if(changeProfile){
+                    socket.emit('updateProfile', profile);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+        });
+
+        //for initial loading of sprites
+        socket.on('loadSprites', (sprite0, sprite1, sprite2)=>{
+            socket.emit('loadSprites', sprite0, sprite1, sprite2);
+        });
+
+        //when player upload new sprite
+        socket.on('loadNewSprite', (sprite0, sprite1, sprite2)=>{
+            socket.emit('loadNewSprite', sprite0, sprite1, sprite2);
+        });
+        
         //when player disconnected
         socket.on('game_playerDisconnect', ()=>{
             socket.broadcast.emit('game_playerDisconnect');
@@ -29,7 +58,6 @@ module.exports = (server)=>{
             console.log('Player in lobby count: ');
             console.table(players);
         });
-
 
         //passing player data upon loading
         socket.on('loadPlayerData', (playerName, playerProfile)=>{

@@ -78,7 +78,7 @@
                         <img src="" alt="user profile" class="border-2 border-blue-500 rounded-lg w-20 h-20" id="playerProfileID">
                         
                         <div>
-                            <label for="profileChangeID" class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700" onclick="changeProfile()">Change
+                            <label for="profileChangeID" class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:bg-blue-700" onclick="changeProfile()">Change
                                 Profile</label>
                             <input type="file" accept="Image/*" hidden id="profileChangeID">
                         </div>
@@ -87,7 +87,7 @@
                 <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700">Pick in-game skins instead</button>
 
                    <div>
-                        <label for="uploadSkin" class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:bg-blue-700">Upload New Skin</label>
+                        <label for="uploadSkin" class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:bg-blue-700" onclick="changeSprite()">Upload New Skin</label>
                         <input type="file" id="uploadSkin" accept="Image/png" multiple hidden>
                    </div>
                </div>
@@ -97,20 +97,17 @@
                
                 <div class="flex justify-between gap-4">
                     <div class="flex flex-col space-y-2 w-full items-center">
-                        <img src="/ImageComponents/Templates for players/back template sprite sheet.png" alt="template"
-                            class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2">
+                        <img src="" alt="back" class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2" id="prevSprite0">
                         <p class="font-PixelifySans text-sm text-black text-center">Back walking animation</p>
                     </div>
 
                     <div class="flex flex-col space-y-2 w-full items-center">
-                        <img src="/ImageComponents/Templates for players/front template sprite sheet.png" alt="template"
-                            class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2">
+                        <img src="" alt="front" class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2" id="prevSprite1">
                         <p class="font-PixelifySans text-sm text-black text-center">Front walking animation</p>
                     </div>
 
                     <div class="flex flex-col space-y-2 w-full items-center">
-                        <img src="/ImageComponents/Templates for players/side template sprite sheet.png" alt="template"
-                            class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2">
+                        <img src="" alt="side" class="border-2 border-blue-500 rounded-lg bg-slate-300 p-2" id="prevSprite2">
                         <p class="font-PixelifySans text-sm text-black text-center">left and right side walking animation</p>
                     </div>
                 </div>

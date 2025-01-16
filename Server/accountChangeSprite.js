@@ -11,8 +11,9 @@ const upload = multer();
 router.post('/', upload.single('image'), async (req, res)=>{
     try{
         const image = req.file;
-        const album = 'BkaAHPo';
+        const album = 'UEqHHkz';
         const formData = new FormData();
+        
         formData.append('image', image.buffer.toString('base64'));
         formData.append('album', album);
 

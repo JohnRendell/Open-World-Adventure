@@ -32,39 +32,83 @@ class homeBase extends Phaser.Scene{
         loadAssets(this);
     }
 
-    create = function(){        
+    create = function(){   
+        //TODO: made a way on this one
+        socket.on('loadSprites', (sprite0, sprite1, sprite2)=>{
+            this.load.spritesheet('main_playerIdle', sprite0, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            this.load.spritesheet('main_playerFront', sprite1, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            this.load.spritesheet('main_playerBack', sprite2, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            this.load.once('complete', ()=>{
+                this.anims.create({
+                    key: 'playerIdle',
+                    frames: this.anims.generateFrameNumbers('main_playerIdle', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: -1
+                });
+
+                this.anims.create({
+                    key: 'playerFront',
+                    frames: this.anims.generateFrameNumbers('main_playerFront', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: -1
+                });
+
+                this.anims.create({
+                    key: 'playerBack',
+                    frames: this.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: -1
+                });
+            });
+
+            this.load.start();
+        });
+        
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
         
         //set the world bounds
         this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
-        //main player
-        this.player = this.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-        this.player.setDisplaySize(40, 70);
-        this.player.setCollideWorldBounds(true); 
-        this.player.setVisible(false);
-
+        /*
         this.anims.create({
             key: 'playerIdle',
-            frames: this.anims.generateFrameNumbers('guestPlayerIdle', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('main_playerIdle', { start: 0, end: 1 }),
             frameRate: 4,
             repeat: -1
         });
 
         this.anims.create({
             key: 'playerFront',
-            frames: this.anims.generateFrameNumbers('guestPlayerFront', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('main_playerFront', { start: 0, end: 1 }),
             frameRate: 4,
             repeat: -1
         });
 
         this.anims.create({
             key: 'playerBack',
-            frames: this.anims.generateFrameNumbers('guestPlayerBack', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
             frameRate: 4,
             repeat: -1
-        });
+        });*/
+
+        //main player
+        this.player = this.physics.add.sprite(0,0, 'main_playerIdle').setOrigin(0.5);
+        this.player.setDisplaySize(40, 70);
+        this.player.setCollideWorldBounds(true); 
+        this.player.setVisible(false);
 
         //player name
         this.playerName = this.add.text(0, -50, 'loading...', {

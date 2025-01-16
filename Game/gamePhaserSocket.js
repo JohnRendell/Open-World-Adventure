@@ -32,7 +32,7 @@ function sceneSocket(scene){
         setTimeout(() => {
             if(game_PlayerName !== playerUser){
                 //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
+                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'playerIdle').setOrigin(0.5);
                 scene.joinedPlayer.setDisplaySize(40, 70);
                 scene.joinedPlayer.setCollideWorldBounds(true); 
                 scene.joinedPlayer.setVisible(false);
@@ -80,7 +80,7 @@ function sceneSocket(scene){
         setTimeout(() => {
             if(!scene.playerCollection.has(playerID)){
                 //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
+                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'playerIdle').setOrigin(0.5);
                 scene.joinedPlayer.setDisplaySize(40, 70);
                 scene.joinedPlayer.setCollideWorldBounds(true); 
                 scene.joinedPlayer.setVisible(true);

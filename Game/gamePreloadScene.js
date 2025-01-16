@@ -39,18 +39,34 @@ function loadAssets(scene){
     //scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall lvl 1.png');
     //scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate lvl 1.png')
 
-    //player
-    scene.load.spritesheet('guestPlayerIdle', '/ImageComponents/Sprite Sheets/guest player Idle Sprite Sheet.png', {
+    //joined player
+    scene.load.spritesheet('playerIdle', '/ImageComponents/Sprite Sheets/guest player Idle Sprite Sheet.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });
 
-    scene.load.spritesheet('guestPlayerFront', '/ImageComponents/Sprite Sheets/guest player front Sprite Sheet.png', {
+    scene.load.spritesheet('playerFront', '/ImageComponents/Sprite Sheets/guest player front Sprite Sheet.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });
 
-    scene.load.spritesheet('guestPlayerBack', '/ImageComponents/Sprite Sheets/guest player back Sprite Sheet.png', {
+    scene.load.spritesheet('playerBack', '/ImageComponents/Sprite Sheets/guest player back Sprite Sheet.png', {
+        frameWidth: 1600 / 5,
+        frameHeight: 800 / 1
+    });
+
+    //main player
+    scene.load.spritesheet('main_playerIdle', '/ImageComponents/Sprite Sheets/guest player Idle Sprite Sheet.png', {
+        frameWidth: 1600 / 5,
+        frameHeight: 800 / 1
+    });
+
+    scene.load.spritesheet('main_playerFront', '/ImageComponents/Sprite Sheets/guest player front Sprite Sheet.png', {
+        frameWidth: 1600 / 5,
+        frameHeight: 800 / 1
+    });
+
+    scene.load.spritesheet('main_playerBack', '/ImageComponents/Sprite Sheets/guest player back Sprite Sheet.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });

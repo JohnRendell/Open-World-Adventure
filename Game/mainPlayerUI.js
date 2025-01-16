@@ -1,6 +1,4 @@
-function homeBaseUI(scene, playerProfile){
-    scene.load.image('playerProfile', playerProfile);
-
+function homeBaseUI(scene){
     //player profile
     scene.profileBorder = scene.add.graphics();
     scene.profileBorder.fillStyle(0x0d6525, 1);

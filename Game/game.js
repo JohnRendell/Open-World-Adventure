@@ -61,8 +61,13 @@ async function loadProfile(playerName){
         if(getPlayerProfile_data.message === 'success'){
             playerName = getPlayerProfile_data.username;
 
-            //add player profile
+            //add player profile and sprites
             document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
+            document.getElementById('prevSprite0').src = getPlayerProfile_data.sprites[0];
+            document.getElementById('prevSprite1').src = getPlayerProfile_data.sprites[1];
+            document.getElementById('prevSprite2').src = getPlayerProfile_data.sprites[2];
+
+            socket.emit('loadSprites', getPlayerProfile_data.sprites[0], getPlayerProfile_data.sprites[1], getPlayerProfile_data.sprites[2]);
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }
@@ -90,8 +95,49 @@ function changeProfile(){
         const uploadProfile_data = await uploadProfile.json();
 
         if(uploadProfile_data.message === 'success'){
-            alert(file.name);
             document.getElementById('validatingDiv').style.display = 'none';
+            document.getElementById('playerProfileID').src = uploadProfile_data.link;
+            socket.emit('updateProfile', uploadProfile_data.link, game_PlayerName);
+        }
+    });
+}
+
+//upload skin
+function changeSprite(){
+    var uploadSpriteFile = document.getElementById('uploadSkin');
+
+    uploadSpriteFile.addEventListener('change', async (event)=>{
+        const images = event.target.files;
+
+        if(images.length == 3){
+            document.getElementById('validatingDiv').style.display = 'flex';
+
+           async function spritesUploaded(){
+                for(let i = 0; i < images.length; i++){
+                    let img = images[i];
+                    const formData = new FormData();
+                    formData.append('image', img);
+
+                    const uploadSprites = await fetch('/changeSprites', {
+                        method: "POST",
+                        body: formData
+                    });
+
+                    const uploadSprites_data = await uploadSprites.json();
+
+                    if(uploadSprites_data.message === 'success'){
+                        document.getElementById('prevSprite' + i).src = uploadSprites_data.link;
+                        localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+                    }
+                }
+            }
+
+            await spritesUploaded();
+            document.getElementById('validatingDiv').style.display = 'none';
+            socket.emit('loadNewSprite', localStorage.getItem('prevSprite0'), localStorage.getItem('prevSprite1'), localStorage.getItem('prevSprite2'))
+        }
+        else{
+            alert('You need to upload exactly three sprites');
         }
     });
 }

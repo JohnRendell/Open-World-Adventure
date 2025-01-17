@@ -23,17 +23,17 @@ function loadAssets(scene) {
     });
 
     //player
-    scene.load.spritesheet('guestPlayerIdle', '/ImageComponents/Sprite Sheets/guest player Idle Sprite Sheet.png', {
+    scene.load.spritesheet('guestPlayerIdle', 'https://i.imgur.com/4BkMHTS.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });
 
-    scene.load.spritesheet('guestPlayerFront', '/ImageComponents/Sprite Sheets/guest player front Sprite Sheet.png', {
+    scene.load.spritesheet('guestPlayerFront', 'https://i.imgur.com/Qq3Yedn.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });
 
-    scene.load.spritesheet('guestPlayerBack', '/ImageComponents/Sprite Sheets/guest player back Sprite Sheet.png', {
+    scene.load.spritesheet('guestPlayerBack', 'https://i.imgur.com/xhU6u5B.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });

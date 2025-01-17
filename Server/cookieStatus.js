@@ -35,25 +35,25 @@ router.post('/getCookie', (req, res)=>{
             let usernameCookie = req.signedCookies.username;
     
             if(usernameCookie){
-                let decryptPlayerName;
+                let playerToken = CryptoJS.AES.decrypt(usernameCookie, 'token').toString(CryptoJS.enc.Utf8);
+                let guestToken = CryptoJS.AES.decrypt(usernameCookie, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
                 //for logged in player
-                if(CryptoJS.AES.decrypt(usernameCookie, 'token').toString(CryptoJS.enc.Utf8)){
-                    decryptPlayerName = CryptoJS.AES.decrypt(usernameCookie, 'token').toString(CryptoJS.enc.Utf8);
+                if(playerToken){
+                    res.status(200).json({ message: 'success', decryptPlayerName: playerToken });
                 }
 
                 //for guest
-                if(CryptoJS.AES.decrypt(usernameCookie, 'tempPlayerName').toString(CryptoJS.enc.Utf8)){
-                    decryptPlayerName = CryptoJS.AES.decrypt(usernameCookie, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                }
-
-                if(decryptPlayerName){
-                    res.status(200).json({ message: 'success', decryptPlayerName: decryptPlayerName });
+                if(guestToken){
+                    res.status(200).json({ message: 'success', decryptPlayerName: guestToken });
                 }
             }
             else{
                 res.status(200).json({ message: 'no cookie' });
             }
+        }
+        else{
+            console.log('cant read shit')
         }
     }
     catch(err){

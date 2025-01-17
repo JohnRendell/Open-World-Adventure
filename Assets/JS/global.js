@@ -179,7 +179,8 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
                             if(decryptPlayerName){
                                 socket.emit('redirectToBase', decryptPlayerName);
-                                window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(setCookie_data.username);
+                                localStorage.setItem('visitor', 'i am visitor');
+                                window.location.href = '/Game/Base/' + decryptPlayerName;
                                 localStorage.removeItem('tempPlayerName');
                             }
                         }

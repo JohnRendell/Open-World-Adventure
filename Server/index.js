@@ -51,7 +51,7 @@ app.use('/promptNPC', require('./geminiAI'));
 app.use('/login', require('./accountLoginValidation'));
 app.use('/signin', require('./accountSigninValidation'));
 app.use('/changeProfile', require('./accountChangeProfile'));
-app.use('/changeSprites', require('./accountChangeSprite'));
+app.use('/changeSprite', require('./accountChangeSprite'));
 
 //for cookie
 app.use('/cookie', require('./cookieStatus'));

@@ -18,7 +18,9 @@ const speed = 200;
 
 let isTalking = false;
 let isPanelOpen = false;
+let isLoaded = false;
 let game_PlayerName, loggedIn_playerName;
+let spriteFront, spriteSide, spriteBack;
 
 let isFront = false;
 let isBack = false;
@@ -33,19 +35,18 @@ class homeBase extends Phaser.Scene{
     }
 
     create = function(){   
-        //TODO: made a way on this one
-        socket.on('loadSprites', (sprite0, sprite1, sprite2)=>{
-            this.load.spritesheet('main_playerIdle', sprite0, {
+        socket.on('loadSprites', (front, back, side)=>{
+            this.load.spritesheet('main_playerBack', back, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
             });
 
-            this.load.spritesheet('main_playerFront', sprite1, {
+            this.load.spritesheet('main_playerFront', front, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
             });
 
-            this.load.spritesheet('main_playerBack', sprite2, {
+            this.load.spritesheet('main_playerIdle', side, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
             });
@@ -71,6 +72,11 @@ class homeBase extends Phaser.Scene{
                     frameRate: 4,
                     repeat: -1
                 });
+
+                isLoaded = true;
+                spriteFront = front;
+                spriteSide = side;
+                spriteBack = back;
             });
 
             this.load.start();
@@ -82,32 +88,9 @@ class homeBase extends Phaser.Scene{
         //set the world bounds
         this.physics.world.setBounds(0,0, worldBounds.width, worldBounds.height);
 
-        /*
-        this.anims.create({
-            key: 'playerIdle',
-            frames: this.anims.generateFrameNumbers('main_playerIdle', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'playerFront',
-            frames: this.anims.generateFrameNumbers('main_playerFront', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'playerBack',
-            frames: this.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: -1
-        });*/
-
         //main player
         this.player = this.physics.add.sprite(0,0, 'main_playerIdle').setOrigin(0.5);
-        this.player.setDisplaySize(40, 70);
-        this.player.setCollideWorldBounds(true); 
+        this.player.setScale(0.1);
         this.player.setVisible(false);
 
         //player name
@@ -115,7 +98,7 @@ class homeBase extends Phaser.Scene{
             font: "16px 'Pixelify Sans'",
             fill: '#06402b',
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setDepth(3);
 
         //player container
         this.playerContainer = this.add.container(499, 296, [this.player, this.playerName]);
@@ -123,7 +106,7 @@ class homeBase extends Phaser.Scene{
         this.physics.world.enable(this.playerContainer);
 
         this.playerContainer.body.setCollideWorldBounds(true);
-        this.playerContainer.body.setSize(40, 70);
+        this.playerContainer.body.setSize(40, 70, true);
         this.playerContainer.body.setOffset(-20, -35);
         this.playerContainer.setDepth(3);
 
@@ -183,7 +166,7 @@ class homeBase extends Phaser.Scene{
         var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY, width, height)=>{
             //add the NPC
             const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
-            npcObj.setDisplaySize(width, height);
+            npcObj.setScale(0.1);
             npcObj.setDepth(3);
             npcObj.body.setSize(width, height, true);
             npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
@@ -427,78 +410,81 @@ class homeBase extends Phaser.Scene{
 
     // Update function (for game logic and updates every frame)
     update = function() {
-        this.playerContainer.body.setVelocity(0);
+        if(isLoaded){
+            this.playerContainer.body.setVelocity(0);
 
-        if(isTalking == false){
-            if(this.cursors.left.isDown || this.A.isDown){
-                this.playerContainer.body.setVelocityX(-speed);
-                this.player.flipX = false;
-                isFront = false;
-                isBack = false;
+            if(isTalking == false){
+                if(this.cursors.left.isDown || this.A.isDown){
+                    this.playerContainer.body.setVelocityX(-speed);
+                    this.player.flipX = false;
+                    isFront = false;
+                    isBack = false;
+                }
+                if(this.cursors.right.isDown || this.D.isDown){
+                    this.playerContainer.body.setVelocityX(speed);
+                    this.player.flipX = true;
+                    isFront = false;
+                    isBack = false;
+                }
+                if(this.cursors.up.isDown || this.W.isDown){
+                    this.playerContainer.body.setVelocityY(-speed);
+                    isFront = false;
+                    isBack = true;
+                }
+                if(this.cursors.down.isDown || this.S.isDown){
+                    this.playerContainer.body.setVelocityY(speed);
+                    isFront = true;
+                    isBack = false;
+                }
             }
-            if(this.cursors.right.isDown || this.D.isDown){
-                this.playerContainer.body.setVelocityX(speed);
-                this.player.flipX = true;
-                isFront = false;
-                isBack = false;
+
+            if(isTalking || isPanelOpen){
+                this.input.keyboard.disableGlobalCapture();
             }
-            if(this.cursors.up.isDown || this.W.isDown){
-                this.playerContainer.body.setVelocityY(-speed);
-                isFront = false;
-                isBack = true;
+
+            if(isFront){
+                this.player.play('playerFront', true);
             }
-            if(this.cursors.down.isDown || this.S.isDown){
-                this.playerContainer.body.setVelocityY(speed);
-                isFront = true;
-                isBack = false;
+
+            if(isBack){
+                this.player.play('playerBack', true);
             }
-        }
 
-        if(isTalking || isPanelOpen){
-            this.input.keyboard.disableGlobalCapture();
-        }
+            if(!isFront && !isBack){
+                this.player.play('playerIdle', true);
+            }
 
-        if(isFront){
-            this.player.play('playerFront', true);
-        }
+            //exiting door
+            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.frontDoor.getBounds())) {
+                this.frontDoor_label.setVisible(false);
+            }
 
-        if(isBack){
-            this.player.play('playerBack', true);
-        }
+            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.roomDoor.getBounds())) {
+                this.roomDoor_label.setVisible(false);
+            }
 
-        if(!isFront && !isBack){
-            this.player.play('playerIdle', true);
-        }
+            //leaving chest
+            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
+                this.chestLabel.setVisible(false);
+            }
 
-        //exiting door
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.frontDoor.getBounds())) {
-            this.frontDoor_label.setVisible(false);
-        }
+            // on exit for NPCs
+            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
+                this.bobText.setVisible(false);
+            }
 
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.roomDoor.getBounds())) {
-            this.roomDoor_label.setVisible(false);
+            //for other player movement        
+            const playerData = {
+                playerID: game_PlayerName,
+                x: this.playerContainer.x,
+                y: this.playerContainer.y,
+                isBack: isBack,
+                isFront: isFront,
+                spriteX: this.player.flipX
+            }
+            socket.emit('game_playerMove', playerData);
+            socket.emit('game_existingPlayer', playerData);
+            socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide);
         }
-
-        //leaving chest
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
-            this.chestLabel.setVisible(false);
-        }
-
-        // on exit for NPCs
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
-            this.bobText.setVisible(false);
-        }
-
-        //for other player movement        
-        const playerData = {
-            playerID: game_PlayerName,
-            x: this.playerContainer.x,
-            y: this.playerContainer.y,
-            isBack: isBack,
-            isFront: isFront,
-            spriteX: this.player.flipX
-        }
-        socket.emit('game_playerMove', playerData);
-        socket.emit('game_existingPlayer', playerData);
     }
 }

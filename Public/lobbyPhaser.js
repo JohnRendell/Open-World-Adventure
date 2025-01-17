@@ -64,8 +64,7 @@ class gameLobby extends Phaser.Scene{
 
         //main player
         this.player = this.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-        this.player.setDisplaySize(40, 70);
-        this.player.setCollideWorldBounds(true); 
+        this.player.setScale(0.1);
         this.player.setVisible(false);
 
         this.anims.create({
@@ -153,7 +152,7 @@ class gameLobby extends Phaser.Scene{
         var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY)=>{
             //add the NPC
             const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
-            npcObj.setDisplaySize(40, 70);
+            npcObj.setScale(0.1);
             npcObj.body.setSize(40, 70, true);
             npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
 

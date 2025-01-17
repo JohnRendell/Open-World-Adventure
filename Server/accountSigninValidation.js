@@ -53,17 +53,12 @@ router.post('/', async (req, res)=>{
         else{
             try{
                 const findAcc = await accountModel.findOne({ username: username });
-                const spritesArr = [
-                    'https://i.imgur.com/xhU6u5B.png',
-                    'https://i.imgur.com/Qq3Yedn.png',
-                    'https://i.imgur.com/4BkMHTS.png'
-                ];
 
                 if(findAcc){
                     res.status(200).json({ message: 'username already exists.' });
                 }
                 else{
-                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: 'https://i.imgur.com/ajVzRmV.jpg', sprites: spritesArr });
+                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: 'https://i.imgur.com/ajVzRmV.jpg', frontSprite: 'https://i.imgur.com/Qq3Yedn.png', backSprite: 'https://i.imgur.com/xhU6u5B.png', sideSprite: 'https://i.imgur.com/4BkMHTS.png' });
 
                     if(createAcc){
                         let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();

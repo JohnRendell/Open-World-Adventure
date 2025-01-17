@@ -29,8 +29,37 @@ module.exports = (server)=>{
         });
 
         //when player upload new sprite
-        socket.on('loadNewSprite', (sprite0, sprite1, sprite2)=>{
-            socket.emit('loadNewSprite', sprite0, sprite1, sprite2);
+        socket.on('loadNewSprite', async (playerName, imageID, sprite, query)=>{
+            const updateQuery = {};
+
+            switch(query){
+                case 'front':
+                    updateQuery.frontSprite = sprite;
+                break;
+
+                case 'back':
+                    updateQuery.backSprite = sprite;
+                break;
+
+                case 'side':
+                    updateQuery.sideSprite = sprite;
+                break;
+            }
+
+            try{
+                const changeSprites = await accountModel.findOneAndUpdate(
+                    { username: playerName },
+                    { $set: updateQuery },
+                    { new: true }
+                );
+
+                if(changeSprites){
+                    //socket.emit('loadNewSprite', imageID, sprite);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
         });
         
         //when player disconnected
@@ -90,6 +119,11 @@ module.exports = (server)=>{
         socket.on('game_existingPlayer', (playerData)=>{
             socket.emit('playerCount', players.length);
             socket.broadcast.emit('game_existingPlayer', playerData);
+        });
+
+        //load player's sprite
+        socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
+            socket.broadcast.emit('game_loadPlayerSprite', playerID, spriteFront, spriteBack, spriteSide);
         });
 
         //when player disconnected

@@ -15,6 +15,57 @@ function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
 
+    //load player's sprite
+    socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
+        if(playerID !== game_PlayerName){
+            scene.load.spritesheet(playerID + '_playerBack', spriteBack, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            scene.load.spritesheet(playerID + '_playerFront', spriteFront, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            scene.load.spritesheet(playerID + '_playerIdle', spriteSide, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            scene.load.once('complete', ()=>{
+                if(!scene.anims.exists(playerID + '_playerIdle')){
+                    scene.anims.create({
+                        key: playerID + '_playerIdle',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerIdle', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: -1
+                    });
+                }
+
+                if(!scene.anims.exists(playerID + '_playerFront')){
+                    scene.anims.create({
+                        key: playerID + '_playerFront',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerFront', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: -1
+                    });
+                }
+
+                if(!scene.anims.exists(playerID + '_playerBack')){
+                    scene.anims.create({
+                        key: playerID + '_playerBack',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerBack', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: -1
+                    });
+                }
+            });
+
+            scene.load.start();
+        }
+    });
+
     socket.on('game_playerDisconnect', ()=>{
         //search player to the collection
         scene.playerCollection.forEach((player, name) => {
@@ -32,9 +83,8 @@ function sceneSocket(scene){
         setTimeout(() => {
             if(game_PlayerName !== playerUser){
                 //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'playerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setDisplaySize(40, 70);
-                scene.joinedPlayer.setCollideWorldBounds(true); 
+                scene.joinedPlayer = scene.physics.add.sprite(0,0, playerUser + '_playerIdle').setOrigin(0.5);
+                scene.joinedPlayer.setScale(0.1); 
                 scene.joinedPlayer.setVisible(false);
 
                 //joined Player name
@@ -42,7 +92,7 @@ function sceneSocket(scene){
                     font: "16px 'Pixelify Sans'",
                     fill: '#ffffff',
                     align: 'center'
-                }).setOrigin(0.5);
+                }).setOrigin(0.5).setDepth(5);
 
                 //joined Player container
                 scene.joinedPlayerContainer = scene.add.container(499, 296, [scene.joinedPlayer, scene.joinedPlayerName]);
@@ -62,7 +112,7 @@ function sceneSocket(scene){
                 });
 
                 //add player to the collection
-                scene.playerCollection.set(playerName, {
+                scene.playerCollection.set(playerUser, {
                     playerName: scene.joinedPlayerName,
                     container: scene.joinedPlayerContainer,
                     playerSprite: scene.joinedPlayer
@@ -80,9 +130,8 @@ function sceneSocket(scene){
         setTimeout(() => {
             if(!scene.playerCollection.has(playerID)){
                 //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'playerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setDisplaySize(40, 70);
-                scene.joinedPlayer.setCollideWorldBounds(true); 
+                scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
+                scene.joinedPlayer.setScale(0.1); 
                 scene.joinedPlayer.setVisible(true);
 
                 //joined Player name
@@ -90,7 +139,7 @@ function sceneSocket(scene){
                     font: "16px 'Pixelify Sans'",
                     fill: '#ffffff',
                     align: 'center'
-                }).setOrigin(0.5);
+                }).setOrigin(0.5).setDepth(5);
 
                 //joined Player container
                 scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
@@ -125,13 +174,13 @@ function sceneSocket(scene){
             playerSprite.flipX = spriteX;
 
             if (isFront) {
-                playerSprite.play('playerFront', true);
+                playerSprite.play(playerID + '_playerFront', true);
             } 
             else if (isBack) {
-                playerSprite.play('playerBack', true);
+                playerSprite.play(playerID + '_playerBack', true);
             } 
             else {
-                playerSprite.play('playerIdle', true);
+                playerSprite.play(playerID + '_playerIdle', true);
             }
         }
     });

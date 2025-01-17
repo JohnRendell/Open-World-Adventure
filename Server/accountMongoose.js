@@ -7,7 +7,9 @@ const accountSchema = new Schema({
     username: { type: String, require: true },
     password: { type: String, require: true },
     profile: { type: String, require: true },
-    sprites: { type: Array, require: true } 
+    frontSprite: { type: String, require: true },
+    backSprite: { type: String, require: true },
+    sideSprite: { type: String, require: true } 
 });
 
 const accountModel = mongoose.model('account', accountSchema);

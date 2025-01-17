@@ -26,23 +26,22 @@ function checkValidUrl(){
         return inputString.replace(/_/g, '/');
     }
 
-    let url = window.location.href;
-    let splitUrl = url.split('/')
-    let checkPlayerNameURL = splitUrl[5];
+   if(!localStorage.getItem('visitor')){
+        let url = window.location.href;
+        let splitUrl = url.split('/')
+        let checkPlayerNameURL = splitUrl[5];
 
-    //TODO: investigate this one
-    try{
-        let validatePlayerNameGuest =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+        try{
+            let validatePlayerNameLoggedIn =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'token').toString(CryptoJS.enc.Utf8);
 
-        let validatePlayerNameLoggedIn =  CryptoJS.AES.decrypt(replaceUnderscoreWithSlash(checkPlayerNameURL), 'token').toString(CryptoJS.enc.Utf8);
-
-        if(!validatePlayerNameLoggedIn && !validatePlayerNameGuest){
-            window.location.href = '/Invalid_URL';
+            if(!validatePlayerNameLoggedIn){
+                window.location.href = '/Invalid_URL';
+            }
         }
-    }
-    catch(err){
-        console.log(err);
-    }
+        catch(err){
+            console.log(err);
+        }
+   }
 }
 
 async function loadProfile(playerName){
@@ -63,11 +62,15 @@ async function loadProfile(playerName){
 
             //add player profile and sprites
             document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
-            document.getElementById('prevSprite0').src = getPlayerProfile_data.sprites[0];
-            document.getElementById('prevSprite1').src = getPlayerProfile_data.sprites[1];
-            document.getElementById('prevSprite2').src = getPlayerProfile_data.sprites[2];
+            document.getElementById('prevSprite0').src = getPlayerProfile_data.frontSprite; //front
+            document.getElementById('prevSprite1').src = getPlayerProfile_data.backSprite; //back
+            document.getElementById('prevSprite2').src = getPlayerProfile_data.sideSprite; //sides
 
-            socket.emit('loadSprites', getPlayerProfile_data.sprites[0], getPlayerProfile_data.sprites[1], getPlayerProfile_data.sprites[2]);
+            document.getElementById('guestDiv').style.display = getPlayerProfile_data.isGuest ? 'flex' : 'none';
+            document.getElementById('playerDiv').style.display = getPlayerProfile_data.isGuest ? 'none' : 'flex';
+
+            socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite);
+
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }
@@ -103,41 +106,29 @@ function changeProfile(){
 }
 
 //upload skin
-function changeSprite(){
-    var uploadSpriteFile = document.getElementById('uploadSkin');
+function changeSkin(id, imageID, query){
+    var uploadSpriteFile = document.getElementById(id);
 
     uploadSpriteFile.addEventListener('change', async (event)=>{
-        const images = event.target.files;
+        const image = event.target.files[0];
 
-        if(images.length == 3){
-            document.getElementById('validatingDiv').style.display = 'flex';
+        document.getElementById('validatingDiv').style.display = 'flex';
+        const formData = new FormData();
+        formData.append('image', image);
 
-           async function spritesUploaded(){
-                for(let i = 0; i < images.length; i++){
-                    let img = images[i];
-                    const formData = new FormData();
-                    formData.append('image', img);
+        const uploadSprites = await fetch('/changeSprite', {
+            method: "POST",
+            body: formData
+        });
 
-                    const uploadSprites = await fetch('/changeSprites', {
-                        method: "POST",
-                        body: formData
-                    });
+        const uploadSprites_data = await uploadSprites.json();
 
-                    const uploadSprites_data = await uploadSprites.json();
+        if(uploadSprites_data.message === 'success'){
+            localStorage.setItem(imageID, uploadSprites_data.link);
+            document.getElementById(imageID).src = uploadSprites_data.link;
 
-                    if(uploadSprites_data.message === 'success'){
-                        document.getElementById('prevSprite' + i).src = uploadSprites_data.link;
-                        localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
-                    }
-                }
-            }
-
-            await spritesUploaded();
             document.getElementById('validatingDiv').style.display = 'none';
-            socket.emit('loadNewSprite', localStorage.getItem('prevSprite0'), localStorage.getItem('prevSprite1'), localStorage.getItem('prevSprite2'))
-        }
-        else{
-            alert('You need to upload exactly three sprites');
+            socket.emit('loadNewSprite', game_PlayerName, imageID, localStorage.getItem(imageID), query);
         }
     });
 }

@@ -54,8 +54,7 @@ function sceneSocket(scene){
             if(decryptPlayerName !== playerName){
                 //joined Player
                 scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setDisplaySize(40, 70);
-                scene.joinedPlayer.setCollideWorldBounds(true); 
+                scene.joinedPlayer.setScale(0.1); 
                 scene.joinedPlayer.setVisible(false);
 
                 //joined Player name
@@ -100,8 +99,7 @@ function sceneSocket(scene){
             if(!scene.playerCollection.has(playerID)){
                 //joined Player
                 scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setDisplaySize(40, 70);
-                scene.joinedPlayer.setCollideWorldBounds(true); 
+                scene.joinedPlayer.setScale(0.1); 
                 scene.joinedPlayer.setVisible(true);
 
                 //joined Player name

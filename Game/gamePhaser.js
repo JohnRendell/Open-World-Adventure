@@ -19,6 +19,7 @@ const speed = 200;
 let isTalking = false;
 let isPanelOpen = false;
 let isLoaded = false;
+let isMainPlayerGoingToRoom = false;
 let game_PlayerName, loggedIn_playerName;
 let spriteFront, spriteSide, spriteBack;
 
@@ -287,6 +288,14 @@ class homeBase extends Phaser.Scene{
 
                         roomObj.body.setSize(240, colliderSize, true);
                         roomObj.body.setOffset(0, offsetY);
+
+                        isMainPlayerGoingToRoom = offsetY === 0 ? true : false;
+                        
+                        //when player going to the door
+                        socket.emit('playerGoToDoor', offsetY, game_PlayerName);
+
+                        //hide all players outside of the room
+                        socket.emit('hidePlayersWhenGoToRoom', offsetY);
                     }
                     else{
                         alert(path);

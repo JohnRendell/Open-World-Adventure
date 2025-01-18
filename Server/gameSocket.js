@@ -120,6 +120,16 @@ module.exports = (server)=>{
             }
         });
 
+        //when other player go inside or outside the room
+        socket.on('playerGoToDoor', (offsetY, playerName)=>{
+            socket.broadcast.emit('playerGoToDoor', offsetY, playerName);
+        });
+
+        //hiding all players when goes into room
+        socket.on('hidePlayersWhenGoToRoom', (offsetY)=>{
+            socket.emit('hidePlayersWhenGoToRoom', offsetY);
+        });
+
         //spawn the existing player
         socket.on('game_existingPlayer', (playerData)=>{
             socket.emit('playerCount', players.length);

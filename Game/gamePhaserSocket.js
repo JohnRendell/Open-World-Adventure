@@ -225,6 +225,7 @@ function sceneSocket(scene){
                 //add player to the collection
                 scene.playerCollection.set(playerUser, {
                     playerName: scene.joinedPlayerName,
+                    isInsideOfRoom: false,
                     container: scene.joinedPlayerContainer,
                     playerSprite: scene.joinedPlayer
                 });
@@ -232,6 +233,60 @@ function sceneSocket(scene){
                 destroyNoNameSprite(scene);
             }
         }, 1000);
+    });
+
+    //when other player go inside or outside of room
+    socket.on('playerGoToDoor', (offsetY, playerName)=>{
+        scene.playerCollection.forEach((player, name)=>{
+            if(playerName == name){
+                //going outside
+                if(offsetY > 0){
+                    player.isInsideOfRoom = false;
+                    player.container.setVisible(true);
+
+                    if(isMainPlayerGoingToRoom){
+                        player.container.setVisible(false);
+                    }
+                }
+
+                //going inside
+                else{
+                    player.isInsideOfRoom = true;
+                    player.container.setVisible(false);
+
+                    if(isMainPlayerGoingToRoom){
+                        player.container.setVisible(true);
+                    }
+                }
+            }
+        });
+    });
+
+    //hiding players when going to room
+    socket.on('hidePlayersWhenGoToRoom', (offsetY)=>{
+        scene.playerCollection.forEach((player, name)=>{
+            if(game_PlayerName != name){
+                //main player going outside
+                if(offsetY > 0){
+                    if(player.isInsideOfRoom){
+                        player.container.setVisible(false);
+                    }
+                    else{
+                        player.container.setVisible(true);
+                    }
+                }
+
+                //main player going inside
+                else{
+                    if(player.isInsideOfRoom){
+                        player.container.setVisible(true);
+                    }
+                    else{
+                        player.container.setVisible(false);
+                    }
+                }
+            }
+        });
     });
 
     //for rendering player data
@@ -263,6 +318,7 @@ function sceneSocket(scene){
                 //add player to the collection
                 scene.playerCollection.set(playerID, {
                     playerName: scene.joinedPlayerName,
+                    isInsideOfRoom: false,
                     container: scene.joinedPlayerContainer,
                     playerSprite: scene.joinedPlayer
                 });

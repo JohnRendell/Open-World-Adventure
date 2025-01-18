@@ -82,7 +82,7 @@ function messageSend(containerID, inputID, incrementID, max, isNPC, npcName){
 
             if(!isNPC){
                 var sender = document.createElement('p');
-                sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-right font-bold');
+                sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-left font-bold');
                 sender.appendChild(document.createTextNode(loggedIn_playerName + '(You)'));
                 messageWrapper.appendChild(sender);
                 socket.emit('globalMessage', containerID, loggedIn_playerName, messageInput.value);

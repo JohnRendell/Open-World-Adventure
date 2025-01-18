@@ -29,7 +29,23 @@ function homeBaseUI(scene){
     scene.playerHunger.fillRoundedRect(100, 30, 100, 20, 5);
 
     //player inventory bag
-    scene.playerInventory = scene.add.image(940, 0, 'inventoryIcon').setDisplaySize(80,80);
+    scene.playerInventory = scene.add.image(940, 0, 'inventoryIcon').setDisplaySize(80,80).setScrollFactor(0);
+
+    scene.playerInventory.setInteractive({ useHandCursor: true });
+    scene.playerInventory.on('pointerdown', ()=>{
+        isTalking = true;
+        isPanelOpen = true;
+        modalStatus('inventoryModal', 'flex', 'modalAnimation');
+    });
+
+    //player settings
+    scene.playerSetting = scene.add.sprite(850, 0, 'settingIcon').setDisplaySize(80,80).setScrollFactor(0);
+    scene.playerSetting.setInteractive({ useHandCursor: true });
+    scene.playerSetting.on('pointerdown', () => {
+        isPanelOpen = true;
+        isTalking = true;
+        modalStatus('settingModal', 'flex', 'modalAnimation');
+    });
 
     scene.load.once('complete', ()=>{
         scene.playerProfile = scene.add.image(30, 20, 'playerProfile').setOrigin(0.5).setDisplaySize(45,40);
@@ -44,6 +60,7 @@ function homeBaseUI(scene){
             scene.meatIcon,
             scene.playerHungerContainer,
             scene.playerHunger,
+            scene.playerSetting,
             scene.playerInventory
         ]).setDepth(5).setScrollFactor(0);
     });

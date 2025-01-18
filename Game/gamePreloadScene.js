@@ -24,6 +24,7 @@ function loadAssets(scene){
     scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
     scene.load.image('inventoryIcon', '/ImageComponents/UI/Inventory Icon.png');
     scene.load.image('meatIcon', '/ImageComponents/UI/meat icon.png');
+    scene.load.image('settingIcon', '/ImageComponents/UI/Setting Icon.png');
 
     //objects
     scene.load.image('table', '/ImageComponents/Objects/Long table.png');

@@ -151,6 +151,11 @@ function piskelTemp(){
     }
 }
 
+//logout
+function logout(){
+    window.location.href = '/lobby';
+}
+
 window.onload = 
         checkCookie(),
         checkValidUrl(),

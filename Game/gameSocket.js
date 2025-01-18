@@ -124,8 +124,6 @@ function loadPlayerInfo(scene){
             socket.emit('game_spawnPlayer', playerName);
             socket.emit('game_playerConnected', playerName);
         }, 1500);
-
-        pressKeysStuff();
     });
 
     socket.on('updateProfile', (profile)=>{
@@ -143,21 +141,11 @@ function loadPlayerInfo(scene){
         scene.playerHungerContainer.destroy();
         scene.playerHunger.destroy();
         scene.playerInventory.destroy();
+        scene.playerSetting.destroy();
         scene.playerUIContainer.destroy();
 
         setTimeout(() => {
             homeBaseUI(scene);
         }, 1500);
     });
-}
-
-//this is for pressing buttons, keys
-function pressKeysStuff(){
-    document.onkeydown = (event)=>{
-        if(event.key === 'i' && !isPanelOpen){
-            modalStatus('inventoryModal', 'flex', 'modalAnimation');
-            isTalking = true;
-            isPanelOpen = true;
-        }
-    }
 }

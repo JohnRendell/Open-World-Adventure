@@ -3,64 +3,111 @@ function loadPlayerInfo(scene){
         socket.emit('game_playerDisconnect');
     });
 
-    socket.on('loadNewSprite', (imageID, sprite)=>{
-        //TODO: wrk on these
-        alert('sprite updated');
+    socket.on('loadNewSprite', (imageID, sprite, query)=>{
+        isLoaded = false;
+        alert(query + ' sprite updated');
+
+        scene.player.setVisible(false);
         localStorage.removeItem(imageID);
 
-        scene.anims.remove('playerIdle');
-        scene.anims.remove('playerFront');
-        scene.anims.remove('playerBack');
+        switch(query){
+            case 'front':
+                if (scene.anims.exists('playerFront')) {
+                    scene.anims.remove('playerFront');
+                }
 
-        //load new assets
-        scene.load.spritesheet('main_playerBack', back, {
-            frameWidth: 1600 / 5,
-            frameHeight: 800 / 1
-        });
+                if (scene.textures.exists('main_playerFront')) {
+                    scene.textures.remove('main_playerFront');
+                }
 
-        scene.load.spritesheet('main_playerFront', front, {
-            frameWidth: 1600 / 5,
-            frameHeight: 800 / 1
-        });
-
-        scene.load.spritesheet('main_playerIdle', side, {
-            frameWidth: 1600 / 5,
-            frameHeight: 800 / 1
-        });
-
-        scene.load.once('complete', ()=>{
-            //main player
-            scene.player.setTexture('main_playerIdle');
-
-            if(!scene.anims.exists('main_playerFront')){
-                scene.anims.create({
-                    key: 'playerFront',
-                    frames: scene.anims.generateFrameNumbers('main_playerFront', { start: 0, end: 1 }),
-                    frameRate: 4,
-                    repeat: -1
+                //load new assets
+                scene.load.spritesheet('main_playerFront', sprite, {
+                    frameWidth: 1600 / 5,
+                    frameHeight: 800 / 1
                 });
-            }
 
-            if(!scene.anims.exists('main_playerBack')){
-                scene.anims.create({
-                    key: 'playerBack',
-                    frames: scene.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
-                    frameRate: 4,
-                    repeat: -1
+                scene.load.once('complete', ()=>{
+                    if(!scene.anims.exists('playerFront')){
+                        scene.anims.create({
+                            key: 'playerFront',
+                            frames: scene.anims.generateFrameNumbers('main_playerFront', { start: 0, end: 1 }),
+                            frameRate: 4,
+                            repeat: -1
+                        });
+                    }
+                    scene.player.play('playerFront');
+                    isLoaded = true;
+                    scene.player.setVisible(true);
                 });
-            }
 
-            if(!scene.anims.exists('main_playerIdle')){
-                scene.anims.create({
-                    key: 'playerIdle',
-                    frames: scene.anims.generateFrameNumbers('main_playerIdle', { start: 0, end: 1 }),
-                    frameRate: 4,
-                    repeat: -1
+                scene.load.start();
+            break;
+
+            case 'back':
+                if (scene.anims.exists('playerBack')) {
+                    scene.anims.remove('playerBack');
+                }
+
+                if (scene.textures.exists('main_playerBack')) {
+                    scene.textures.remove('main_playerBack');
+                }
+
+                //load new assets
+                scene.load.spritesheet('main_playerBack', sprite, {
+                    frameWidth: 1600 / 5,
+                    frameHeight: 800 / 1
                 });
-            }
-        });
 
-        scene.load.start();
+                scene.load.once('complete', ()=>{
+                    if(!scene.anims.exists('playerBack')){
+                        scene.anims.create({
+                            key: 'playerBack',
+                            frames: scene.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
+                            frameRate: 4,
+                            repeat: -1
+                        });
+                    }
+                    scene.player.play('playerBack');
+                    isLoaded = true;
+                    scene.player.setVisible(true);
+                });
+
+                scene.load.start();
+            break;
+
+            case 'side':
+                if (scene.anims.exists('playerIdle')) {
+                    scene.anims.remove('playerIdle');
+                }
+
+                if (scene.textures.exists('main_playerIdle')) {
+                    scene.textures.remove('main_playerIdle');
+                }
+
+                //load new assets
+                scene.load.spritesheet('main_playerIdle', sprite, {
+                    frameWidth: 1600 / 5,
+                    frameHeight: 800 / 1
+                });
+
+                scene.load.once('complete', ()=>{
+                    if(!scene.anims.exists('playerIdle')){
+                        scene.anims.create({
+                            key: 'playerIdle',
+                            frames: scene.anims.generateFrameNumbers('main_playerIdle', { start: 0, end: 1 }),
+                            frameRate: 4,
+                            repeat: -1
+                        });
+                    }
+                    scene.player.play('playerIdle');
+                    isLoaded = true;
+                    scene.player.setVisible(true);
+                });
+
+                scene.load.start();
+            break;
+        }
+        socket.emit('loadNewSpriteToClient', game_PlayerName, sprite, query);
     });
 
     socket.on('loadPlayerData', (playerName, playerProfile)=>{

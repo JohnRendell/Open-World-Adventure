@@ -14,6 +14,116 @@ function destroyNoNameSprite(scene){
 function sceneSocket(scene){
     //map collection for players joined
     scene.playerCollection = new Map();
+    let animationFire = false;
+
+    //load new player's sprite
+    socket.on('loadNewSpriteToClient', (playerName, sprite, query)=>{
+        scene.playerCollection.forEach((player, name)=>{
+             if(playerName === name){
+                const { playerSprite } = player;
+                playerSprite.setVisible(false);
+                animationFire = false;
+
+                switch(query){
+                    case 'front':
+                        if (scene.anims.exists(name + '_playerFront')) {
+                            scene.anims.remove(name + '_playerFront');
+                        }
+
+                        if (scene.textures.exists(name + '_playerFront')) {
+                            scene.textures.remove(name + '_playerFront');
+                        }
+
+                        //load new assets
+                        scene.load.spritesheet(name + '_playerFront', sprite, {
+                            frameWidth: 1600 / 5,
+                            frameHeight: 800 / 1
+                        });
+
+                        scene.load.once('complete', ()=>{
+                            if(!scene.anims.exists(name + '_playerFront')){
+                                scene.anims.create({
+                                    key: name + '_playerFront',
+                                    frames: scene.anims.generateFrameNumbers(name + '_playerFront', { start: 0, end: 1 }),
+                                    frameRate: 4,
+                                    repeat: -1
+                                });
+                            }
+                            playerSprite.play(name + '_playerFront');
+                            playerSprite.setVisible(true);
+                            animationFire = true;
+                        });
+
+                        scene.load.start();
+                    break;
+
+                    case 'back':
+                        if (scene.anims.exists(name + '_playerBack')) {
+                            scene.anims.remove(name + '_playerBack');
+                        }
+
+                        if (scene.textures.exists(name + '_playerBack')) {
+                            scene.textures.remove(name + '_playerBack');
+                        }
+
+                        //load new assets
+                        scene.load.spritesheet(name + '_playerBack', sprite, {
+                            frameWidth: 1600 / 5,
+                            frameHeight: 800 / 1
+                        });
+
+                        scene.load.once('complete', ()=>{
+                            if(!scene.anims.exists(name + '_playerBack')){
+                                scene.anims.create({
+                                    key: name + '_playerBack',
+                                    frames: scene.anims.generateFrameNumbers(name + '_playerBack', { start: 0, end: 1 }),
+                                    frameRate: 4,
+                                    repeat: -1
+                                });
+                            }
+                            playerSprite.play(name + '_playerBack');
+                            playerSprite.setVisible(true);
+                            animationFire = true;
+                        });
+
+                        scene.load.start();
+                    break;
+
+                    case 'side':
+                        if (scene.anims.exists(name + '_playerIdle')) {
+                            scene.anims.remove(name + '_playerIdle');
+                        }
+
+                        if (scene.textures.exists(name + '_playerIdle')) {
+                            scene.textures.remove(name + '_playerIdle');
+                        }
+
+                        //load new assets
+                        scene.load.spritesheet(name + '_playerIdle', sprite, {
+                            frameWidth: 1600 / 5,
+                            frameHeight: 800 / 1
+                        });
+
+                        scene.load.once('complete', ()=>{
+                            if(!scene.anims.exists(name + '_playerIdle')){
+                                scene.anims.create({
+                                    key: name + '_playerIdle',
+                                    frames: scene.anims.generateFrameNumbers(name + '_playerIdle', { start: 0, end: 1 }),
+                                    frameRate: 4,
+                                    repeat: -1
+                                });
+                            }
+                            playerSprite.play(name + '_playerIdle');
+                            playerSprite.setVisible(true);
+                            animationFire = true;
+                        });
+
+                        scene.load.start();
+                    break;
+                }
+            }
+        })
+    });
 
     //load player's sprite
     socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
@@ -60,6 +170,7 @@ function sceneSocket(scene){
                         repeat: -1
                     });
                 }
+                animationFire = true;
             });
 
             scene.load.start();
@@ -173,15 +284,17 @@ function sceneSocket(scene){
             container.setPosition(x, y);
             playerSprite.flipX = spriteX;
 
-            if (isFront) {
-                playerSprite.play(playerID + '_playerFront', true);
-            } 
-            else if (isBack) {
-                playerSprite.play(playerID + '_playerBack', true);
-            } 
-            else {
-                playerSprite.play(playerID + '_playerIdle', true);
-            }
+           if(animationFire){
+                if (isFront) {
+                    playerSprite.play(playerID + '_playerFront', true);
+                } 
+                else if (isBack) {
+                    playerSprite.play(playerID + '_playerBack', true);
+                } 
+                else {
+                    playerSprite.play(playerID + '_playerIdle', true);
+                }
+           }
         }
     });
 }

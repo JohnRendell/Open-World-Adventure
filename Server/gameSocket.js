@@ -54,12 +54,17 @@ module.exports = (server)=>{
                 );
 
                 if(changeSprites){
-                    //socket.emit('loadNewSprite', imageID, sprite);
+                    socket.emit('loadNewSprite', imageID, sprite, query);
                 }
             }
             catch(err){
                 console.log(err);
             }
+        });
+
+        //load new sprite to other player
+        socket.on('loadNewSpriteToClient', (playerName, sprite, query)=>{
+            socket.broadcast.emit('loadNewSpriteToClient', playerName, sprite, query);
         });
         
         //when player disconnected

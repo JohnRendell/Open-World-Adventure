@@ -99,7 +99,7 @@ class homeBase extends Phaser.Scene{
             font: "16px 'Pixelify Sans'",
             fill: '#06402b',
             align: 'center'
-        }).setOrigin(0.5).setDepth(3);
+        }).setOrigin(0.5);
 
         //player container
         this.playerContainer = this.add.container(499, 296, [this.player, this.playerName]);
@@ -109,7 +109,7 @@ class homeBase extends Phaser.Scene{
         this.playerContainer.body.setCollideWorldBounds(true);
         this.playerContainer.body.setSize(40, 70, true);
         this.playerContainer.body.setOffset(-20, -35);
-        this.playerContainer.setDepth(3);
+        this.playerContainer.setDepth(2);
 
         //spawn smoke
         this.spawnSmoke = this.add.sprite(447, 266, "spawn_smoke").setOrigin(0.5);
@@ -136,7 +136,7 @@ class homeBase extends Phaser.Scene{
         this.spawner.setDisplaySize(60, 50);
         this.spawner.body.setSize(60, 20, true);
         this.spawner.body.setOffset(500, 400);
-        this.spawner.setDepth(4);
+        this.spawner.setDepth(3);
 
         this.anims.create({
             key: 'spawnerPod',        
@@ -218,12 +218,13 @@ class homeBase extends Phaser.Scene{
 
                     switch(npcKey){
                         case 'bimbo':
-                            bimboPrompt();
+                            socket.emit('NPCPrompt', 'bimbo');
+                            npcGreet('npcConversationDiv', '');
                         break;
 
                         case 'bob':
+                            socket.emit('NPCPrompt', 'bob');
                             npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
-                            bobPrompt();
                         break;
                     }
                 }
@@ -386,7 +387,7 @@ class homeBase extends Phaser.Scene{
         });
 
         //chest
-        this.chest = this.physics.add.staticSprite(700, 300, 'chest').setOrigin(0.5).setDisplaySize(100, 80).setDepth(4);
+        this.chest = this.physics.add.staticSprite(700, 300, 'chest').setOrigin(0.5).setDisplaySize(100, 80).setDepth(3);
         this.chest.body.setSize(100, 45, true);
         this.chest.body.setOffset(270, 300);
 

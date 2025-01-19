@@ -17,7 +17,7 @@ async function checkCookie(){
     }
     else{
         alert('Cookie expired');
-        //window.location.href = '/lobby';
+        window.location.href = '/lobby';
     }
 }
 

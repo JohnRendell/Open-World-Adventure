@@ -196,6 +196,8 @@ class gameLobby extends Phaser.Scene{
             npcObj.setInteractive({ useHandCursor: true });
             npcObj.on('pointerdown', () => {
                 if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
+                    npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');
+                    socket.emit('NPCPrompt', 'rupert');
                     modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
                     isTalking = true;
                     isPanelOpen = true;

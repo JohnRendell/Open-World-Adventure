@@ -1,4 +1,5 @@
 let globalMessageCounter = 0;
+let npcPromptInstruction;
 
 socket.on('globalMessage', (containerID, receiver, msg)=>{
     globalMessageCounter++;
@@ -27,4 +28,9 @@ socket.on('globalMessage', (containerID, receiver, msg)=>{
 
         socket.emit('incrementGlobalMessage', globalMessageCounter);
     }
+});
+
+//passing the prompt
+socket.on('NPCPrompt', (prompt)=>{
+    npcPromptInstruction = prompt;
 });

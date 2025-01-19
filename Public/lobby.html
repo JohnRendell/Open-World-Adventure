@@ -53,7 +53,7 @@
                 <div class="w-full h-auto">
                     <h1 class="font-PixelifySans text-black text-center text-lg">Rupert (NPC)</h1>
                 </div>
-                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('rupertDialog', 'none', null); playGame('npcConversationDiv'); npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');">
+                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('rupertDialog', 'none', null); playGame('npcConversationDiv');">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -293,14 +293,10 @@
 
 <!--Phasers-->
 <script src="/JS/gameUI.js"></script>
-<script src="/scenePreloadPhaser.js"></script>
-<script src="/lobbyPhaser.js"></script>
-<script src="/lobbyPhaserSocket.js"></script>
-<script src="/lobbyConfig.js"></script>
+<script src="/MinJS/lobbyPhaserUglify.min.js"></script>
 
 
 <!--Scripts needed-->
-<script src="/NPC_Rupert_promptSystem.js"></script>
 <script src="/JS/global.js"></script>
-<script src="/lobby.js"></script>
-<script src="/clearCookie.js"></script>
+<script src="/MinJS/lobby.min.js"></script>
+<script src="/MinJS/clearCookie.min.js"></script>

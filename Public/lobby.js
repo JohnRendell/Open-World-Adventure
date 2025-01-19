@@ -70,5 +70,3 @@ async function validateCreateAccount(){
         console.log(err);
     }
 }
-
-npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');

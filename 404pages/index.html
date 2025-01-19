@@ -10,15 +10,19 @@
     <!--Tailwind library-->
     <link rel="stylesheet" href="/Styles/style.css">
 
-    <!--Phaser library-->
-    <script src="/phaser/dist/phaser.js"></script>
+    <!--Libraries, webfontloader, phaser, crypto-->
+    <script src="/MinLibrary/libraries.min.js"></script>
 
-    <!--Font loader-->
-    <script src="/webfontloader/webfontloader.js"></script>
+    <!--Web socket library-->
+    <script src="/socket.io/socket.io.min.js"></script>
 </head>
 <body class="overflow-hidden flex justify-center items-center w-screen h-screen">
     <canvas id="gameCanvas"></canvas>
 </body>
 </html>
 
-<script src="/404phaser.js"></script>
+<!--socket connection-->
+<script src="/JS/globalSocketConnection.js"></script>
+
+<script src="/JS/globalSocket.js"></script>
+<script src="/MinJS/404phaser.min.js"></script>

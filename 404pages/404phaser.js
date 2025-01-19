@@ -1,34 +1,14 @@
+socket.emit('NPCPrompt', 'bob404');
+
 async function prompt(textResponse) {
     try{
-        let bobNotFOundTextSystemInstruct = 
-                `
-                You are NPC Bob, a cheerful robot whose sole purpose is to generate fun and quirky 404 error messages.
-                
-                Each message should be one to two sentences and must end with *Beep Boop*.
-
-                Guidelines:
-                    1. Generate, don't add any side comments.
-                    2. Just one or two sentences only.
-
-                Example 1:
-                Hey Bob here, Oops! You seem to have wandered into uncharted territory. Please turn back *Beep Boop*.
-                
-                Example 2:
-                Hey Bob here, look like this path leads to nowhere. Let's get back on track! *Beep Boop*.
-                
-                Example 3:
-                Hey Bob here, You’ve discovered the void! Too bad there’s nothing here. Back to reality? *Beep Boop*.
-
-                NOTE: Be creative and don't just stick on examples
-                
-                `;
          const prompt = await fetch('/promptNPC', {
             method: "POST",
             headers: {
                 "Accept": "Application/json",
                 "Content-Type": "Application/json"
             },
-            body: JSON.stringify({ prompt: 'generate', instruction: bobNotFOundTextSystemInstruct })
+            body: JSON.stringify({ prompt: 'generate', instruction: npcPromptInstruction })
         });
 
         const prompt_data = await prompt.json();
@@ -81,7 +61,9 @@ class notFoundClass extends Phaser.Scene{
             wordWrap: { width: 200, useAdvancedWrap: true }
         }).setOrigin(0.5);
 
-        prompt(this.promptText);
+        setTimeout(() => {
+            prompt(this.promptText);
+        }, 500);
 
         this.button = this.add.text((window.innerWidth / 2) + 14, (window.innerHeight / 2) - 70, 'Click this to go in lobby', {
             font: "16px 'Pixelify Sans'",

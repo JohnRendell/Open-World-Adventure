@@ -36,9 +36,11 @@ function loadAssets(scene){
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
-    //scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall lvl 1.png');
-    //scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall lvl 1.png');
-    //scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate lvl 1.png')
+
+    //outside assets
+    scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall.png');
+    scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall.png');
+    scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png')
 
     //effect
     scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {

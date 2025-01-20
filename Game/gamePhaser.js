@@ -299,7 +299,7 @@ class homeBase extends Phaser.Scene{
                         socket.emit('hidePlayersWhenGoToRoom', offsetY);
                     }
                     else{
-                        alert(path);
+                        goingOutside();
                     }
                 }
             });
@@ -402,7 +402,7 @@ class homeBase extends Phaser.Scene{
         this.chest.setInteractive({ useHandCursor: true });
         this.chest.on('pointerdown', () => {
             if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
-                alert('Opening Chest')
+                modalStatus('chestModal', 'flex', 'modalAnimation');
             }
         });
         this.physics.add.overlap(this.playerContainer, this.chest, () => {
@@ -498,3 +498,30 @@ class homeBase extends Phaser.Scene{
         }
     }
 }
+
+// Game configuration
+const config = {
+    type: Phaser.CANVAS,
+    width: canvasSize.width,
+    height: canvasSize.height,
+    canvas: gameCanvas,
+    backgroundColor: '#000000',
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: true
+        }
+    },
+    scene: [homeBase]
+};
+
+//webfont loader
+WebFont.load({
+    google: {
+        families: ['Pixelify Sans']
+    }
+})
+
+// Initialize the Phaser Game
+const game = new Phaser.Game(config);

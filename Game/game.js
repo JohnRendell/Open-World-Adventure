@@ -61,13 +61,15 @@ async function loadProfile(playerName){
             playerName = getPlayerProfile_data.username;
 
             //add player profile and sprites
-            document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
-            document.getElementById('prevSprite0').src = getPlayerProfile_data.frontSprite; //front
-            document.getElementById('prevSprite1').src = getPlayerProfile_data.backSprite; //back
-            document.getElementById('prevSprite2').src = getPlayerProfile_data.sideSprite; //sides
+            if(document.getElementById('playerProfileID') && document.getElementById('prevSprite0') && document.getElementById('prevSprite1') && document.getElementById('prevSprite2') && document.getElementById('guestDiv') && document.getElementById('playerDiv')){
+                document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
+                document.getElementById('prevSprite0').src = getPlayerProfile_data.frontSprite; //front
+                document.getElementById('prevSprite1').src = getPlayerProfile_data.backSprite; //back
+                document.getElementById('prevSprite2').src = getPlayerProfile_data.sideSprite; //sides
 
-            document.getElementById('guestDiv').style.display = getPlayerProfile_data.isGuest ? 'flex' : 'none';
-            document.getElementById('playerDiv').style.display = getPlayerProfile_data.isGuest ? 'none' : 'flex';
+                document.getElementById('guestDiv').style.display = getPlayerProfile_data.isGuest ? 'flex' : 'none';
+                document.getElementById('playerDiv').style.display = getPlayerProfile_data.isGuest ? 'none' : 'flex';
+            }
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite);
 
@@ -149,6 +151,11 @@ function piskelTemp(){
         a.click();
         document.body.removeChild(a);
     }
+}
+
+//going base outside
+function goingOutside(){
+    window.location.href = '/Game/BaseOutside/' + replaceSlashWithUnderscore(validateUser);
 }
 
 //logout

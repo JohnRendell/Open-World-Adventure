@@ -171,6 +171,31 @@ class baseOutside extends Phaser.Scene{
             }
         }
 
+        //scattered rocks
+        this.rockGroup = this.physics.add.staticGroup();
+
+        const rock = [
+            this.rockGroup.create(400, 600, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
+            this.rockGroup.create(850, 700, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
+            this.rockGroup.create(1000, 300, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
+            this.rockGroup.create(1400, 750, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2)
+        ]
+        
+        rock.forEach(obj => {
+            obj.body.setSize(60, 20, true);
+            obj.body.setOffset(480, 520);
+        });
+
+        //collider for rock
+        this.physics.add.collider(this.playerContainer, this.rockGroup);
+
+        //tree
+        this.tree = this.physics.add.staticSprite(1400, 100, 'tree').setDisplaySize(300, 600).setOrigin(0.5).setDepth(3);
+        this.tree.body.setSize(100, 20, true);
+        this.tree.body.setOffset(750, 850);
+
+        this.physics.add.collider(this.tree, this.playerContainer);
+
         //grass road
         this.groupDirtTopDown = this.add.group();
 
@@ -198,6 +223,28 @@ class baseOutside extends Phaser.Scene{
 
             this.groupGrassTexture.add(road);
         }
+
+        //walls
+        this.woodenWalls = this.physics.add.staticGroup();
+
+        //top wall
+        for(let i = 0; i < 5; i++){
+            const wall = this.woodenWalls.create(890 + (180 * i), 100, 'front_Wall').setDisplaySize(180, 230).setDepth(0).setOrigin(0.5);
+            wall.body.setSize(180, 50, true);
+            wall.body.setOffset(420, 460);
+
+            this.woodenWalls.add(wall);
+        }
+
+        //bottom wall
+        for(let i = 0; i < 11; i++){
+            const wall = this.woodenWalls.create(100 + (180 * i), 830, 'front_Wall').setDisplaySize(180, 230).setDepth(2).setOrigin(0.5);
+            wall.body.setSize(180, 50, true);
+            wall.body.setOffset(420, 520);
+
+            this.woodenWalls.add(wall);
+        }
+        this.physics.add.collider(this.playerContainer, this.woodenWalls);
         
         //entrance gate
         this.gate = this.physics.add.staticSprite(1800, 100, 'gate').setDepth(0).setDisplaySize(150, 220).setOrigin(0.5);
@@ -209,7 +256,7 @@ class baseOutside extends Phaser.Scene{
         });
 
         //river
-        this.riverGroup = this.physics.add.staticGroup();
+        this.riverGroup = this.add.group();
 
         this.anims.create({
             key: 'riverFlow',
@@ -219,17 +266,11 @@ class baseOutside extends Phaser.Scene{
         });
 
         for(let i = 0; i < 4; i++){
-            const river = this.physics.add.staticSprite(300 + (600 * i), 1000, 'river').setDisplaySize(600, 600).setDepth(0).setOrigin(0.5);
-
-            river.body.setSize(600, 130, true);
-            river.body.setOffset(669, 580);
+            const river = this.add.sprite(300 + (600 * i), 1000, 'river').setDisplaySize(600, 600).setDepth(0).setOrigin(0.5);
             river.play('riverFlow');
     
             this.riverGroup.add(river);
         }
-        
-        this.physics.add.collider(this.riverGroup, this.playerContainer);
-
         lobbyUI(this);
         loadPlayerInfo(this);
     }
@@ -284,6 +325,16 @@ class baseOutside extends Phaser.Scene{
                 this.doorLabel.setVisible(false);
             }
 
+            //for tree
+            const treeY = ()=>{
+                if(this.tree.body.y > this.playerContainer.y){
+                    this.tree.setDepth(3);
+                }
+                else{
+                    this.tree.setDepth(1);
+                }
+            }
+            treeY();
             /*
             // on exit for NPCs
             if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {

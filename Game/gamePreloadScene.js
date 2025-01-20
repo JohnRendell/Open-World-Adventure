@@ -35,12 +35,13 @@ function loadAssets(scene){
     scene.load.image('window', '/ImageComponents/Objects/window day.png');
     scene.load.image('chest', '/ImageComponents/Objects/Wooden chest.png');
     scene.load.image('Cabinet', '/ImageComponents/Objects/Cabinet.png');
+    scene.load.image('rock', '/ImageComponents/Objects/Rock.png');
+    scene.load.image('tree', '/ImageComponents/Objects/Tree.png');
     scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
     scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall.png');
-    scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall.png');
     scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png')
 
     //effect

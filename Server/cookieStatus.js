@@ -40,7 +40,7 @@ router.post('/getCookie', (req, res)=>{
 
                 //for logged in player
                 if(playerToken){
-                    res.status(200).json({ message: 'success', decryptPlayerName: playerToken });
+                    res.status(200).json({ message: 'success', decryptPlayerName: playerToken, encryptPlayerName: usernameCookie });
                 }
 
                 //for guest

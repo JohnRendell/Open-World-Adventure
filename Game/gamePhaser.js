@@ -233,7 +233,7 @@ class homeBase extends Phaser.Scene{
 
         npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', 450, 430, 200, 300, 70, 80);
 
-        var door = (doorName, doorText, posX, posY, depth, forPlayer, path, roomObj, roomStuff)=>{
+        var door = (doorName, doorText, posX, posY, depth, forPlayer, roomObj, roomStuff)=>{
             //door
             const doorObj = this.physics.add.staticSprite(posX, posY, 'door').setOrigin(0.5).setDisplaySize(80, 100).setDepth(depth);
             doorObj.body.setSize(47, 120, true);
@@ -340,10 +340,10 @@ class homeBase extends Phaser.Scene{
         });
 
         //door for front house
-        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null, null);
+        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null);
 
         //door for room
-        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 4, true, null, this.frontRoomWall, stuff);
+        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 4, true, this.frontRoomWall, stuff);
 
         //window
         this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
@@ -510,7 +510,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: [homeBase]

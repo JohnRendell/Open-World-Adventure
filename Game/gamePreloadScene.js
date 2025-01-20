@@ -19,6 +19,9 @@ function loadAssets(scene){
 
     //texture images
     scene.load.image('floor', '/ImageComponents/Texture/Wooden Floor.png');
+    scene.load.image('grassTexture', '/ImageComponents/Texture/Grass Texture.png');
+    scene.load.image('dirt', '/ImageComponents/Texture/Dirt Road.png');
+    scene.load.image('dirtCorner', '/ImageComponents/Texture/Dirt Road corner.png');
 
     //UI images
     scene.load.image('heartIcon', '/ImageComponents/UI/Heart Icon.png');
@@ -36,8 +39,6 @@ function loadAssets(scene){
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
-
-    //outside assets
     scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall.png');
     scene.load.image('side_Wall', '/ImageComponents/Objects/Side Wooden Wall.png');
     scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png')

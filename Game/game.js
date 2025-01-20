@@ -1,4 +1,5 @@
 let validateUser;
+let loggedInURL;
 
 async function checkCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
@@ -13,6 +14,7 @@ async function checkCookie(){
     const getUserToken_Data = await getUserToken.json();
 
     if(getUserToken_Data.message === 'success'){
+        loggedInURL = getUserToken_Data.encryptPlayerName;
         validateUser = getUserToken_Data.decryptPlayerName;
     }
     else{
@@ -155,7 +157,12 @@ function piskelTemp(){
 
 //going base outside
 function goingOutside(){
-    window.location.href = '/Game/BaseOutside/' + replaceSlashWithUnderscore(validateUser);
+    window.location.href = '/Game/BaseOutside/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
+}
+
+//going back to base
+function backToBase(){
+    window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
 }
 
 //logout

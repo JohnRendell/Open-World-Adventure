@@ -1,4 +1,3 @@
-const CryptoJS = require('crypto-js');
 const accountModel = require('./accountMongoose');
 
 const players = [];
@@ -68,22 +67,30 @@ module.exports = (server)=>{
         });
         
         //when player disconnected
-        socket.on('game_playerDisconnect', ()=>{
-            socket.broadcast.emit('game_playerDisconnect');
-        });
+        function disconnectPlayer(socket, socketName){
+            socket.on(socketName, ()=>{
+                socket.broadcast.emit(socketName);
+            });
+        }
+        disconnectPlayer(socket, 'game_playerDisconnect');
+        disconnectPlayer(socket, 'gameOutside_playerDisconnect');
 
-        socket.on('game_playerConnected', (playerName)=>{
-            var data = { playerName: playerName };
+        function playerConnectedSocket(socket, socketName){
+            socket.on(socketName, (playerName)=>{
+                var data = { playerName: playerName };
 
-            //add the player to the array
-            const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
+                //add the player to the array
+                const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
 
-            if(findPlayerIndex == -1){
-                players.push(data);
-            }
-            console.log('players in lobby:');
-            console.table(players);
-        });
+                if(findPlayerIndex == -1){
+                    players.push(data);
+                }
+                console.log('players in lobby:');
+                console.table(players);
+            });   
+        }
+        playerConnectedSocket(socket, 'game_playerConnected');
+        playerConnectedSocket(socket, 'gameOutside_playerConnected');
 
         //player counts
         socket.on('playerCount', (count)=>{
@@ -98,27 +105,23 @@ module.exports = (server)=>{
             socket.emit('loadPlayerData', playerName, playerProfile);
         });
 
-         //player move
-        socket.on('game_playerMove', (playerData)=>{
-            socket.broadcast.emit('game_playerMove', playerData);
-        });
+        //player move
+        function playerMove(socket, socketName){
+            socket.on(socketName, (playerData)=>{
+                socket.broadcast.emit(socketName, playerData);
+            });
+        }
+        playerMove(socket, 'game_playerMove');
+        playerMove(socket, 'gameOutside_playerMove');
 
         //spawn the player
-        socket.on('game_spawnPlayer', (playerName)=>{
-            try{
-                let decryptPlayerNameGuest = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                let decryptPlayerNameLoggedIn = CryptoJS.AES.decrypt(playerName, 'token').toString(CryptoJS.enc.Utf8);
-
-                if(decryptPlayerNameGuest || decryptPlayerNameLoggedIn){
-                    let decryptPlayerName = decryptPlayerNameGuest ? decryptPlayerNameGuest : decryptPlayerNameLoggedIn;
-
-                    socket.broadcast.emit('game_spawnPlayer', decryptPlayerName);
-                }
-            }
-            catch(err){
-                console.log(err);
-            }
-        });
+        function spawnPlayer(socket, socketName){
+            socket.on(socketName, (playerName)=>{
+                socket.broadcast.emit(socketName, playerName);
+            });
+        }
+        spawnPlayer(socket, 'game_spawnPlayer');
+        spawnPlayer(socket, 'gameOutside_spawnPlayer');
 
         //when other player go inside or outside the room
         socket.on('playerGoToDoor', (offsetY, playerName)=>{
@@ -131,15 +134,23 @@ module.exports = (server)=>{
         });
 
         //spawn the existing player
-        socket.on('game_existingPlayer', (playerData)=>{
-            socket.emit('playerCount', players.length);
-            socket.broadcast.emit('game_existingPlayer', playerData);
-        });
+        function renderPlayer(socket, socketName){
+            socket.on(socketName, (playerData)=>{
+                socket.emit('playerCount', players.length);
+                socket.broadcast.emit(socketName, playerData);
+            });
+        }
+        renderPlayer(socket, 'game_existingPlayer');
+        renderPlayer(socket, 'gameOutside_existingPlayer');
 
         //load player's sprite
-        socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
-            socket.broadcast.emit('game_loadPlayerSprite', playerID, spriteFront, spriteBack, spriteSide);
-        });
+        function loadSprite(socket, socketName){
+            socket.on(socketName, (playerID, spriteFront, spriteBack, spriteSide)=>{
+                socket.broadcast.emit(socketName, playerID, spriteFront, spriteBack, spriteSide);
+            });
+        }
+        loadSprite(socket, 'game_loadPlayerSprite');
+        loadSprite(socket, 'gameOutside_loadPlayerSprite');
 
         //when player disconnected
         socket.on('game_playerDisconnect', (playerName)=>{

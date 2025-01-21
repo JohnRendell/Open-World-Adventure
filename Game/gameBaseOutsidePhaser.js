@@ -108,7 +108,7 @@ class baseOutside extends Phaser.Scene{
         
         this.playerContainer.body.setSize(40, 70, true);
         this.playerContainer.body.setOffset(-20, -35);
-        this.playerContainer.setDepth(2);
+        this.playerContainer.setDepth(3);
 
         //camera follow main player
         this.cameras.main.startFollow(this.playerContainer);
@@ -122,6 +122,81 @@ class baseOutside extends Phaser.Scene{
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         this.input.keyboard.enableGlobalCapture();
+
+         //npc functions
+        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY, width, height)=>{
+            //add the NPC
+            const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
+            npcObj.setScale(0.1);
+            npcObj.setDepth(3);
+            npcObj.body.setSize(width, height, true);
+            npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
+
+            //NPC Label
+            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 100) + 50, objectLabel, {
+                font: "16px 'Pixelify Sans",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+            this.NPCLabel.setDepth(4);
+
+            const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
+                font: "16px 'Pixelify Sans",
+                fill: "#ffffff",
+                align: "center"
+            }).setOrigin(0.5);
+            instructionText.setVisible(false);
+            instructionText.setDepth(4);
+
+            //animation idle for npc
+            this.anims.create({
+                key: npcKey,
+                frames: this.anims.generateFrameNumbers(imageLabel, { start: 0, end: 1 }),
+                frameRate: 4,
+                repeat: -1
+            });
+
+            npcObj.play(npcKey);
+
+            //trigger for this npc, on enter
+            this.physics.add.overlap(this.playerContainer, npcObj, () => {
+                instructionText.setVisible(true);
+            });
+
+            //collider for npc
+            this.physics.add.collider(this.playerContainer, npcObj);
+
+            this[npcKey] = npcObj;
+            this[`${npcKey}Text`] = instructionText;
+            this[`${npcKey}Label`] = this.NPCLabel;
+
+            npcObj.setInteractive({ useHandCursor: true });
+            npcObj.on('pointerdown', () => {
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
+                    modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
+                    isTalking = true;
+                    isPanelOpen = true;
+
+                    switch(npcKey){
+                        case 'bimbo':
+                            socket.emit('NPCPrompt', 'bimbo');
+                            npcGreet('npcConversationDiv', '');
+                        break;
+
+                        case 'bob':
+                            socket.emit('NPCPrompt', 'bob');
+                            npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
+                        break;
+                    }
+                }
+            });
+        }
+
+        this.bobXHover = 200;
+        this.bobXOffset = 450;
+        this.bobYOffset = 430;
+        this.bobDirection = 1;
+        npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', this.bobXOffset, this.bobYOffset, this.bobXHover, 700, 70, 80);
 
         //house base
         this.house = this.add.rectangle(420, 120, 720, 300, 0xa7a7a7).setDepth(1);
@@ -153,6 +228,7 @@ class baseOutside extends Phaser.Scene{
         this.door.setInteractive({ useHandCursor: true });
         this.door.on('pointerdown', () => {
             if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
+                socket.emit('gameOutside_playerDisconnect');
                 backToBase();
             }
         });
@@ -175,10 +251,10 @@ class baseOutside extends Phaser.Scene{
         this.rockGroup = this.physics.add.staticGroup();
 
         const rock = [
-            this.rockGroup.create(400, 600, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(850, 700, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(1000, 300, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(1400, 750, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2)
+            this.rockGroup.create(400, 600, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(4),
+            this.rockGroup.create(850, 700, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(4),
+            this.rockGroup.create(1000, 300, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(4),
+            this.rockGroup.create(1400, 750, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(4)
         ]
         
         rock.forEach(obj => {
@@ -238,7 +314,7 @@ class baseOutside extends Phaser.Scene{
 
         //bottom wall
         for(let i = 0; i < 11; i++){
-            const wall = this.woodenWalls.create(100 + (180 * i), 830, 'front_Wall').setDisplaySize(180, 230).setDepth(2).setOrigin(0.5);
+            const wall = this.woodenWalls.create(100 + (180 * i), 830, 'front_Wall').setDisplaySize(180, 230).setDepth(3).setOrigin(0.5);
             wall.body.setSize(180, 50, true);
             wall.body.setOffset(420, 520);
 
@@ -266,13 +342,14 @@ class baseOutside extends Phaser.Scene{
         });
 
         for(let i = 0; i < 4; i++){
-            const river = this.add.sprite(300 + (600 * i), 1000, 'river').setDisplaySize(600, 600).setDepth(0).setOrigin(0.5);
+            const river = this.add.sprite(300 + (600 * i), 1000, 'river').setDisplaySize(600, 600).setOrigin(0.5);
             river.play('riverFlow');
     
             this.riverGroup.add(river);
         }
         lobbyUI(this);
         loadPlayerInfo(this);
+        sceneSocket(this);
     }
 
     update = function(){
@@ -328,18 +405,41 @@ class baseOutside extends Phaser.Scene{
             //for tree
             const treeY = ()=>{
                 if(this.tree.body.y > this.playerContainer.y){
-                    this.tree.setDepth(3);
+                    this.tree.setDepth(4);
                 }
                 else{
-                    this.tree.setDepth(1);
+                    this.tree.setDepth(2);
                 }
             }
             treeY();
-            /*
+            
             // on exit for NPCs
             if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
                 this.bobText.setVisible(false);
-            }*/
+            }
+
+            //hovering bob
+            if(this.bob){
+                this.bobXHover += this.bobDirection * 2;
+                this.bobXOffset += this.bobDirection * 2;
+
+                //right
+                if (this.bobXHover >= 700) {
+                    this.bob.flipX = true;
+                    this.bobDirection = -1;
+
+                //left
+                } else if (this.bobXHover <= 200) {
+                    this.bob.flipX = false;
+                    this.bobDirection = 1;
+                }
+
+                // Apply the updated position to the static sprite
+                this.bob.setX(this.bobXHover);
+                this.bob.body.setOffset(this.bobXOffset, this.bobYOffset);
+                this.bobLabel.setX(this.bobXHover);
+                this.bobText.setX(this.bobXHover);
+            }
 
             //for other player movement        
             const playerData = {
@@ -350,9 +450,9 @@ class baseOutside extends Phaser.Scene{
                 isFront: isFront,
                 spriteX: this.player.flipX
             }
-            //socket.emit('game_playerMove', playerData);
-            //socket.emit('game_existingPlayer', playerData);
-            //socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide);
+            socket.emit('gameOutside_playerMove', playerData);
+            socket.emit('gameOutside_existingPlayer', playerData);
+            socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide);
         }
     }
 }

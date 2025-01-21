@@ -192,7 +192,7 @@ function sceneSocket(scene){
 
     socket.on('game_spawnPlayer', (playerUser) => {
         setTimeout(() => {
-            if(game_PlayerName !== playerUser){
+            if(!scene.playerCollection.has(playerUser) && game_PlayerName !== playerUser){
                 //joined Player
                 scene.joinedPlayer = scene.physics.add.sprite(0,0, playerUser + '_playerIdle').setOrigin(0.5);
                 scene.joinedPlayer.setScale(0.1); 

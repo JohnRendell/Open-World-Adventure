@@ -299,6 +299,7 @@ class homeBase extends Phaser.Scene{
                         socket.emit('hidePlayersWhenGoToRoom', offsetY);
                     }
                     else{
+                        socket.emit('game_playerDisconnect');
                         goingOutside();
                     }
                 }

@@ -1,15 +1,34 @@
 const accountModel = require('./accountMongoose');
+const Fetch = require('node-fetch');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
 
 const players = [];
 
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
         //when player change profile
-        socket.on('updateProfile', async (profile, playerName)=>{
+        socket.on('updateProfile', async (profile, deleteHash, playerName)=>{
             try{
+                //delete old profile
+                const findPlayer = await accountModel.findOne({ username: playerName });
+
+                if(findPlayer){
+                    //if the profile is not null, it will only null if the profile is default
+                    if(findPlayer.profileHash){
+                        const deleteProfile = await Fetch('https://api.imgur.com/3/image/' + findPlayer.profileHash, {
+                            method: "DELETE",
+                            Authorize: `Bearer ${process.env.IMGUR_TOKEN}`
+                        });
+
+                        if(!deleteProfile){
+                            console.log('Old Profile Can\'t delete');
+                        }
+                    }
+                }
                 const changeProfile = await accountModel.findOneAndUpdate(
                     { username: playerName },
-                    { $set: { profile: profile } },
+                    { $set: { profile: profile, profileHash: deleteHash } },
                     { new: true }
                 )
 
@@ -23,8 +42,8 @@ module.exports = (server)=>{
         });
 
         //for initial loading of sprites
-        socket.on('loadSprites', (sprite0, sprite1, sprite2)=>{
-            socket.emit('loadSprites', sprite0, sprite1, sprite2);
+        socket.on('loadSprites', (sprite0, sprite1, sprite2, sprite3, sprite4, sprite5)=>{
+            socket.emit('loadSprites', sprite0, sprite1, sprite2, sprite3, sprite4, sprite5);
         });
 
         //when player upload new sprite
@@ -42,6 +61,18 @@ module.exports = (server)=>{
 
                 case 'side':
                     updateQuery.sideSprite = sprite;
+                break;
+
+                case 'frontAttack':
+                    updateQuery.attackFrontSprite = sprite;
+                break;
+
+                case 'backAttack':
+                    updateQuery.attackBackSprite = sprite;
+                break;
+
+                case 'sideAttack':
+                    updateQuery.attackSideSprite = sprite;
                 break;
             }
 

@@ -36,7 +36,7 @@ class homeBase extends Phaser.Scene{
     }
 
     create = function(){   
-        socket.on('loadSprites', (front, back, side)=>{
+        socket.on('loadSprites', (front, back, side, sideAttack, frontAttack, backAttack)=>{
             this.load.spritesheet('main_playerBack', back, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
@@ -163,75 +163,55 @@ class homeBase extends Phaser.Scene{
 
         this.input.keyboard.enableGlobalCapture();
 
-        //npc functions
-        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY, width, height)=>{
-            //add the NPC
-            const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
-            npcObj.setScale(0.1);
-            npcObj.setDepth(3);
-            npcObj.body.setSize(width, height, true);
-            npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
+        //add bob NPC
+        this.bob = this.physics.add.staticSprite(200, 300, 'Bob_NPC').setOrigin(0.5);
+        this.bob.setScale(0.1);
+        this.bob.setDepth(3);
+        this.bob.body.setSize(70, 80, true);
+        this.bob.body.setOffset(450, 430);
 
-            //NPC Label
-            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 100) + 50, objectLabel, {
-                font: "16px 'Pixelify Sans",
-                fill: "#ffffff",
-                align: "center"
-            }).setOrigin(0.5);
-            this.NPCLabel.setDepth(4);
+        //NPC Label
+        this.bobLabel = this.add.text(200, 240, 'Bob (NPC)', {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.bobLabel.setDepth(4);
 
-            const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
-                font: "16px 'Pixelify Sans",
-                fill: "#ffffff",
-                align: "center"
-            }).setOrigin(0.5);
-            instructionText.setVisible(false);
-            instructionText.setDepth(4);
+        this.bobText = this.add.text(200, (300 - 100) + 20, "Click to talk", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.bobText.setVisible(false);
+        this.bobText.setDepth(4);
 
-            //animation idle for npc
-            this.anims.create({
-                key: npcKey,
-                frames: this.anims.generateFrameNumbers(imageLabel, { start: 0, end: 1 }),
-                frameRate: 4,
-                repeat: -1
-            });
+        //animation idle for bob npc
+        this.anims.create({
+            key: 'bob',
+            frames: this.anims.generateFrameNumbers('Bob_NPC', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: -1
+        });
 
-            npcObj.play(npcKey);
+        this.bob.play('bob');
 
-            //trigger for this npc, on enter
-            this.physics.add.overlap(this.playerContainer, npcObj, () => {
-                instructionText.setVisible(true);
-            });
+        //trigger for this npc, on enter
+        this.physics.add.overlap(this.playerContainer, this.bob, () => {
+            this.bobText.setVisible(true);
+        });
 
-            //collider for npc
-            this.physics.add.collider(this.playerContainer, npcObj);
+        this.bob.setInteractive({ useHandCursor: true });
+        this.bob.on('pointerdown', () => {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds()) && isPanelOpen === false) {
+                modalStatus('bobDialog', 'flex', 'modalAnimation');
+                isTalking = true;
+                isPanelOpen = true;
 
-            this[npcKey] = npcObj;
-            this[`${npcKey}Text`] = instructionText;
-
-            npcObj.setInteractive({ useHandCursor: true });
-            npcObj.on('pointerdown', () => {
-                if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
-                    modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
-                    isTalking = true;
-                    isPanelOpen = true;
-
-                    switch(npcKey){
-                        case 'bimbo':
-                            socket.emit('NPCPrompt', 'bimbo');
-                            npcGreet('npcConversationDiv', '');
-                        break;
-
-                        case 'bob':
-                            socket.emit('NPCPrompt', 'bob');
-                            npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
-                        break;
-                    }
-                }
-            });
-        }
-
-        npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', 450, 430, 200, 300, 70, 80);
+                socket.emit('NPCPrompt', 'bob');
+                npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
+            }
+        });
 
         var door = (doorName, doorText, posX, posY, depth, forPlayer, roomObj, roomStuff)=>{
             //door

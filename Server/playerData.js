@@ -9,6 +9,7 @@ router.post('/playerProfile', async (req, res)=>{
         let findUser = await accountModel.findOne({ username: playerName });
         let playerUser, playerProfile;
         let frontSprite, backSprite, sideSprite;
+        let attackSideSprite, attackFrontSprite, attackBackSprite;
         let isGuest;
 
         if(findUser){
@@ -17,6 +18,9 @@ router.post('/playerProfile', async (req, res)=>{
             frontSprite = findUser.frontSprite;
             backSprite = findUser.backSprite;
             sideSprite = findUser.sideSprite;
+            attackSideSprite = findUser.attackSideSprite;
+            attackFrontSprite = findUser.attackFrontSprite;
+            attackBackSprite = findUser.attackBackSprite;
             isGuest = false;
         }
         else{
@@ -25,9 +29,12 @@ router.post('/playerProfile', async (req, res)=>{
             frontSprite = 'https://i.imgur.com/Qq3Yedn.png';
             backSprite = 'https://i.imgur.com/xhU6u5B.png';
             sideSprite = 'https://i.imgur.com/4BkMHTS.png';
+            attackSideSprite = 'https://i.imgur.com/jVS0NeM.png';
+            attackFrontSprite = 'https://i.imgur.com/ebhD511.png';
+            attackBackSprite = 'https://i.imgur.com/z1jmKkm.png';
             isGuest = true;
         }
-        res.status(200).json({ message: 'success', username: playerUser, profile: playerProfile, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, isGuest: isGuest });
+        res.status(200).json({ message: 'success', username: playerUser, profile: playerProfile, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite, isGuest: isGuest });
     }
     catch(err){
         console.log(err);

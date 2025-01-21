@@ -63,17 +63,24 @@ async function loadProfile(playerName){
             playerName = getPlayerProfile_data.username;
 
             //add player profile and sprites
-            if(document.getElementById('playerProfileID') && document.getElementById('prevSprite0') && document.getElementById('prevSprite1') && document.getElementById('prevSprite2') && document.getElementById('guestDiv') && document.getElementById('playerDiv')){
+            if(document.getElementById('playerProfileID') && document.getElementById('prevSprite0') && document.getElementById('prevSprite1') && document.getElementById('prevSprite2') && document.getElementById('prevSprite3') && document.getElementById('prevSprite4') && document.getElementById('prevSprite5') && document.getElementById('guestDiv') && document.getElementById('playerDiv')){
                 document.getElementById('playerProfileID').src = getPlayerProfile_data.profile;
+
+                //walking
                 document.getElementById('prevSprite0').src = getPlayerProfile_data.frontSprite; //front
                 document.getElementById('prevSprite1').src = getPlayerProfile_data.backSprite; //back
                 document.getElementById('prevSprite2').src = getPlayerProfile_data.sideSprite; //sides
+
+                //attacking
+                document.getElementById('prevSprite3').src = getPlayerProfile_data.attackFrontSprite; //front
+                document.getElementById('prevSprite4').src = getPlayerProfile_data.attackBackSprite; //back
+                document.getElementById('prevSprite5').src = getPlayerProfile_data.attackSideSprite; //sides
 
                 document.getElementById('guestDiv').style.display = getPlayerProfile_data.isGuest ? 'flex' : 'none';
                 document.getElementById('playerDiv').style.display = getPlayerProfile_data.isGuest ? 'none' : 'flex';
             }
 
-            socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite);
+            socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
 
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
@@ -104,12 +111,13 @@ function changeProfile(){
         if(uploadProfile_data.message === 'success'){
             document.getElementById('validatingDiv').style.display = 'none';
             document.getElementById('playerProfileID').src = uploadProfile_data.link;
-            socket.emit('updateProfile', uploadProfile_data.link, game_PlayerName);
+            socket.emit('updateProfile', uploadProfile_data.link, uploadProfile_data.deleteHash, game_PlayerName);
         }
     });
 }
 
 //upload skin
+//TODO: investigate this, the query got fired two times
 function changeSkin(id, imageID, query){
     var uploadSpriteFile = document.getElementById(id);
 
@@ -142,7 +150,10 @@ function piskelTemp(){
     const url = [
         { link: '/ImageComponents/Templates for players/Front Template.piskel', name: 'Front Template.piskel' },
         { link: '/ImageComponents/Templates for players/Back Template.piskel', name: 'Back Template.piskel' },
-        { link: '/ImageComponents/Templates for players/Side Template.piskel', name: 'Side Template.piskel'}
+        { link: '/ImageComponents/Templates for players/Side Template.piskel', name: 'Side Template.piskel'},
+        { link: '/ImageComponents/Templates for players/Back Attack punch.piskel', name: 'Back Attack punch.piskel'},
+        { link: '/ImageComponents/Templates for players/Front Attack punch.piskel', name: 'Front Attack punch.piskel'},
+        { link: '/ImageComponents/Templates for players/Side Attack punch.piskel', name: 'Side Attack punch.piskel'}
     ]
 
     for(let i = 0; i < url.length; i++){

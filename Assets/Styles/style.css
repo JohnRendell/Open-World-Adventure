@@ -614,6 +614,10 @@ video {
   margin-top: -60rem;
 }
 
+.mt-\[0rem\]{
+  margin-top: 0rem;
+}
+
 .flex{
   display: flex;
 }
@@ -624,10 +628,6 @@ video {
 
 .hidden{
   display: none;
-}
-
-.h-20{
-  height: 5rem;
 }
 
 .h-\[10rem\]{
@@ -650,6 +650,10 @@ video {
   height: 35rem;
 }
 
+.h-\[auto\]{
+  height: auto;
+}
+
 .h-auto{
   height: auto;
 }
@@ -663,8 +667,12 @@ video {
   height: 100vh;
 }
 
-.w-20{
-  width: 5rem;
+.h-20{
+  height: 5rem;
+}
+
+.h-\[15rem\]{
+  height: 15rem;
 }
 
 .w-\[10rem\]{
@@ -702,6 +710,10 @@ video {
 
 .w-screen{
   width: 100vw;
+}
+
+.w-20{
+  width: 5rem;
 }
 
 .cursor-pointer{
@@ -768,6 +780,10 @@ video {
 
 .overflow-y-auto{
   overflow-y: auto;
+}
+
+.overflow-x-hidden{
+  overflow-x: hidden;
 }
 
 .scroll-smooth{

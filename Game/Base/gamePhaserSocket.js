@@ -49,9 +49,6 @@ function sceneSocket(scene){
                                     repeat: -1
                                 });
                             }
-                            playerSprite.play(name + '_playerFront');
-                            playerSprite.setVisible(true);
-                            animationFire = true;
                         });
 
                         scene.load.start();
@@ -81,9 +78,6 @@ function sceneSocket(scene){
                                     repeat: -1
                                 });
                             }
-                            playerSprite.play(name + '_playerBack');
-                            playerSprite.setVisible(true);
-                            animationFire = true;
                         });
 
                         scene.load.start();
@@ -113,14 +107,17 @@ function sceneSocket(scene){
                                     repeat: -1
                                 });
                             }
-                            playerSprite.play(name + '_playerIdle');
-                            playerSprite.setVisible(true);
-                            animationFire = true;
                         });
 
                         scene.load.start();
                     break;
                 }
+
+                setTimeout(() => {
+                    playerSprite.play(name + '_playerFront');
+                    playerSprite.setVisible(true);
+                    animationFire = true;
+                }, 1000);
             }
         })
     });

@@ -24,6 +24,9 @@ let spriteFront, spriteSide, spriteBack;
 
 let isFront = false;
 let isBack = false;
+let isAttackingSide = false;
+let isAttackingFront = false;
+let isAttackingBack = false;
 
 class baseOutside extends Phaser.Scene{
     constructor(){
@@ -35,7 +38,7 @@ class baseOutside extends Phaser.Scene{
     }
 
     create = function(){
-        socket.on('loadSprites', (front, back, side)=>{
+        socket.on('loadSprites', (front, back, side, sideAttack, frontAttack, backAttack)=>{
             this.load.spritesheet('main_playerBack', back, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
@@ -47,6 +50,21 @@ class baseOutside extends Phaser.Scene{
             });
 
             this.load.spritesheet('main_playerIdle', side, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            this.load.spritesheet('main_playerAttackSide', sideAttack, {
+                frameWidth: 4800 / 5,
+                frameHeight: 960 / 1
+            });
+
+            this.load.spritesheet('main_playerAttackFront', frontAttack, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            this.load.spritesheet('main_playerAttackBack', backAttack, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
             });
@@ -71,6 +89,27 @@ class baseOutside extends Phaser.Scene{
                     frames: this.anims.generateFrameNumbers('main_playerBack', { start: 0, end: 1 }),
                     frameRate: 4,
                     repeat: -1
+                });
+
+                this.anims.create({
+                    key: 'playerAttackSide',
+                    frames: this.anims.generateFrameNumbers('main_playerAttackSide', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: 0
+                });
+
+                this.anims.create({
+                    key: 'playerAttackFront',
+                    frames: this.anims.generateFrameNumbers('main_playerAttackFront', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: 0
+                });
+
+                this.anims.create({
+                    key: 'playerAttackBack',
+                    frames: this.anims.generateFrameNumbers('main_playerAttackBack', { start: 0, end: 1 }),
+                    frameRate: 4,
+                    repeat: 0
                 });
 
                 isLoaded = true;
@@ -121,6 +160,9 @@ class baseOutside extends Phaser.Scene{
         this.S = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        //for attack
+        this.Z = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+
         this.input.keyboard.enableGlobalCapture();
 
          //npc functions
@@ -133,7 +175,7 @@ class baseOutside extends Phaser.Scene{
             npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
 
             //NPC Label
-            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 100) + 50, objectLabel, {
+            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 60), objectLabel, {
                 font: "16px 'Pixelify Sans",
                 fill: "#ffffff",
                 align: "center"
@@ -162,9 +204,6 @@ class baseOutside extends Phaser.Scene{
             this.physics.add.overlap(this.playerContainer, npcObj, () => {
                 instructionText.setVisible(true);
             });
-
-            //collider for npc
-            this.physics.add.collider(this.playerContainer, npcObj);
 
             this[npcKey] = npcObj;
             this[`${npcKey}Text`] = instructionText;
@@ -379,6 +418,19 @@ class baseOutside extends Phaser.Scene{
                     isFront = true;
                     isBack = false;
                 }
+                if(this.Z.isDown){
+                    if(!isFront || !isBack){
+                        isAttackingSide = true;
+                    }
+
+                    if(isFront){
+                        isAttackingFront = true;
+                    }
+
+                    if(isBack){
+                        isAttackingBack = true;
+                    }
+                }
             }
 
             if(isTalking || isPanelOpen){
@@ -395,6 +447,22 @@ class baseOutside extends Phaser.Scene{
 
             if(!isFront && !isBack){
                 this.player.play('playerIdle', true);
+            }
+
+            //attacking
+            if(isAttackingSide){
+                this.player.play('playerAttackSide', true);
+                isAttackingSide = false;
+            }
+
+            if(isAttackingFront){
+                this.player.play('playerAttackFront', true);
+                isAttackingFront = false;
+            }
+
+            if(isAttackingBack){
+                this.player.play('playerAttackBack', true);
+                isAttackingBack = false;
             }
 
             //exiting door

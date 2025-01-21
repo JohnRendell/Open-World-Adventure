@@ -36,8 +36,6 @@ function loadPlayerInfo(scene){
                         });
                     }
                     scene.player.play('playerFront');
-                    isLoaded = true;
-                    scene.player.setVisible(true);
                 });
 
                 scene.load.start();
@@ -68,8 +66,6 @@ function loadPlayerInfo(scene){
                         });
                     }
                     scene.player.play('playerBack');
-                    isLoaded = true;
-                    scene.player.setVisible(true);
                 });
 
                 scene.load.start();
@@ -100,13 +96,16 @@ function loadPlayerInfo(scene){
                         });
                     }
                     scene.player.play('playerIdle');
-                    isLoaded = true;
-                    scene.player.setVisible(true);
                 });
 
                 scene.load.start();
             break;
         }
+
+        setTimeout(() => {
+            isLoaded = true;
+            scene.player.setVisible(true);
+        }, 1000);
         socket.emit('loadNewSpriteToClient', game_PlayerName, sprite, query);
     });
 

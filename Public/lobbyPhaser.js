@@ -149,63 +149,53 @@ class gameLobby extends Phaser.Scene{
         //collider for spawner
         this.physics.add.collider(this.playerContainer, this.spawner);
 
-        var npc = (npcKey, imageLabel, objectLabel, NPCBodyOffsetX, NPCBodyOffsetY, NPCposX, NPCposY)=>{
-            //add the NPC
-            const npcObj = this.physics.add.staticSprite(NPCposX, NPCposY, imageLabel).setOrigin(0.5);
-            npcObj.setScale(0.1);
-            npcObj.body.setSize(40, 70, true);
-            npcObj.body.setOffset(NPCBodyOffsetX, NPCBodyOffsetY);
+        //add the rupert NPC
+        this.rupert = this.physics.add.staticSprite(centerWorld.width - 30, centerWorld.height + 200, 'Rupert_NPC').setOrigin(0.5);
+        this.rupert.setScale(0.1);
+        this.rupert.body.setSize(40, 70, true);
+        this.rupert.body.setOffset(140, 365);
 
-            //NPC Label
-            this.NPCLabel = this.add.text(NPCposX, (NPCposY - 100) + 50, objectLabel, {
-                font: "16px 'Pixelify Sans",
-                fill: "#ffffff",
-                align: "center"
-            }).setOrigin(0.5);
-            this.NPCLabel.setDepth(2);
+        //NPC rupert Label
+        this.rupertLabel = this.add.text(centerWorld.width - 30, (centerWorld.height + 200) - 60, 'Rupert (NPC)', {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.rupertLabel.setDepth(2);
 
-            const instructionText = this.add.text(NPCposX, (NPCposY - 100) + 20, "Click to talk", {
-                font: "16px 'Pixelify Sans",
-                fill: "#ffffff",
-                align: "center"
-            }).setOrigin(0.5);
-            instructionText.setVisible(false);
-            instructionText.setDepth(2);
+        this.rupertText = this.add.text(centerWorld.width - 30, ((centerWorld.height + 200) - 100) + 20, "Click to talk", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.rupertText.setVisible(false);
+        this.rupertText.setDepth(2);
 
-            //animation idle for npc
-            this.anims.create({
-                key: npcKey,
-                frames: this.anims.generateFrameNumbers(imageLabel, { start: 0, end: 1 }),
-                frameRate: 4,
-                repeat: -1
-            });
+        //animation idle for npc
+        this.anims.create({
+            key: 'rupert',
+            frames: this.anims.generateFrameNumbers('Rupert_NPC', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: -1
+        });
 
-            npcObj.play(npcKey);
+        this.rupert.play('rupert');
 
-            //trigger for this npc, on enter
-            this.physics.add.overlap(this.playerContainer, npcObj, () => {
-                instructionText.setVisible(true);
-            });
+        //trigger for this npc, on enter
+        this.physics.add.overlap(this.playerContainer, this.rupert, () => {
+            this.rupertText.setVisible(true);
+        });
 
-            //collider for npc
-            this.physics.add.collider(this.playerContainer, npcObj);
-
-            this[npcKey] = npcObj;
-            this[`${npcKey}Text`] = instructionText;
-
-            npcObj.setInteractive({ useHandCursor: true });
-            npcObj.on('pointerdown', () => {
-                if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), npcObj.getBounds()) && isPanelOpen === false) {
-                    npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');
-                    socket.emit('NPCPrompt', 'rupert');
-                    modalStatus(npcKey + 'Dialog', 'flex', 'modalAnimation');
-                    isTalking = true;
-                    isPanelOpen = true;
-                }
-            });
-        }
-
-        npc.call(this, 'rupert', 'Rupert_NPC', 'Rupert (NPC)', 140, 365, centerWorld.width - 30, centerWorld.height + 200);
+        this.rupert.setInteractive({ useHandCursor: true });
+        this.rupert.on('pointerdown', () => {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds()) && isPanelOpen === false) {
+                npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');
+                socket.emit('NPCPrompt', 'rupert');
+                modalStatus('rupertDialog', 'flex', 'modalAnimation');
+                isTalking = true;
+                isPanelOpen = true;
+            }
+        });
 
         //rock
         this.rockGroup = this.physics.add.staticGroup();

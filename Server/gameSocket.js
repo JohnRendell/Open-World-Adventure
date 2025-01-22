@@ -183,6 +183,11 @@ module.exports = (server)=>{
         loadSprite(socket, 'game_loadPlayerSprite');
         loadSprite(socket, 'gameOutside_loadPlayerSprite');
 
+        //when player update account
+        socket.on('updateAcc', (username)=>{
+            socket.emit('updateAcc', username);
+        });
+
         //when player disconnected
         socket.on('game_playerDisconnect', (playerName)=>{
             socket.broadcast.emit('game_playerDisconnect', playerName);

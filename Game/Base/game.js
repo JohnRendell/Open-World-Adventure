@@ -176,6 +176,47 @@ function backToBase(){
     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
 }
 
+//updating account
+async function updateAccount() {
+    var warningTxt = document.getElementById('accSetting_warningTxt');
+    var username = document.getElementById('accSetting_userID').value;
+    var currentPassword = document.getElementById('accSetting_passID').value;
+    var newPassword = document.getElementById('accSetting_newPassID').value;
+
+    if(username && currentPassword && newPassword){
+        try{
+            const changeAcc = await fetch('/playerData/changeAcc', {
+                method: "POST",
+                headers: {
+                    "Accept": "Application/json",
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify({ currentName: game_PlayerName, username: username, currentPassword: currentPassword, newPassword: newPassword })
+            });
+
+            const changeAcc_data = await changeAcc.json();
+
+            if(changeAcc_data.message === 'success'){
+                alert('Account Updated');
+                socket.emit('updateAcc', changeAcc_data.username);
+
+                document.getElementById('accSetting_userID').value = "";
+                document.getElementById('accSetting_passID').value = "";
+                document.getElementById('accSetting_newPassID').value = "";
+            }
+            else{
+                warningTxt.innerText = changeAcc_data.message;
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    else{
+        warningTxt.innerText = 'Fields cannot be empty';
+    }
+}
+
 //logout
 function logout(){
     window.location.href = '/lobby';

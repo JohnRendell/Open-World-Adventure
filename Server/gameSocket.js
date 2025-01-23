@@ -16,6 +16,8 @@ module.exports = (server)=>{
                 if(findPlayer){
                     //if the profile is not null, it will only null if the profile is default
                     if(findPlayer.profileHash){
+
+                        //TODO: fix this not able to delete the image
                         const deleteProfile = await Fetch('https://api.imgur.com/3/image/' + findPlayer.profileHash, {
                             method: "DELETE",
                             Authorize: `Bearer ${process.env.IMGUR_TOKEN}`

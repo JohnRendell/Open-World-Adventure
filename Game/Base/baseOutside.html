@@ -66,7 +66,7 @@
             </div>
 
             <button
-                class="w-full font-PixelifySans text-sm text-center text-black rounded-lg p-2 hover:bg-blue-500 hover:text-white" onclick="modalStatus('accSettingModal', 'flex', 'modalAnimation');">Change
+                class="w-full font-PixelifySans text-sm text-center text-black rounded-lg p-2 hover:bg-blue-500 hover:text-white" onclick="modalStatus('accSettingModal', 'flex', 'modalAnimation');  openAccountModal()">Change
                 Account</button>
 
             <button
@@ -92,68 +92,77 @@
             </div>
     
             <!--Change Account-->
-            <div class="flex-col space-y-4">
-                <!--Username-->
-                <div class="flex flex-col items-center">
-                    <div class="w-full h-fit flex justify-between items-center">
-                        <label for="accSetting_userID" class="font-PixelifySans text-black text-sm">New Username</label>
-                        <p class="font-PixelifySans text-sm text-black" id="messageIncrementNewUsername">0/20</p>
+            <div class="flex flex-col space-y-2 w-fit items-center" id="accUpdateLoggedIn">
+                <div class="flex-col space-y-4">
+                    <!--Username-->
+                    <div class="flex flex-col items-center">
+                        <div class="w-full h-fit flex justify-between items-center">
+                            <label for="accSetting_userID" class="font-PixelifySans text-black text-sm">New Username</label>
+                            <p class="font-PixelifySans text-sm text-black" id="messageIncrementNewUsername">0/20</p>
+                        </div>
+                        <input type="text" placeholder="New Username..."
+                            class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
+                            minlength="0" maxlength="20"
+                            oninput="typeMessage('messageIncrementNewUsername', 'accSetting_userID', 20)"
+                            id="accSetting_userID">
                     </div>
-                    <input type="text" placeholder="New Username..."
-                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
-                        minlength="0" maxlength="20"
-                        oninput="typeMessage('messageIncrementNewUsername', 'accSetting_userID', 20)"
-                        id="accSetting_userID">
+    
+                    <!--Password-->
+                    <div class="flex flex-col items-center">
+                        <div class="w-full h-fit flex justify-between items-center">
+                            <label for="accSetting_passID" class="font-PixelifySans text-black text-sm">Current
+                                Password</label>
+                            <p class="font-PixelifySans text-sm text-black" id="messageIncrementOldPassword">0/20</p>
+                        </div>
+    
+                        <input type="password" placeholder="type current Password..."
+                            class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
+                            minlength="0" maxlength="20"
+                            oninput="typeMessage('messageIncrementOldPassword', 'accSetting_passID', 20)"
+                            id="accSetting_passID">
+    
+                        <div class="w-fit h-fit flex justify-between items-center gap-2">
+                            <input type="checkbox" id="accSetting_showPassID"
+                                onclick="showPass('accSetting_passID', 'accSetting_showPassID')">
+                            <label for="accSetting_showPassID" class="font-PixelifySans text-black text-sm">Show
+                                Password</label>
+                        </div>
+                    </div>
+    
+                    <!--New password-->
+                    <div class="flex flex-col items-center">
+                        <div class="w-full h-fit flex justify-between items-center">
+                            <label for="accSetting_newPassID" class="font-PixelifySans text-black text-sm">New
+                                Password</label>
+                            <p class="font-PixelifySans text-sm text-black" id="messageIncrementNewPassword">0/20</p>
+                        </div>
+    
+                        <input type="password" placeholder="New Password..."
+                            class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
+                            minlength="0" maxlength="20"
+                            oninput="typeMessage('messageIncrementNewPassword', 'accSetting_newPassID', 20)"
+                            id="accSetting_newPassID">
+    
+                        <div class="w-fit h-fit flex justify-between items-center gap-2">
+                            <input type="checkbox" id="accSetting_showNewPassID"
+                                onclick="showPass('accSetting_newPassID', 'accSetting_showNewPassID')">
+                            <label for="accSetting_showNewPassID" class="font-PixelifySans text-black text-sm">Show
+                                Password</label>
+                        </div>
+                    </div>
+    
+                    <p class="font-PixelifySans text-red-500 text-sm text-center" id="accSetting_warningTxt"></p>
                 </div>
     
-                <!--Password-->
-                <div class="flex flex-col items-center">
-                    <div class="w-full h-fit flex justify-between items-center">
-                        <label for="accSetting_passID" class="font-PixelifySans text-black text-sm">Current Password</label>
-                        <p class="font-PixelifySans text-sm text-black" id="messageIncrementOldPassword">0/20</p>
-                    </div>
-    
-                    <input type="password" placeholder="type current Password..."
-                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
-                        minlength="0" maxlength="20"
-                        oninput="typeMessage('messageIncrementOldPassword', 'accSetting_passID', 20)"
-                        id="accSetting_passID">
-    
-                    <div class="w-fit h-fit flex justify-between items-center gap-2">
-                        <input type="checkbox" id="accSetting_showPassID"
-                            onclick="showPass('accSetting_passID', 'accSetting_showPassID')">
-                        <label for="accSetting_showPassID" class="font-PixelifySans text-black text-sm">Show
-                            Password</label>
-                    </div>
-                </div>
-    
-                <!--New password-->
-                <div class="flex flex-col items-center">
-                    <div class="w-full h-fit flex justify-between items-center">
-                        <label for="accSetting_newPassID" class="font-PixelifySans text-black text-sm">New Password</label>
-                        <p class="font-PixelifySans text-sm text-black" id="messageIncrementNewPassword">0/20</p>
-                    </div>
-    
-                    <input type="password" placeholder="New Password..."
-                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none text-sm"
-                        minlength="0" maxlength="20"
-                        oninput="typeMessage('messageIncrementNewPassword', 'accSetting_newPassID', 20)"
-                        id="accSetting_newPassID">
-    
-                    <div class="w-fit h-fit flex justify-between items-center gap-2">
-                        <input type="checkbox" id="accSetting_showNewPassID"
-                            onclick="showPass('accSetting_newPassID', 'accSetting_showNewPassID')">
-                        <label for="accSetting_showNewPassID" class="font-PixelifySans text-black text-sm">Show
-                            Password</label>
-                    </div>
-                </div>
-    
-                <p class="font-PixelifySans text-red-500 text-sm text-center" id="accSetting_warningTxt"></p>
+                <button
+                    class="w-fit bg-green-500 font-PixelifySans text-sm text-center text-white font-normal rounded-lg p-2 hover:bg-green-700 hover:font-bold"
+                    onclick="updateAccount()">Proceed</button>
             </div>
     
-            <button
-                class="w-fit bg-green-500 font-PixelifySans text-sm text-center text-white font-normal rounded-lg p-2 hover:bg-green-700 hover:font-bold"
-                onclick="updateAccount()">Proceed</button>
+            <!--for guest-->
+            <div id="accUpdateGuest">
+                <p class="font-PixelifySans text-sm text-black text-center">Logged in to modify your account</p>
+            </div>
         </div>
     </div>
 

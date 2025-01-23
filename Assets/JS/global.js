@@ -161,32 +161,16 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
                 if(loginOutput.substring(0, 5) === 'GUEST'){
                     modalStatus('rupertDialog', 'none', null);
-                    
-                    try{
-                        const setCookie = await fetch('/cookie/setCookie', {
-                            method: "POST",
-                            headers: {
-                                "Accept": "Application/json",
-                                "Content-Type": "Application/json"
-                            },
-                            body: JSON.stringify({ username: localStorage.getItem('tempPlayerName') })
-                        });
 
-                        const setCookie_data = await setCookie.json();
+                    if(await setCookie(localStorage.getItem('tempPlayerName'), 'tempPlayerName')){
+                        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
-                        if(setCookie_data.message === 'success'){
-                            let decryptPlayerName = CryptoJS.AES.decrypt(setCookie_data.username, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-                            if(decryptPlayerName){
-                                socket.emit('redirectToBase', decryptPlayerName);
-                                localStorage.setItem('visitor', 'i am visitor');
-                                window.location.href = '/Game/Base/' + decryptPlayerName;
-                                localStorage.removeItem('tempPlayerName');
-                            }
+                        if(decryptPlayerName){
+                            socket.emit('redirectToBase', decryptPlayerName);
+                            localStorage.setItem('visitor', 'i am visitor');
+                            window.location.href = '/Game/Base/' + decryptPlayerName;
+                            localStorage.removeItem('tempPlayerName');
                         }
-                    }
-                    catch(err){
-                        console.log(err);
                     }
                 }
             }
@@ -208,6 +192,27 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
             container.scrollTo(0, container.scrollHeight);
         }
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+//setting cookie
+async function setCookie(value, key){
+    try{
+        const setCookie = await fetch('/cookie/setCookie', {
+            method: "POST",
+            headers: {
+                "Accept": "Application/json",
+                "Content-Type": "Application/json"
+            },
+            body: JSON.stringify({ username: value, cryptoKey: key })
+        });
+
+        const setCookie_data = await setCookie.json();
+
+        return setCookie_data.message === 'success' ? true : false;
     }
     catch(err){
         console.log(err);

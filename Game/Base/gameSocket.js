@@ -125,11 +125,8 @@ function loadPlayerInfo(scene){
         }, 1500);
     });
 
-    //TODO: fix this not applying on game itself
     socket.on('updateAcc', (playerName)=>{
         game_PlayerName = playerName;
-        loggedIn_playerName = playerName;
-
         scene.playerName.setText(playerName);
     });
 

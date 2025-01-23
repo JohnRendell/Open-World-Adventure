@@ -19,7 +19,8 @@ let isTalking = false;
 let isPanelOpen = false;
 let isLoaded = false;
 let isMainPlayerGoingToRoom = false;
-let game_PlayerName, loggedIn_playerName;
+var game_PlayerName, loggedIn_playerName;
+
 let spriteFront, spriteSide, spriteBack;
 
 let isFront = false;

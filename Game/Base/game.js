@@ -1,5 +1,5 @@
-let validateUser;
-let loggedInURL;
+var validateUser;
+var loggedInURL;
 
 async function checkCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
@@ -176,6 +176,17 @@ function backToBase(){
     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
 }
 
+//opening account modal
+function openAccountModal(){
+    var loggedInMode = document.getElementById('accUpdateLoggedIn');
+    var guestMode = document.getElementById('accUpdateGuest');
+
+    loggedInMode.style.display = localStorage.getItem('visitor') ? 'none' : 'flex';
+    guestMode.style.display = localStorage.getItem('visitor') ? 'flex' : 'none';
+
+    document.getElementById('accSetting_userID').value = validateUser;
+}
+
 //updating account
 async function updateAccount() {
     var warningTxt = document.getElementById('accSetting_warningTxt');
@@ -197,12 +208,20 @@ async function updateAccount() {
             const changeAcc_data = await changeAcc.json();
 
             if(changeAcc_data.message === 'success'){
-                alert('Account Updated');
-                socket.emit('updateAcc', changeAcc_data.username);
+                document.getElementById('validatingDiv').style.display = 'flex';
+                let encryptNewUsername = CryptoJS.AES.encrypt(changeAcc_data.username , 'token').toString();
 
-                document.getElementById('accSetting_userID').value = "";
-                document.getElementById('accSetting_passID').value = "";
-                document.getElementById('accSetting_newPassID').value = "";
+                if(await setCookie(encryptNewUsername, 'token')){
+                    document.getElementById('validatingDiv').style.display = 'none';
+                    alert('Account Updated');
+
+                    await checkCookie();
+                    socket.emit('updateAcc', changeAcc_data.username);
+
+                    document.getElementById('accSetting_userID').value = "";
+                    document.getElementById('accSetting_passID').value = "";
+                    document.getElementById('accSetting_newPassID').value = "";
+                }
             }
             else{
                 warningTxt.innerText = changeAcc_data.message;

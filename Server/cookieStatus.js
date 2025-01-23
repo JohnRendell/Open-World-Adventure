@@ -8,16 +8,16 @@ require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
 
 router.use(cookieParser(process.env.COOKIE_KEY));
 
-//this set cookie is for only guest alright
 router.post('/setCookie', (req, res)=>{
     try{
         let user = req.body.username;
+        let cryptoKey = req.body.cryptoKey;
 
-        let decryptPlayerName = CryptoJS.AES.decrypt(user, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+        let decryptPlayerName = CryptoJS.AES.decrypt(user, cryptoKey).toString(CryptoJS.enc.Utf8);
 
         if(decryptPlayerName){
             //add httpOnly: true later on
-            res.cookie('username', user, { signed: true, maxAge: 3600000, secure: true });
+            res.cookie('username', user, { signed: true, maxAge: 3600000, secure: true, path: '/' });
             res.status(200).json({ message: 'success', username: user });
         }
     }
@@ -51,9 +51,6 @@ router.post('/getCookie', (req, res)=>{
             else{
                 res.status(200).json({ message: 'no cookie' });
             }
-        }
-        else{
-            console.log('cant read shit')
         }
     }
     catch(err){

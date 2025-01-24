@@ -21,6 +21,7 @@ let isLoaded = false;
 var game_PlayerName, loggedIn_playerName;
 
 let spriteFront, spriteSide, spriteBack;
+let spriteFrontAttack, spriteSideAttack, spriteBackAttack;
 
 let isFront = false;
 let isBack = false;
@@ -116,6 +117,10 @@ class baseOutside extends Phaser.Scene{
                 spriteFront = front;
                 spriteSide = side;
                 spriteBack = back;
+
+                spriteFrontAttack = frontAttack;
+                spriteSideAttack = sideAttack;
+                spriteBackAttack = backAttack;
             });
 
             this.load.start();
@@ -516,11 +521,16 @@ class baseOutside extends Phaser.Scene{
                 y: this.playerContainer.y,
                 isBack: isBack,
                 isFront: isFront,
-                spriteX: this.player.flipX
+                spriteX: this.player.flipX,
+                isAttackingSide: isAttackingSide,
+                isAttackingBack: isAttackingBack,
+                isAttackingFront: isAttackingFront
             }
             socket.emit('gameOutside_playerMove', playerData);
             socket.emit('gameOutside_existingPlayer', playerData);
-            socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide);
+            socket.emit('gameOutside_playerAttack', playerData);
+
+            socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, spriteFrontAttack, spriteBackAttack, spriteSideAttack);
         }
     }
 }

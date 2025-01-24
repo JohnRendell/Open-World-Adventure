@@ -1,7 +1,7 @@
 let globalMessageCounter = 0;
 let npcPromptInstruction;
 
-socket.on('globalMessage', (containerID, receiver, msg)=>{
+socket.on('globalMessage', (containerID, receiver, userProfile, msg)=>{
     globalMessageCounter++;
     var container = document.getElementById(containerID);
 
@@ -11,13 +11,23 @@ socket.on('globalMessage', (containerID, receiver, msg)=>{
         container.appendChild(wrapperContainer);
 
         var messageWrapper = document.createElement('div');
-        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
+        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
         wrapperContainer.appendChild(messageWrapper);
+
+        var wrapper = document.createElement('div');
+        wrapper.setAttribute('class', 'flex items-center flex-row gap-2');
+        messageWrapper.appendChild(wrapper);
+
+        var profile = document.createElement('img');
+        profile.setAttribute('class', 'rounded-full w-[2rem] h-[2rem]');
+        profile.setAttribute('src', userProfile);
+        profile.setAttribute('alt', receiver + ' Profile');
+        wrapper.appendChild(profile);
 
         var sender = document.createElement('p');
         sender.setAttribute('class', 'font-PixelifySans text-sm text-black text-left font-bold');
         sender.appendChild(document.createTextNode(receiver));
-        messageWrapper.appendChild(sender);
+        wrapper.appendChild(sender);
 
         var textContent = document.createElement('p');
         textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');

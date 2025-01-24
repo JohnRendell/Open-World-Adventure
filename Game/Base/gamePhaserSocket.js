@@ -123,7 +123,7 @@ function sceneSocket(scene){
     });
 
     //load player's sprite
-    socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
+    socket.on('game_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide, frontAttack, backAttack, sideAttack)=>{
         if(playerID !== game_PlayerName){
             scene.load.spritesheet(playerID + '_playerBack', spriteBack, {
                 frameWidth: 1600 / 5,

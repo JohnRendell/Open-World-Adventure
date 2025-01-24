@@ -178,12 +178,17 @@ module.exports = (server)=>{
 
         //load player's sprite
         function loadSprite(socket, socketName){
-            socket.on(socketName, (playerID, spriteFront, spriteBack, spriteSide)=>{
-                socket.broadcast.emit(socketName, playerID, spriteFront, spriteBack, spriteSide);
+            socket.on(socketName, (playerID, spriteFront, spriteBack, spriteSide, frontAttack, backAttack, sideAttack)=>{
+                socket.broadcast.emit(socketName, playerID, spriteFront, spriteBack, spriteSide, frontAttack, backAttack, sideAttack);
             });
         }
         loadSprite(socket, 'game_loadPlayerSprite');
         loadSprite(socket, 'gameOutside_loadPlayerSprite');
+
+        //for attacking
+        socket.on('gameOutside_playerAttack', (playerData)=>{
+            socket.broadcast.emit('gameOutside_playerAttack', playerData);
+        });
 
         //when player update account
         socket.on('updateAcc', (username)=>{

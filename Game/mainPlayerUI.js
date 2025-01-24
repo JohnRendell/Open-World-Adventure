@@ -33,18 +33,22 @@ function homeBaseUI(scene){
 
     scene.playerInventory.setInteractive({ useHandCursor: true });
     scene.playerInventory.on('pointerdown', ()=>{
-        isTalking = true;
-        isPanelOpen = true;
-        modalStatus('inventoryModal', 'flex', 'modalAnimation');
+        if(isPanelOpen === false){
+            isTalking = true;
+            isPanelOpen = true;
+            modalStatus('inventoryModal', 'flex', 'modalAnimation');
+        }
     });
 
     //player settings
     scene.playerSetting = scene.add.sprite(850, 0, 'settingIcon').setDisplaySize(80,80).setScrollFactor(0);
     scene.playerSetting.setInteractive({ useHandCursor: true });
     scene.playerSetting.on('pointerdown', () => {
-        isPanelOpen = true;
-        isTalking = true;
-        modalStatus('settingModal', 'flex', 'modalAnimation');
+        if(isPanelOpen === false){
+            isPanelOpen = true;
+            isTalking = true;
+            modalStatus('settingModal', 'flex', 'modalAnimation');
+        }
     });
 
     scene.load.once('complete', ()=>{

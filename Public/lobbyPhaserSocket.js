@@ -1,4 +1,5 @@
 let loggedIn_playerName;
+let userProfile;
 
 socket.on('connect', ()=>{
     function guestID(length) {
@@ -27,7 +28,8 @@ socket.on('connect', ()=>{
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
     socket.emit('game_playerDisconnect');
 
-    loggedIn_playerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+    loggedIn_playerName = playerName;
+    userProfile = 'https://i.imgur.com/ajVzRmV.jpg';
 });
 
 function sceneSocket(scene){

@@ -1,6 +1,7 @@
 var validateUser;
 var loggedInURL;
 var userType;
+var userProfile;
 
 async function getCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
@@ -81,6 +82,7 @@ async function loadProfile(playerName){
                 document.getElementById('guestDiv').style.display = userType === 'guest' ? 'flex' : 'none';
                 document.getElementById('playerDiv').style.display = userType === 'guest' ? 'none' : 'flex';
             }
+            userProfile = getPlayerProfile_data.profile;
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
 

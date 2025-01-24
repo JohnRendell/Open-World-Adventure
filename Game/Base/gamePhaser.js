@@ -214,7 +214,7 @@ class homeBase extends Phaser.Scene{
             }
         });
 
-        var door = (doorName, doorText, posX, posY, depth, forPlayer, roomObj, roomStuff)=>{
+        var door = (doorName, doorText, posX, posY, depth, forPlayer, roomObj)=>{
             //door
             const doorObj = this.physics.add.staticSprite(posX, posY, 'door').setOrigin(0.5).setDisplaySize(80, 100).setDepth(depth);
             doorObj.body.setSize(47, 120, true);
@@ -240,35 +240,16 @@ class homeBase extends Phaser.Scene{
                         const doorLabel = offsetY === 0 ? 'Click to go outside the Room' : doorText;
 
                         label.setText(doorLabel);
+                        label.setDepth(5).setVisible(false);
 
-                        //stuff in the rooms
-                        let roomStuffCount = roomStuff.length;
-
-                        for(let i = 0; i < roomStuffCount; i++){
-                            let obj = roomStuff[i];
-                            obj.setDepth(wallDepth);
-
-                            label.setDepth(5).setVisible(false);
-
-                            if(wallDepth === 0){
-                                if(obj.name === 'Cabinet'){ 
-                                    obj.on('pointerdown', () => {
-                                        if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), obj.getBounds())) {
-                                            modalStatus('cosmeticModal', 'flex', 'modalAnimation');
-                                        }
-                                    });
-                                }
-                            }
-                            else{
-                                label.setDepth(5).setVisible(false);
-                            }
-                        }
+                        //for cabinet
+                        this.cabinet.setDepth(wallDepth);
                         
                         roomObj.setDepth(wallDepth);
                         doorObj.setDepth(wallDepth);
                         this.playerContainer.setY(newPlayerY);
 
-                        roomObj.body.setSize(240, colliderSize, true);
+                        roomObj.body.setSize(300, colliderSize, true);
                         roomObj.body.setOffset(0, offsetY);
 
                         isMainPlayerGoingToRoom = offsetY === 0 ? true : false;
@@ -300,39 +281,40 @@ class homeBase extends Phaser.Scene{
         this.frontWallHouse.body.setSize(720, 100, true);
         this.frontWallHouse.body.setOffset(0, 0);
 
-        this.frontRoomWall = this.add.rectangle(650, 535, 240, 130, 0xa7a7a7).setDepth(4);
+        this.frontRoomWall = this.add.rectangle(620, 535, 300, 130, 0xa7a7a7).setDepth(4);
         this.physics.add.existing(this.frontRoomWall, true);
-        this.frontRoomWall.body.setSize(240, 50, true);
+        this.frontRoomWall.body.setSize(300, 50, true);
         this.frontRoomWall.body.setOffset(0, 80);
 
         this.physics.add.collider(this.frontWallHouse, this.playerContainer);
         this.physics.add.collider(this.frontRoomWall, this.playerContainer);
 
         //stuff in rooms
-        this.roomStuff = this.physics.add.staticGroup();
+        this.cabinet = this.physics.add.staticSprite(600, 560, 'Cabinet').setOrigin(0.5).setDisplaySize(100, 130).setDepth(4).setName('Cabinet'),
+        this.cabinet.body.setSize(65, 90, true);
+        this.cabinet.body.setOffset(480, 470);
+        this.cabinet.setInteractive({ useHandCursor: true });
 
-        const stuff = [
-            this.roomStuff.create(600, 560, 'Cabinet').setOrigin(0.5).setDisplaySize(100, 130).setDepth(4).setName('Cabinet'),
-        ]
-
-        stuff.forEach(obj =>{
-            obj.body.setSize(65, 90, true);
-            obj.body.setOffset(480, 470);
-            obj.setInteractive({ useHandCursor: true });
+        this.cabinet.on('pointerdown', () => {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.cabinet.getBounds()) && isPanelOpen === false) {
+                isTalking = true;
+                isPanelOpen = true;
+                modalStatus('cosmeticModal', 'flex', 'modalAnimation');
+            }
         });
 
         //door for front house
-        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null, null);
+        door.call(this, 'frontDoor', 'Click the door to go outside', 600, 120, 0, false, null);
 
         //door for room
-        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 4, true, this.frontRoomWall, stuff);
+        door.call(this, 'roomDoor', 'Click the door to go inside the Room', 700, 550, 4, true, this.frontRoomWall);
 
         //window
         this.window = this.add.image(400, 100, 'window').setOrigin(0.5).setDisplaySize(60, 60);
 
         const walls = [
             this.add.rectangle(140, 470, 60, 600, 0xa7a7a7).setDepth(0),
-            this.add.rectangle(500, 620, 60, 300, 0xa7a7a7).setDepth(2),
+            this.add.rectangle(500, 685, 60, 175, 0xa7a7a7).setDepth(2),
             this.add.rectangle(800, 470, 60, 600, 0xa7a7a7).setDepth(0),
         ];
         walls.forEach(obj =>{
@@ -383,7 +365,7 @@ class homeBase extends Phaser.Scene{
         //chest interactions
         this.chest.setInteractive({ useHandCursor: true });
         this.chest.on('pointerdown', () => {
-            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds()) && isPanelOpen === false) {
                 modalStatus('chestModal', 'flex', 'modalAnimation');
             }
         });
@@ -476,7 +458,7 @@ class homeBase extends Phaser.Scene{
             }
             socket.emit('game_playerMove', playerData);
             socket.emit('game_existingPlayer', playerData);
-            socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide);
+            socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
         }
     }
 }

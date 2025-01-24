@@ -48,9 +48,11 @@ function lobbyUI(scene){
 
     scene.button_GlobalChat.setInteractive({ useHandCursor: true });
     scene.button_GlobalChat.on('pointerdown', () => {
-        isTalking = true;
-        isPanelOpen = true;
-        modalStatus('globalChatModal', 'flex', 'modalAnimation');
+        if(isPanelOpen === false){
+            isTalking = true;
+            isPanelOpen = true;
+            modalStatus('globalChatModal', 'flex', 'modalAnimation');
+        }
     });
 
     socket.on('incrementGlobalMessage', (count)=>{

@@ -156,7 +156,7 @@ function sceneSocket(scene){
     });
 
     //displaying sprite player
-    socket.on('gameOutside_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide)=>{
+    socket.on('gameOutside_loadPlayerSprite', (playerID, spriteFront, spriteBack, spriteSide, frontAttack, backAttack, sideAttack)=>{
         if(playerID !== game_PlayerName){
             scene.load.spritesheet(playerID + '_playerBack', spriteBack, {
                 frameWidth: 1600 / 5,
@@ -169,6 +169,21 @@ function sceneSocket(scene){
             });
 
             scene.load.spritesheet(playerID + '_playerIdle', spriteSide, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            scene.load.spritesheet(playerID + '_playerAttackSide', sideAttack, {
+                frameWidth: 4800 / 5,
+                frameHeight: 960 / 1
+            });
+
+            scene.load.spritesheet(playerID + '_playerAttackFront', frontAttack, {
+                frameWidth: 1600 / 5,
+                frameHeight: 800 / 1
+            });
+
+            scene.load.spritesheet(playerID + '_playerAttackBack', backAttack, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1
             });
@@ -200,10 +215,64 @@ function sceneSocket(scene){
                         repeat: -1
                     });
                 }
+
+                if(!scene.anims.exists(playerID + '_playerAttackSide')){
+                    scene.anims.create({
+                        key: playerID + '_playerAttackSide',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerAttackSide', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: 0
+                    });
+                }
+
+                if(!scene.anims.exists(playerID + '_playerAttackFront')){
+                    scene.anims.create({
+                        key: playerID + '_playerAttackFront',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerAttackFront', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: 0
+                    });
+                }
+
+                if(!scene.anims.exists(playerID + '_playerAttackBack')){
+                    scene.anims.create({
+                        key: playerID + '_playerAttackBack',
+                        frames: scene.anims.generateFrameNumbers(playerID + '_playerAttackBack', { start: 0, end: 1 }),
+                        frameRate: 4,
+                        repeat: 0
+                    });
+                }
                 animationFire = true;
             });
 
             scene.load.start();
+        }
+    });
+
+    //TODO: fix this
+    socket.on('gameOutside_playerAttack', (playerData)=>{
+        const { playerID, isAttackingBack, isAttackingSide, isAttackingFront } = playerData;
+
+        //search player to the collection
+        const findPlayer = scene.playerCollection.get(playerID);
+
+        if(findPlayer){
+            const { playerSprite } = findPlayer;
+
+            if(animationFire){
+                if(isAttackingSide){
+                    alert(isAttackingSide)
+                    playerSprite.play(playerID + '_playerAttackSide', true);
+                }
+
+                if(isAttackingBack){
+                    playerSprite.play(playerID + '_playerAttackBack', true);
+                }
+                
+                if(isAttackingFront){
+                    playerSprite.play(playerID + '_playerAttackFront', true);
+                }
+            }
         }
     });
 }

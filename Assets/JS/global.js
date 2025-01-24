@@ -150,30 +150,6 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 
         if(prompt_data.message == 'success'){
             promptMessage(prompt_data.output);
-
-            let loginOutput = prompt_data.output;
-
-            if(npcName === 'Rupert'){
-                if(loginOutput.substring(0, 5) === 'LOGIN'){
-                    modalStatus('rupertDialog', 'none', null);
-                    modalStatus('loginDiv', 'flex', 'modalAnimation');
-                }
-
-                if(loginOutput.substring(0, 5) === 'GUEST'){
-                    modalStatus('rupertDialog', 'none', null);
-
-                    if(await setCookie(localStorage.getItem('tempPlayerName'), 'tempPlayerName')){
-                        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-                        if(decryptPlayerName){
-                            socket.emit('redirectToBase', decryptPlayerName);
-                            localStorage.setItem('visitor', 'i am visitor');
-                            window.location.href = '/Game/Base/' + decryptPlayerName;
-                            localStorage.removeItem('tempPlayerName');
-                        }
-                    }
-                }
-            }
         }
         else{
             var container = document.getElementById(containerID);
@@ -199,7 +175,7 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
 }
 
 //setting cookie
-async function setCookie(value, key){
+async function setCookie(value, userType){
     try{
         const setCookie = await fetch('/cookie/setCookie', {
             method: "POST",
@@ -207,12 +183,12 @@ async function setCookie(value, key){
                 "Accept": "Application/json",
                 "Content-Type": "Application/json"
             },
-            body: JSON.stringify({ username: value, cryptoKey: key })
+            body: JSON.stringify({ username: value, userType: userType })
         });
 
         const setCookie_data = await setCookie.json();
 
-        return setCookie_data.message === 'success' ? true : false;
+        return { status: setCookie_data.message === 'success' ? true : false, encryptUser: setCookie_data.message === 'success' ? setCookie_data.encryptUser : null };
     }
     catch(err){
         console.log(err);

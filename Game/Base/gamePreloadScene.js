@@ -6,7 +6,7 @@ function loadAssets(scene){
     scene.load.on('progress', (value) => {
         let percentage = parseInt(value * 100);
         document.getElementById('loadingProgressText').innerText = `${percentage} %`;
-    });
+    }); 
 
     scene.load.on('complete', () => {
         document.getElementById('loadingProgressText').innerText = 'Starting game...';

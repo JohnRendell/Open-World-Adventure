@@ -3,13 +3,6 @@ const router = express.Router();
 const sanitizeHtml = require('sanitize-html');
 const accountModel = require('./accountMongoose');
 const bcryptJS = require('bcryptjs');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const CryptoJS = require('crypto-js');
-
-require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
-
-router.use(cookieParser(process.env.COOKIE_KEY));
 
 router.post('/', async (req, res)=>{
     const username = sanitizeHtml(req.body.username);
@@ -61,10 +54,7 @@ router.post('/', async (req, res)=>{
                     const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: 'https://i.imgur.com/ajVzRmV.jpg', profileHash: null, frontSprite: 'https://i.imgur.com/Qq3Yedn.png', backSprite: 'https://i.imgur.com/xhU6u5B.png', sideSprite: 'https://i.imgur.com/4BkMHTS.png', attackSideSprite: 'https://i.imgur.com/jVS0NeM.png', attackFrontSprite: 'https://i.imgur.com/ebhD511.png', attackBackSprite: 'https://i.imgur.com/z1jmKkm.png' });
 
                     if(createAcc){
-                        let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();
-
-                        res.cookie('username', encryptPlayerName, { signed: true, httpOnly: true, maxAge: 3600000, secure: true, path: '/' });
-                        res.status(200).json({ message: 'success', username: encryptPlayerName });
+                        res.status(200).json({ message: 'success', username: username });
                     }
                 }
             }

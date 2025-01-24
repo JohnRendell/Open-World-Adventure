@@ -13,7 +13,7 @@ function loadAssets(scene) {
         document.getElementById('loadingProgressText').innerText = 'Starting game...';
     });
 
-    //objecs
+    //objects
     scene.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
     scene.load.image('rock', '/ImageComponents/Objects/Rock.png');
     scene.load.image('tree', '/ImageComponents/Objects/Tree.png');
@@ -21,6 +21,10 @@ function loadAssets(scene) {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
+
+    //icon
+    scene.load.image('loggedIcon', '/ImageComponents/UI/Login Icon.png');
+    scene.load.image('guestIcon', '/ImageComponents/UI/Guest Icon.png');
 
     //player
     scene.load.spritesheet('guestPlayerIdle', 'https://i.imgur.com/4BkMHTS.png', {
@@ -34,12 +38,6 @@ function loadAssets(scene) {
     });
 
     scene.load.spritesheet('guestPlayerBack', 'https://i.imgur.com/xhU6u5B.png', {
-        frameWidth: 1600 / 5,
-        frameHeight: 800 / 1
-    });
-
-    //NPC
-    scene.load.spritesheet('Rupert_NPC', '/ImageComponents/Sprite Sheets/Rupert Idle sprite sheet.png', {
         frameWidth: 1600 / 5,
         frameHeight: 800 / 1
     });

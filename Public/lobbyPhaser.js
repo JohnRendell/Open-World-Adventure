@@ -149,54 +149,6 @@ class gameLobby extends Phaser.Scene{
         //collider for spawner
         this.physics.add.collider(this.playerContainer, this.spawner);
 
-        //add the rupert NPC
-        this.rupert = this.physics.add.staticSprite(centerWorld.width - 30, centerWorld.height + 200, 'Rupert_NPC').setOrigin(0.5);
-        this.rupert.setScale(0.1);
-        this.rupert.body.setSize(40, 70, true);
-        this.rupert.body.setOffset(140, 365);
-
-        //NPC rupert Label
-        this.rupertLabel = this.add.text(centerWorld.width - 30, (centerWorld.height + 200) - 60, 'Rupert (NPC)', {
-            font: "16px 'Pixelify Sans",
-            fill: "#ffffff",
-            align: "center"
-        }).setOrigin(0.5);
-        this.rupertLabel.setDepth(2);
-
-        this.rupertText = this.add.text(centerWorld.width - 30, ((centerWorld.height + 200) - 100) + 20, "Click to talk", {
-            font: "16px 'Pixelify Sans",
-            fill: "#ffffff",
-            align: "center"
-        }).setOrigin(0.5);
-        this.rupertText.setVisible(false);
-        this.rupertText.setDepth(2);
-
-        //animation idle for npc
-        this.anims.create({
-            key: 'rupert',
-            frames: this.anims.generateFrameNumbers('Rupert_NPC', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.rupert.play('rupert');
-
-        //trigger for this npc, on enter
-        this.physics.add.overlap(this.playerContainer, this.rupert, () => {
-            this.rupertText.setVisible(true);
-        });
-
-        this.rupert.setInteractive({ useHandCursor: true });
-        this.rupert.on('pointerdown', () => {
-            if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds()) && isPanelOpen === false) {
-                npcGreet('npcConversationDiv', 'Hi i am Rupert, say login if you want to log in or say guest if you want to play as guest.');
-                socket.emit('NPCPrompt', 'rupert');
-                modalStatus('rupertDialog', 'flex', 'modalAnimation');
-                isTalking = true;
-                isPanelOpen = true;
-            }
-        });
-
         //rock
         this.rockGroup = this.physics.add.staticGroup();
 
@@ -233,6 +185,76 @@ class gameLobby extends Phaser.Scene{
         this.D = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         this.input.keyboard.enableGlobalCapture();
+
+        //login icon
+        this.loggedInIcon = this.add.image(70, 0, 'loggedIcon').setDisplaySize(30, 30);
+
+        //login text
+        this.loggedInLabel = this.add.text(0, 0, "Log In", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+
+        //login container
+        this.button_Background = this.add.graphics();
+        this.button_Background.fillStyle(0x3079ff, 1);
+        this.button_Background.fillRoundedRect(-75, -20, 170, 40, 10);
+
+        this.loggedInContainer = this.add.container(canvasSize.width - 110, 40, [
+            this.button_Background,
+            this.loggedInIcon,
+            this.loggedInLabel
+        ]);
+        this.loggedInContainer.setScrollFactor(0).setDepth(5).setSize(170, 40);
+
+        this.loggedInContainer.setInteractive({ useHandCursor: true });
+        this.loggedInContainer.on('pointerdown', () => {
+            isTalking = true;
+            isPanelOpen = true;
+            modalStatus('loginDiv', 'flex', 'modalAnimation');
+        });
+
+        //guest icon
+        this.guestIcon = this.add.image(70, 0, 'guestIcon').setDisplaySize(30, 30);
+
+        //guest text
+        this.guestLabel = this.add.text(0, 0, "Play as Guest", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+
+        //guest container
+        this.guestButton_Background = this.add.graphics();
+        this.guestButton_Background.fillStyle(0x3079ff, 1);
+        this.guestButton_Background.fillRoundedRect(-75, -20, 170, 40, 10);
+
+        this.guestContainer = this.add.container(canvasSize.width - 110, 100, [
+            this.guestButton_Background,
+            this.guestIcon,
+            this.guestLabel
+        ]);
+        this.guestContainer.setScrollFactor(0).setDepth(5).setSize(170, 40);
+
+        this.guestContainer.setInteractive({ useHandCursor: true });
+        this.guestContainer.on('pointerdown', async () => {
+            document.getElementById('processingDiv').style.display = 'flex';
+
+            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+
+            const cookieStatus = await setCookie(decryptPlayerName, 'guest');
+
+            if(cookieStatus.status){
+                document.getElementById('processingDiv').style.display = 'none';
+
+                if(decryptPlayerName){
+                    socket.emit('redirectToBase', decryptPlayerName);
+                    window.location.href = '/Game/Base/' + decryptPlayerName;
+                    localStorage.removeItem('tempPlayerName');
+                }
+            }
+        });
 
         //call the socket scene
         sceneSocket(this);
@@ -286,11 +308,6 @@ class gameLobby extends Phaser.Scene{
             this.player.play('playerIdle', true);
         }
 
-        // on exit for NPCs
-        if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.rupert.getBounds())) {
-            this.rupertText.setVisible(false);
-        }
-
         //for other player movement
         let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
         
@@ -306,3 +323,29 @@ class gameLobby extends Phaser.Scene{
         socket.emit('existingPlayer', playerData);
     }
 }
+
+// Game configuration
+const config = {
+    type: Phaser.CANVAS,
+    width: canvasSize.width,
+    height: canvasSize.height,
+    canvas: gameCanvas,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: false
+        }
+    },
+    scene: [gameLobby]
+};
+
+//webfont loader
+WebFont.load({
+    google: {
+        families: ['Pixelify Sans']
+    }
+})
+
+// Initialize the Phaser Game
+const game = new Phaser.Game(config);

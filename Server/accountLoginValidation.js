@@ -5,7 +5,6 @@ const accountModel = require('./accountMongoose');
 const bcryptJS = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const CryptoJS = require('crypto-js');
 
 require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
 
@@ -27,11 +26,7 @@ router.post('/', async (req, res)=>{
                 let checkPass = comparePass(password, loginAcc.password);
 
                 if(checkPass){
-                    let encryptPlayerName = CryptoJS.AES.encrypt(username, 'token').toString();
-  
-                    //add httpOnly: true later on
-                    res.cookie('username', encryptPlayerName, { signed: true, maxAge: 3600000, secure: true, path: '/' });
-                    res.status(200).json({ message: 'success', username: encryptPlayerName });
+                    res.status(200).json({ message: 'success', username: username });
                 }
                 else{
                     res.status(200).json({ message: 'Wrong Credentials' });

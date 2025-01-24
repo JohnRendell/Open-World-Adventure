@@ -13,7 +13,7 @@
 
     "uglifyCookieJS": "uglifyjs ./Public/clearCookie.js -o ./Public/MinJS/clearCookie.min.js -c -m",
     "uglifyLobbyJS": "uglifyjs ./Public/lobby.js -o ./Public/MinJS/lobby.min.js -c -m",
-    "uglifyLobbyPhaserJS": "uglifyjs ./Public/scenePreloadPhaser.js ./Public/lobbyPhaser.js ./Public/lobbyPhaserSocket.js ./Public/lobbyConfig.js -o ./Public/MinJS/lobbyPhaserUglify.min.js -c -m"
+    "uglifyLobbyPhaserJS": "uglifyjs ./Public/scenePreloadPhaser.js ./Public/lobbyPhaser.js ./Public/lobbyPhaserSocket.js -o ./Public/MinJS/lobbyPhaserUglify.min.js -c -m"
   },
   "repository": {
     "type": "git",

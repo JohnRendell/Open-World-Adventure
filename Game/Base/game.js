@@ -1,7 +1,8 @@
 var validateUser;
 var loggedInURL;
+var userType;
 
-async function checkCookie(){
+async function getCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
         method: "POST",
         headers: {
@@ -16,6 +17,7 @@ async function checkCookie(){
     if(getUserToken_Data.message === 'success'){
         loggedInURL = getUserToken_Data.encryptPlayerName;
         validateUser = getUserToken_Data.decryptPlayerName;
+        userType = getUserToken_Data.userType;
     }
     else{
         alert('Cookie expired');
@@ -28,7 +30,7 @@ function checkValidUrl(){
         return inputString.replace(/_/g, '/');
     }
 
-   if(!localStorage.getItem('visitor')){
+   if(userType === 'loggedIn'){
         let url = window.location.href;
         let splitUrl = url.split('/')
         let checkPlayerNameURL = splitUrl[5];
@@ -76,8 +78,8 @@ async function loadProfile(playerName){
                 document.getElementById('prevSprite4').src = getPlayerProfile_data.attackBackSprite; //back
                 document.getElementById('prevSprite5').src = getPlayerProfile_data.attackSideSprite; //sides
 
-                document.getElementById('guestDiv').style.display = getPlayerProfile_data.isGuest ? 'flex' : 'none';
-                document.getElementById('playerDiv').style.display = getPlayerProfile_data.isGuest ? 'none' : 'flex';
+                document.getElementById('guestDiv').style.display = userType === 'guest' ? 'flex' : 'none';
+                document.getElementById('playerDiv').style.display = userType === 'guest' ? 'none' : 'flex';
             }
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
@@ -181,8 +183,8 @@ function openAccountModal(){
     var loggedInMode = document.getElementById('accUpdateLoggedIn');
     var guestMode = document.getElementById('accUpdateGuest');
 
-    loggedInMode.style.display = localStorage.getItem('visitor') ? 'none' : 'flex';
-    guestMode.style.display = localStorage.getItem('visitor') ? 'flex' : 'none';
+    loggedInMode.style.display = userType === 'guest' ? 'none' : 'flex';
+    guestMode.style.display = userType === 'guest' ? 'flex' : 'none';
 
     document.getElementById('accSetting_userID').value = validateUser;
 }
@@ -209,13 +211,13 @@ async function updateAccount() {
 
             if(changeAcc_data.message === 'success'){
                 document.getElementById('validatingDiv').style.display = 'flex';
-                let encryptNewUsername = CryptoJS.AES.encrypt(changeAcc_data.username , 'token').toString();
+                const cookieStatus = await setCookie(changeAcc_data.username, 'loggedIn');
 
-                if(await setCookie(encryptNewUsername, 'token')){
+                if(cookieStatus.status){
                     document.getElementById('validatingDiv').style.display = 'none';
                     alert('Account Updated');
 
-                    await checkCookie();
+                    await getCookie();
                     socket.emit('updateAcc', changeAcc_data.username);
 
                     document.getElementById('accSetting_userID').value = "";
@@ -238,12 +240,14 @@ async function updateAccount() {
 
 //logout
 function logout(){
+    socket.emit('gameOutside_playerDisconnect');
+    socket.emit('redirectToBase', game_PlayerName);
     window.location.href = '/lobby';
 }
 
-window.onload = 
-        checkCookie(),
-        checkValidUrl(),
-        setTimeout(()=>{
-            loadProfile(validateUser)
-        }, 2000);
+window.onload = async function(){
+    await getCookie(),
+    checkValidUrl(),
+    loadProfile(validateUser);
+}
+        

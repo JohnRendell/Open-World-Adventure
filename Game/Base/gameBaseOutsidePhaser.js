@@ -18,7 +18,6 @@ const speed = 200;
 let isTalking = false;
 let isPanelOpen = false;
 let isLoaded = false;
-let isMainPlayerGoingToRoom = false;
 var game_PlayerName, loggedIn_playerName;
 
 let spriteFront, spriteSide, spriteBack;

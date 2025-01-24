@@ -12,5 +12,4 @@ window.onload = async function(){
     if(!deleteCookieData){
         alert('failed to clear cookie');
     }
-    localStorage.removeItem('visitor');
 }

@@ -11,15 +11,18 @@ router.use(cookieParser(process.env.COOKIE_KEY));
 router.post('/setCookie', (req, res)=>{
     try{
         let user = req.body.username;
-        let cryptoKey = req.body.cryptoKey;
+        let type = req.body.userType;
 
-        let decryptPlayerName = CryptoJS.AES.decrypt(user, cryptoKey).toString(CryptoJS.enc.Utf8);
+        let encryptUsername = CryptoJS.AES.encrypt(user, 'token').toString();
 
-        if(decryptPlayerName){
-            //add httpOnly: true later on
-            res.cookie('username', user, { signed: true, maxAge: 3600000, secure: true, path: '/' });
-            res.status(200).json({ message: 'success', username: user });
-        }
+        //add httpOnly: true later on
+        let sessionData = JSON.stringify({
+            username: encryptUsername,
+            userType: type
+        });
+
+        res.cookie('session', sessionData, { signed: true, maxAge: 3600000, secure: true, path: '/' });
+        res.status(200).json({ message: 'success', encryptUser: encryptUsername });
     }
     catch(err){
         console.log(err);
@@ -32,20 +35,14 @@ router.post('/getCookie', (req, res)=>{
         let guaranteedAccess = req.body.guaranteedAccess;
 
         if(guaranteedAccess){
-            let usernameCookie = req.signedCookies.username;
+            let userSession = req.signedCookies.session;
     
-            if(usernameCookie){
-                let playerToken = CryptoJS.AES.decrypt(usernameCookie, 'token').toString(CryptoJS.enc.Utf8);
-                let guestToken = CryptoJS.AES.decrypt(usernameCookie, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+            if(userSession){
+                const { username, userType } = JSON.parse(userSession);
+                let playerToken = CryptoJS.AES.decrypt(username, 'token').toString(CryptoJS.enc.Utf8);
 
-                //for logged in player
                 if(playerToken){
-                    res.status(200).json({ message: 'success', decryptPlayerName: playerToken, encryptPlayerName: usernameCookie });
-                }
-
-                //for guest
-                if(guestToken){
-                    res.status(200).json({ message: 'success', decryptPlayerName: guestToken });
+                    res.status(200).json({ message: 'success', decryptPlayerName: playerToken, encryptPlayerName: username, userType: userType });
                 }
             }
             else{
@@ -59,7 +56,7 @@ router.post('/getCookie', (req, res)=>{
 });
 
 router.get('/deleteCookie', (req, res)=>{
-    res.clearCookie('username');
+    res.clearCookie('session');
     res.status(200).json({ message: 'cookies has been deleted'});
 });
 

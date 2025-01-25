@@ -190,6 +190,11 @@ module.exports = (server)=>{
             socket.broadcast.emit('gameOutside_playerAttack', playerData);
         });
 
+        //for player taking damage
+        socket.on('gameOutside_takingDamage', (healthPoints)=>{
+
+        });
+
         //when player update account
         socket.on('updateAcc', (username)=>{
             socket.emit('updateAcc', username);

@@ -54,6 +54,8 @@ function sceneSocket(scene){
                 scene.joinedPlayer = scene.physics.add.sprite(0,0, playerUser + '_playerIdle').setOrigin(0.5);
                 scene.joinedPlayer.setScale(0.1); 
                 scene.joinedPlayer.setVisible(true);
+                scene.joinedPlayer.body.setSize(scene.joinedPlayer.width, scene.joinedPlayer.height, true);
+                scene.joinedPlayer.body.setOffset(0,0);
 
                 //joined Player name
                 scene.joinedPlayerName = scene.add.text(0, -50, playerUser, {
@@ -64,6 +66,11 @@ function sceneSocket(scene){
 
                 //joined Player container
                 scene.joinedPlayerContainer = scene.add.container(380, 250, [scene.joinedPlayer, scene.joinedPlayerName]);
+                scene.physics.world.enable(scene.joinedPlayerContainer);
+
+                scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
+                scene.joinedPlayerContainer.body.setSize(40, 70, true);
+                scene.joinedPlayerContainer.body.setOffset(-20, -35);
                 scene.joinedPlayerContainer.setDepth(3);
 
                 //add player to the collection
@@ -140,6 +147,11 @@ function sceneSocket(scene){
                         scene.joinedPlayerName,
                         scene.joinedPlayer
                     ]);
+                scene.physics.world.enable(scene.joinedPlayerContainer);
+
+                scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
+                scene.joinedPlayerContainer.body.setSize(40, 70, true);
+                scene.joinedPlayerContainer.body.setOffset(-20, -35);
                 scene.joinedPlayerContainer.setDepth(3);
 
                 //add player to the collection
@@ -249,7 +261,6 @@ function sceneSocket(scene){
         }
     });
 
-    //TODO: fix this
     socket.on('gameOutside_playerAttack', (playerData)=>{
         const { playerID, isAttackingBack, isAttackingSide, isAttackingFront } = playerData;
 
@@ -261,7 +272,6 @@ function sceneSocket(scene){
 
             if(animationFire){
                 if(isAttackingSide){
-                    alert(isAttackingSide)
                     playerSprite.play(playerID + '_playerAttackSide', true);
                 }
 
@@ -272,7 +282,20 @@ function sceneSocket(scene){
                 if(isAttackingFront){
                     playerSprite.play(playerID + '_playerAttackFront', true);
                 }
+
+                //main player's hp
+                scene.playerHealth.fillRoundedRect(100, 0, 100, 20, 5);
             }
         }
+    });
+
+    //TODO: fix this not colliding
+    scene.playerCollection.forEach((player, name) => {
+        const { container } = player;
+
+        //for main player overlapping the player
+        scene.physics.add.collider(container, scene.playerContainer, ()=>{
+            alert('You are colliding with ' + name)
+        });
     });
 }

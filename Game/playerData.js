@@ -1,0 +1,1 @@
+var playerHealthPoints = 100;

@@ -14,7 +14,7 @@ function homeBaseUI(scene){
 
     scene.playerHealth = scene.add.graphics();
     scene.playerHealth.fillStyle(0xeb281a, 1);
-    scene.playerHealth.fillRoundedRect(100, 0, 100, 20, 5);
+    scene.playerHealth.fillRoundedRect(100, 0, playerHealthPoints, 20, 5);
 
     //meat icon
     scene.meatIcon = scene.add.image(80, 40, 'meatIcon').setDisplaySize(30, 30);

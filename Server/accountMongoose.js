@@ -8,6 +8,7 @@ const accountSchema = new Schema({
     password: { type: String, require: true },
     profile: { type: String, require: true },
     profileHash: { type: String, require: true },
+    healthPoints: { type: Number, require: true },
     frontSprite: { type: String, require: true },
     backSprite: { type: String, require: true },
     sideSprite: { type: String, require: true },

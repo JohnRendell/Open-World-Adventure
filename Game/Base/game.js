@@ -83,6 +83,7 @@ async function loadProfile(playerName){
                 document.getElementById('playerDiv').style.display = userType === 'guest' ? 'none' : 'flex';
             }
             userProfile = getPlayerProfile_data.profile;
+            playerHealthPoints = getPlayerProfile_data.playerHealthPoints;
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
 

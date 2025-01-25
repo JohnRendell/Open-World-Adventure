@@ -457,16 +457,22 @@ class baseOutside extends Phaser.Scene{
             //attacking
             if(isAttackingSide){
                 this.player.play('playerAttackSide', true);
+                socket.emit('gameOutside_playerAttack', { playerID: game_PlayerName, isAttackingBack: isAttackingBack, isAttackingFront: isAttackingFront, isAttackingSide: isAttackingSide });
+
                 isAttackingSide = false;
             }
 
             if(isAttackingFront){
                 this.player.play('playerAttackFront', true);
+                socket.emit('gameOutside_playerAttack', { playerID: game_PlayerName, isAttackingBack: isAttackingBack, isAttackingFront: isAttackingFront, isAttackingSide: isAttackingSide });
+
                 isAttackingFront = false;
             }
 
             if(isAttackingBack){
                 this.player.play('playerAttackBack', true);
+                socket.emit('gameOutside_playerAttack', { playerID: game_PlayerName, isAttackingBack: isAttackingBack, isAttackingFront: isAttackingFront, isAttackingSide: isAttackingSide });
+
                 isAttackingBack = false;
             }
 
@@ -521,14 +527,10 @@ class baseOutside extends Phaser.Scene{
                 y: this.playerContainer.y,
                 isBack: isBack,
                 isFront: isFront,
-                spriteX: this.player.flipX,
-                isAttackingSide: isAttackingSide,
-                isAttackingBack: isAttackingBack,
-                isAttackingFront: isAttackingFront
+                spriteX: this.player.flipX
             }
             socket.emit('gameOutside_playerMove', playerData);
             socket.emit('gameOutside_existingPlayer', playerData);
-            socket.emit('gameOutside_playerAttack', playerData);
 
             socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, spriteFrontAttack, spriteBackAttack, spriteSideAttack);
         }

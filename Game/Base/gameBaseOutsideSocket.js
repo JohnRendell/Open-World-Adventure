@@ -261,6 +261,32 @@ function sceneSocket(scene){
         }
     });
 
+    //TODO: fix this
+    let playerHealthPoints = 100;
+    let isAttack = false;
+
+    //for main player overlapping the player
+    function attackCheck(){
+        scene.physics.add.overlap(scene.playerContainer, scene.joinedPlayerContainer, () => {
+            console.log('is colliding');
+            if(isAttack){
+                playerHealthPoints--;
+
+                if(playerHealthPoints <= 0){
+                    playerHealthPoints = 0;
+                }
+
+                //main player's hp
+                scene.playerHealth.destroy();
+                scene.playerHealth = scene.add.graphics();
+                scene.playerHealth.fillStyle(0xeb281a, 1);
+                scene.playerHealth.fillRoundedRect(100, 0, playerHealthPoints, 20, 5);
+                
+                isAttack = false;
+            }
+        });
+    }
+
     socket.on('gameOutside_playerAttack', (playerData)=>{
         const { playerID, isAttackingBack, isAttackingSide, isAttackingFront } = playerData;
 
@@ -272,30 +298,21 @@ function sceneSocket(scene){
 
             if(animationFire){
                 if(isAttackingSide){
+                    isAttack = true;
                     playerSprite.play(playerID + '_playerAttackSide', true);
                 }
 
                 if(isAttackingBack){
+                    isAttack = true;
                     playerSprite.play(playerID + '_playerAttackBack', true);
                 }
                 
                 if(isAttackingFront){
+                    isAttack = true;
                     playerSprite.play(playerID + '_playerAttackFront', true);
                 }
-
-                //main player's hp
-                scene.playerHealth.fillRoundedRect(100, 0, 100, 20, 5);
+                attackCheck();
             }
         }
-    });
-
-    //TODO: fix this not colliding
-    scene.playerCollection.forEach((player, name) => {
-        const { container } = player;
-
-        //for main player overlapping the player
-        scene.physics.add.collider(container, scene.playerContainer, ()=>{
-            alert('You are colliding with ' + name)
-        });
     });
 }

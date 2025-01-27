@@ -222,14 +222,13 @@ class baseOutside extends Phaser.Scene{
                     isPanelOpen = true;
 
                     switch(npcKey){
-                        case 'bimbo':
-                            socket.emit('NPCPrompt', 'bimbo');
-                            npcGreet('npcConversationDiv', '');
-                        break;
-
                         case 'bob':
                             socket.emit('NPCPrompt', 'bob');
                             npcGreet('npcConversationDiv', 'Hi im Bob, your robot guide. *Beep boop*');
+                        break;
+
+                        case 'bobPrototype':
+                            npcGreet('bobPrototypeMessage', 'Hey, its me Bob first model, your robot helper, *Buzz Buzz*');
                         break;
                     }
                 }
@@ -241,6 +240,8 @@ class baseOutside extends Phaser.Scene{
         this.bobYOffset = 430;
         this.bobDirection = 1;
         npc.call(this, 'bob', 'Bob_NPC', 'Bob (NPC)', this.bobXOffset, this.bobYOffset, this.bobXHover, 700, 70, 80);
+
+        npc.call(this, 'bobPrototype', 'BobPrototype_NPC', 'Bob Prototype Model (NPC)', 450, 430, 800, 450, 70, 80);
 
         //house base
         this.house = this.add.rectangle(420, 120, 720, 300, 0xa7a7a7).setDepth(1);
@@ -495,6 +496,10 @@ class baseOutside extends Phaser.Scene{
             // on exit for NPCs
             if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
                 this.bobText.setVisible(false);
+            }
+
+            if(!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bobPrototype.getBounds())){
+                this.bobPrototypeText.setVisible(false);
             }
 
             //hovering bob

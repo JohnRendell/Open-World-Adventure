@@ -9,7 +9,7 @@ function npcGreet(containerID, greetMsg){
     container.appendChild(wrapperContainer);
 
     var messageWrapper = document.createElement('div');
-    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
+    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
     wrapperContainer.appendChild(messageWrapper);
 
     var textContent = document.createElement('p');
@@ -65,7 +65,7 @@ function resetGlobalMessageCounter(){
     socket.emit('clearGlobalMessageCounter');
 }
 
-function messageSend(containerID, inputID, incrementID, max, isNPC, npcName){    
+function messageSend(containerID, inputID, incrementID, max, isNPC){    
    try{
         var container = document.getElementById(containerID);
         var messageInput = document.getElementById(inputID);
@@ -105,7 +105,7 @@ function messageSend(containerID, inputID, incrementID, max, isNPC, npcName){
             messageWrapper.appendChild(textContent);
 
             if(isNPC){
-                promptNPC(messageInput.value, container.id, npcPromptInstruction, npcName);
+                promptNPC(messageInput.value, container.id, npcPromptInstruction);
             }
 
             document.getElementById(inputID).value = "";
@@ -128,7 +128,7 @@ function togglePanel(panelAID, panelBID){
 }
 
 //prompt for NPC (Gemini AI)
-async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
+async function promptNPC(promptMsg, containerID, systemInstruction){
     try{
         const prompt = await fetch('/promptNPC', {
             method: "POST",
@@ -169,7 +169,7 @@ async function promptNPC(promptMsg, containerID, systemInstruction, npcName){
             container.appendChild(wrapperContainer);
 
             var messageWrapper = document.createElement('div');
-            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
+            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
             wrapperContainer.appendChild(messageWrapper);
 
             var textContent = document.createElement('p');

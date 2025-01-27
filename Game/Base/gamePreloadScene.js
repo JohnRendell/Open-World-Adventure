@@ -55,4 +55,9 @@ function loadAssets(scene){
         frameWidth: 4800 / 5,
         frameHeight: 960 / 1
     });
+
+    scene.load.spritesheet('BobPrototype_NPC', '/ImageComponents/Sprite Sheets/Helper Robot Sprite sheet.png', {
+        frameWidth: 4800 / 5,
+        frameHeight: 960 / 1
+    });
 }

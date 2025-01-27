@@ -622,6 +622,10 @@ video {
   margin-top: -60rem;
 }
 
+.mt-\[0rem\]{
+  margin-top: 0rem;
+}
+
 .flex{
   display: flex;
 }
@@ -685,6 +689,14 @@ video {
 
 .h-screen{
   height: 100vh;
+}
+
+.h-\[40rem\]{
+  height: 40rem;
+}
+
+.h-full{
+  height: 100%;
 }
 
 .w-20{

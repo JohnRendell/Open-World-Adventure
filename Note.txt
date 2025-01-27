@@ -7,3 +7,5 @@ walls: w 32 px h 32px
 door: w 6px h 10px
 
 Character size: w 10px h 25px - drawing size 30px 30px
+
+NPC sizes = 30px 30px

@@ -340,7 +340,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="border-2 border-gray-800 rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
                 id="globalContainerDiv">
     
             <!--Placeholder for the message, so the tailwind wont forget about this--
@@ -422,7 +422,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="border-2 border-gray-800 rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
                 id="npcConversationDiv">
     
                 <!--Placeholder for the message, so the tailwind wont forget about this
@@ -449,7 +449,7 @@
                     <div class="flex flex-col space-y-2 m-2">
                         <button
                             class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700"
-                            onclick="messageSend('npcConversationDiv', 'npcMessageInput', 'messageIncrementNPC', 80, true, 'Bimbo')">Send</button>
+                            onclick="messageSend('npcConversationDiv', 'npcMessageInput', 'messageIncrementNPC', 80, true)">Send</button>
                         <p class="font-PixelifySans text-sm text-black text-center" id="messageIncrementNPC">0/80</p>
                     </div>
                 </div>
@@ -481,7 +481,6 @@
 <script src="/Base/gameSocket.js"></script>
 
 <!--Phaser Script-->
-<script src="/playerData.js"></script>
 <script src="/Base/gamePreloadScene.js"></script>
 <script src="/Base/gamePhaser.js"></script>
 <script src="/Base/gamePhaserSocket.js"></script>

@@ -20,6 +20,7 @@ function loadPlayerInfo(scene){
 
 function sceneSocket(scene){
     scene.playerCollection = new Map();
+    scene.isAttack = false;
 
     function destroyNoNameSprite(scene){
         //search player to the collection
@@ -261,26 +262,6 @@ function sceneSocket(scene){
         }
     });
 
-    //TODO: fix this
-    let playerHealthPoints = 100;
-    scene.isAttack = false;
-
-    //for main player overlapping the player
-    scene.physics.add.overlap(scene.playerContainer, scene.joinedPlayerContainer, () => {
-        playerHealthPoints--;
-        console.log('hit: ' + playerHealthPoints);
-
-        if(playerHealthPoints <= 0){
-            playerHealthPoints = 0;
-        }
-
-        //main player's hp
-        scene.playerHealth.destroy();
-        scene.playerHealth = scene.add.graphics();
-        scene.playerHealth.fillStyle(0xeb281a, 1);
-        scene.playerHealth.fillRoundedRect(100, 0, playerHealthPoints, 20, 5);
-    });
-
     socket.on('gameOutside_playerAttack', (playerData)=>{
         const { playerID, isAttackingBack, isAttackingSide, isAttackingFront } = playerData;
 
@@ -288,20 +269,53 @@ function sceneSocket(scene){
         const findPlayer = scene.playerCollection.get(playerID);
 
         if(findPlayer){
-            const { playerSprite } = findPlayer;
+            const { playerSprite, container } = findPlayer;
 
             if(animationFire){
                 if(isAttackingSide){
                     playerSprite.play(playerID + '_playerAttackSide', true);
+                    setTimeout(() => {
+                        scene.isAttack = true;
+                    }, 1000);
                 }
 
                 if(isAttackingBack){
                     playerSprite.play(playerID + '_playerAttackBack', true);
+                    setTimeout(() => {
+                        scene.isAttack = true;
+                    }, 1000);
                 }
                 
                 if(isAttackingFront){
                     playerSprite.play(playerID + '_playerAttackFront', true);
+                    setTimeout(() => {
+                        scene.isAttack = true;
+                    }, 1000);
                 }
+
+                //for main player overlapping the player
+                scene.physics.add.overlap(scene.playerContainer, container, () => {
+                    if(scene.isAttack){
+                        playerHealthPoints--;
+
+                        if(playerHealthPoints <= 0){
+                            playerHealthPoints = 0;
+                        }
+
+                        //main player's hp
+                        scene.playerHealth.destroy();
+
+                        scene.playerHealth = scene.add.graphics();
+                        scene.playerHealth.fillStyle(0xeb281a, 1);
+                        scene.playerHealth.fillRoundedRect(100, 0, playerHealthPoints, 20, 5);
+
+                        //add to the container
+                        scene.playerUIContainer.add(scene.playerHealth);
+
+                        socket.emit('gameOutside_takingDamage', playerHealthPoints, game_PlayerName);
+                        scene.isAttack = false;
+                    }
+                });
             }
         }
     });

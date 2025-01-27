@@ -2,6 +2,7 @@ var validateUser;
 var loggedInURL;
 var userType;
 var userProfile;
+var playerHealthPoints;
 
 async function getCookie(){
     const getUserToken = await fetch('/cookie/getCookie', {
@@ -86,7 +87,6 @@ async function loadProfile(playerName){
             playerHealthPoints = getPlayerProfile_data.playerHealthPoints;
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
-
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
         }
     }

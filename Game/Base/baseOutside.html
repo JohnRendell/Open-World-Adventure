@@ -250,6 +250,28 @@
         </div>
     </div>
 
+    <!--Death div-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="deathModal"
+        style="display: none;">
+        <div class="bg-white w-[20rem] h-fit rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+            id="deathModal_panel">
+            <!--Header-->
+            <div class="w-full h-fit flex justify-between p-2">
+                <div class="w-full h-auto">
+                    <h1 class="font-PixelifySans text-black text-center text-lg">You died</h1>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center gap-2 w-fit">
+                <img src="/ImageComponents/UI/Heart Icon.png" alt="heart icon" class="w-[2rem] h-[2rem]">
+                <img src="/ImageComponents/UI/Heart Icon.png" alt="heart icon" class="w-[2rem] h-[2rem]">
+                <img src="/ImageComponents/UI/Heart Icon.png" alt="heart icon" class="w-[2rem] h-[2rem]">
+            </div>
+
+            <button class="font-PixelifySans text-center text-sm text-white bg-green-500 rounded-lg w-fit h-fit p-2 hover:bg-green-700" onclick="backToBase()">Return to Home Base</button>
+        </div>
+    </div>
+
     <!--Loading div-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="loadingDiv"
         style="display: none;">
@@ -334,7 +356,7 @@
                 <div class="flex justify-between items-center gap-4">
                     <img src="/ImageComponents/UI/Heart Icon.png" alt="health icon" class="w-[2rem] h-[2rem]">
                     <button
-                        class="font-PixelifySans text-sm text-white bg-green-500 text-center font-normal w-fit h-fit p-2 rounded-lg hover:bg-green-700 hover:font-bold">Heal</button>
+                        class="font-PixelifySans text-sm text-white bg-green-500 text-center font-normal w-fit h-fit p-2 rounded-lg hover:bg-green-700 hover:font-bold" onclick="healPlayer()">Heal</button>
                 </div>
             </div>
     
@@ -350,6 +372,16 @@
         </div>
     </div>
 
+    <!--Validation div-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="validateDiv"
+        style="display: none;">
+        <div class="bg-white w-[20rem] h-[10rem] rounded-2xl flex flex-col space-y-2 items-center justify-center">
+            <h1 class="font-PixelifySans text-center text-black text-lg">Validating...</h1>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!--Canvas-->
     <div class="bg-gray-600 w-screen h-screen justify-center items-center hidden lg:flex">
         <div class="flex flex-col space-y-2">
             <div class="flex justify-center">

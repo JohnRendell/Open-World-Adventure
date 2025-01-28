@@ -193,19 +193,29 @@ module.exports = (server)=>{
         //for player taking damage
         socket.on('gameOutside_takingDamage', async (healthPoints, playerName)=>{
             try{
-                const findUser = await accountModel.findOneAndUpdate(
+                await accountModel.findOneAndUpdate(
                     { username: playerName },
                     { $set: { healthPoints: healthPoints }}
                 );
-
-                if(!findUser){
-                    console.log('This user is a guest player');
-                }
             }
             catch(err){
                 console.log(err);
             }
         });
+
+        //for player healing
+        socket.on('heal', async (playerName)=>{
+            try{
+                await accountModel.findOneAndUpdate(
+                    { username: playerName },
+                    { $set: { healthPoints: 100 }}
+                );
+                socket.emit('heal');
+            }
+            catch(err){
+                console.log(err);
+            }
+        });   
 
         //when player update account
         socket.on('updateAcc', (username)=>{

@@ -178,6 +178,10 @@ function goingOutside(){
 
 //going back to base
 function backToBase(){
+    if(playerHealthPoints <= 0){
+        playerHealthPoints = 100;
+        socket.emit('heal', game_PlayerName);
+    }
     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
 }
 
@@ -239,6 +243,12 @@ async function updateAccount() {
     else{
         warningTxt.innerText = 'Fields cannot be empty';
     }
+}
+
+//heal player
+function healPlayer(){
+    document.getElementById('validateDiv').style.display = 'flex';
+    socket.emit('heal', game_PlayerName);   
 }
 
 //logout

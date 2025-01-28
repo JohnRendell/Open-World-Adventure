@@ -152,4 +152,19 @@ function loadPlayerInfo(scene){
             homeBaseUI(scene);
         }, 1500);
     });
+
+    socket.on('heal', ()=>{
+        document.getElementById('validateDiv').style.display = 'none';
+        playerHealthPoints = 100;
+
+        //main player's hp
+        scene.playerHealth.destroy();
+
+        scene.playerHealth = scene.add.graphics();
+        scene.playerHealth.fillStyle(0xeb281a, 1);
+        scene.playerHealth.fillRoundedRect(100, 0, playerHealthPoints, 20, 5);
+
+        //add to the container
+        scene.playerUIContainer.add(scene.playerHealth);
+    });
 }

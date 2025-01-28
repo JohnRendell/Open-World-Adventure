@@ -250,7 +250,7 @@ class gameLobby extends Phaser.Scene{
 
                 if(decryptPlayerName){
                     socket.emit('redirectToBase', decryptPlayerName);
-                    window.location.href = '/Game/Base/' + decryptPlayerName;
+                    window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
                     localStorage.removeItem('tempPlayerName');
                 }
             }

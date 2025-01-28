@@ -73,7 +73,7 @@
     <!--Change account modal-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="accSettingModal"
         style="display: none;">
-        <div class="bg-white w-[20rem] h-[25rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[20rem] h-[15rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:h-[25rem]"
             id="accSettingModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -87,7 +87,7 @@
             </div>
 
             <!--Change Account-->
-            <div class="flex flex-col space-y-2 items-center w-fit" id="accUpdateLoggedIn">
+            <div class="flex flex-col space-y-2 items-center w-fit h-full overflow-x-hidden overflow-y-auto" id="accUpdateLoggedIn">
                 <div class="flex-col space-y-4">
                     <!--Username-->
                     <div class="flex flex-col items-center">
@@ -156,7 +156,7 @@
     <!--Change Skin modal-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="cosmeticModal"
         style="display: none;">
-        <div class="bg-white w-[40rem] h-[35rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[40rem] h-[20rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 lg:h-[35rem]"
             id="cosmeticModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -188,7 +188,7 @@
                 <!--Animation skin-->
                 <p class="font-PixelifySans text-sm text-black text-center">Your Current Sprite Skin</p>
                
-                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[15rem]">
+                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[10rem] lg:h-[15rem]">
                     <!--Walking-->
                     <div class="flex justify-between gap-4">
                         <div class="flex flex-col space-y-2 w-full items-center">
@@ -281,7 +281,7 @@
     <!--Chest-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="chestModal"
         style="display: none;">
-        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[20rem] h-[20rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[40rem] lg:h-[30rem]"
             id="chestModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -295,7 +295,7 @@
             </div>
     
             <!--Content Div-->
-            <div class="bg-[#c1c1c1] rounded-lg overflow-y-auto w-[35rem] h-[24rem]" id="">
+            <div class="bg-[#c1c1c1] rounded-lg overflow-y-auto w-[18rem] h-[18rem] md:w-[30rem]" id="">
             </div>
         </div>
     </div>
@@ -303,7 +303,7 @@
     <!--Inventory-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="inventoryModal"
         style="display: none;">
-        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[20rem] h-[20rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[40rem]"
             id="inventoryModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -317,7 +317,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="bg-[#c1c1c1] rounded-lg overflow-y-auto w-[35rem] h-[24rem]"
+            <div class="bg-[#c1c1c1] rounded-lg overflow-y-auto w-[35rem] h-[15rem] md:h-[24rem]"
                 id="">
             </div>
         </div>
@@ -326,7 +326,7 @@
     <!--Global Chat-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="globalChatModal"
         style="display: none;">
-        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[20rem] h-[20rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0 md:w-[40rem] lg:h-[30rem]"
             id="globalChatModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -340,7 +340,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[18rem] h-[20rem] scroll-smooth md:w-[30rem]"
                 id="globalContainerDiv">
     
                 <!--Placeholder for the message, so the tailwind wont forget about this--
@@ -367,7 +367,7 @@
     
             <!--Input message-->
             <div class="flex flex-col space-y-2 h-fit">
-                <div class="flex justify-between items-center gap-2 w-[30rem]">
+                <div class="flex justify-between items-center gap-2 w-[18rem] md:w-[30rem]">
                     <textarea type="text" placeholder="Type Message"
                         class="font-PixelifySans bg-slate-200 w-full rounded-lg p-2 text-left outline-none" minlength="0"
                         maxlength="80" oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80)"
@@ -407,7 +407,7 @@
         style="display: none;">
         <img src="/ImageComponents/NPC/Bob NPC.png" alt="Bob Npc" class="absolute right-0" width="300px" height="500px">
     
-        <div class="bg-white w-[40rem] h-[30rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0"
+        <div class="bg-white w-[20rem] h-[20rem] rounded-2xl flex flex-col space-y-4 items-center justify-center p-2 mt-[-60rem] opacity-0 md:w-[40rem] lg:h-[30rem]"
             id="bobDialog_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -421,7 +421,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[18rem] h-[20rem] scroll-smooth md:w-[30rem]"
                 id="npcConversationDiv">
     
                 <!--Placeholder for the message, so the tailwind wont forget about this
@@ -440,7 +440,7 @@
     
             <!--Input message-->
             <div class="flex flex-col space-y-2 h-fit">
-                <div class="flex justify-between items-center gap-2 w-[30rem]">
+                <div class="flex justify-between items-center gap-2 w-[20rem] md:w-[30rem]">
                     <textarea type="text" placeholder="Type Message"
                         class="font-PixelifySans bg-slate-200 w-full rounded-lg p-2 text-center outline-none"
                         minlength="0" maxlength="80" oninput="typeMessage('messageIncrementNPC', 'npcMessageInput', 80)"
@@ -456,21 +456,30 @@
         </div>
     </div>
 
+    <!--notif for mobile div-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center lg:hidden" id="mobileDiv">
+        <div class="bg-white w-fit h-fit p-4 rounded-2xl flex flex-col space-y-2 items-center justify-center">
+            <p class="font-PixelifySans text-center text-black text-sm">Play on landscape for mobile and tablets</p>
+            <button
+                class="font-PixelifySans text-sm text-center text-white bg-green-500 w-fit h-fit p-2 rounded-lg hover:bg-green-700"
+                onclick="document.getElementById('mobileDiv').style.display = 'none';">Understood</button>
+        </div>
+    </div>
+
     <!--Canvas-->
-    <div class="bg-gray-600 w-screen h-screen justify-center items-center hidden lg:flex">
+    <div class="bg-gray-600 w-screen h-screen justify-center items-center flex xsm:hidden">
         <div class="flex flex-col space-y-2">
             <canvas id="gameCanvas" class="border-4 border-gray-800 rounded-2xl"></canvas>
-            <div class="flex justify-between">
+            <div class="flex flex-col">
                 <p class="font-PixelifySans text-sm text-center text-white">Press Arrow keys or WASD for movement</p>
                 <p class="font-PixelifySans text-sm text-center text-white">Objects with mouse pointer are interactable, go near it to interact</p>
             </div>
         </div>
     </div>
     
-    <!--For mobile users-->
-    <div class="flex w-screen h-screen justify-center items-center p-4 lg:hidden">
-        <p class="font-PixelifySans text-black text-sm text-center">The game can only be played to the desktop or any wider
-            screen because most of the stuff here require keyboards, like a lot.</p>
+    <!--For small mobile users-->
+    <div class=" w-screen h-screen justify-center items-center p-4 hidden xsm:flex">
+        <p class="font-PixelifySans text-black text-sm text-center">Your phone is too small for this, im sorry</p>
     </div>
 </body>
 </html>

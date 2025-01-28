@@ -9,6 +9,9 @@ module.exports = {
     extend: {
         fontFamily: {
           "PixelifySans": ["Pixelify Sans", "Sans"]
+        },
+        screens: {
+          "xsm": { "max" : "320px" }
         }
     },
   },

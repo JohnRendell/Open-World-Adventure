@@ -1,6 +1,12 @@
+function checkDevice() {
+    if(window.innerWidth < 1280){
+        return 'mobile'
+    }
+};
+
 const canvasSize = {
-    width: 1000,
-    height: 500
+    width: checkDevice() === 'mobile' ? window.innerWidth - 200 : 1000,
+    height: checkDevice() === 'mobile' ? window.innerHeight - 100 : 500
 }
 
 const worldBounds = {

@@ -1,6 +1,12 @@
+function checkDevice() {
+    if(window.innerWidth < 1280){
+        return 'mobile'
+    }
+};
+
 const canvasSize = {
-    width: 1000,
-    height: 500
+    width: checkDevice() === 'mobile' ? window.innerWidth - 200 : 1000,
+    height: checkDevice() === 'mobile' ? window.innerHeight - 100 : 500
 }
 
 //max base size 4000, min is 1200
@@ -38,6 +44,7 @@ class homeBase extends Phaser.Scene{
 
     create = function(){   
         socket.on('loadSprites', (front, back, side, sideAttack, frontAttack, backAttack)=>{
+            console.log('check is this working?')
             this.load.spritesheet('main_playerBack', back, {
                 frameWidth: 1600 / 5,
                 frameHeight: 800 / 1

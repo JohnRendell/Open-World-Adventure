@@ -20,6 +20,8 @@ async function getCookie(){
         loggedInURL = getUserToken_Data.encryptPlayerName;
         validateUser = getUserToken_Data.decryptPlayerName;
         userType = getUserToken_Data.userType;
+
+        await loadProfile();
     }
     else{
         alert('Cookie expired');
@@ -50,7 +52,7 @@ function checkValidUrl(){
    }
 }
 
-async function loadProfile(playerName){
+async function loadProfile(){
     try{
         const getPlayerProfile = await fetch('/playerData/playerProfile', {
             method: "POST",
@@ -58,7 +60,7 @@ async function loadProfile(playerName){
                 "Accept": "Application/json",
                 "Content-Type": "Application/json"
             },
-            body: JSON.stringify({ playerName: playerName })
+            body: JSON.stringify({ playerName: validateUser })
         });
 
         const getPlayerProfile_data = await getPlayerProfile.json();
@@ -260,7 +262,6 @@ function logout(){
 
 window.onload = async function(){
     await getCookie(),
-    checkValidUrl(),
-    loadProfile(validateUser);
+    checkValidUrl();
 }
         

@@ -29,7 +29,7 @@ function homeBaseUI(scene){
     scene.playerHunger.fillRoundedRect(100, 30, 100, 20, 5);
 
     //player inventory bag
-    scene.playerInventory = scene.add.image(940, 0, 'inventoryIcon').setDisplaySize(80,80).setScrollFactor(0);
+    scene.playerInventory = scene.add.image(checkDevice() === 'mobile' ? canvasSize.width - 60 : 940, 0, 'inventoryIcon').setDisplaySize(80,80).setScrollFactor(0);
 
     scene.playerInventory.setInteractive({ useHandCursor: true });
     scene.playerInventory.on('pointerdown', ()=>{
@@ -41,7 +41,7 @@ function homeBaseUI(scene){
     });
 
     //player settings
-    scene.playerSetting = scene.add.sprite(850, 0, 'settingIcon').setDisplaySize(80,80).setScrollFactor(0);
+    scene.playerSetting = scene.add.sprite(checkDevice() === 'mobile' ? canvasSize.width - 150 : 850, 0, 'settingIcon').setDisplaySize(80,80).setScrollFactor(0);
     scene.playerSetting.setInteractive({ useHandCursor: true });
     scene.playerSetting.on('pointerdown', () => {
         if(isPanelOpen === false){

@@ -5,6 +5,15 @@
     background-position: center;
 }
 
+/*Wrap all p*/
+p {
+    text-wrap: pretty;
+}
+
+div{
+    word-wrap: break-word;
+}
+
 /*Loading spinner*/
 .loader {
     width: 48px;

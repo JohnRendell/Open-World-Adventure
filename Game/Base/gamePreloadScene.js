@@ -50,6 +50,11 @@ function loadAssets(scene){
         frameHeight: 2048 / 2
     });
 
+    scene.load.spritesheet('deathEffect', '/ImageComponents/Sprite Sheets/Death Effect Sprite Sheet.png', {
+        frameWidth: 1600 / 5,
+        frameHeight: 320 / 1
+    });
+
     //NPC
     scene.load.spritesheet('Bob_NPC', '/ImageComponents/Sprite Sheets/Guide Robot Sprite sheet.png', {
         frameWidth: 4800 / 5,

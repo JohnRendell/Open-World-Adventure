@@ -217,6 +217,11 @@ module.exports = (server)=>{
             }
         });   
 
+        //for player die
+        socket.on('playerDie', (playerName)=>{
+            socket.broadcast.emit('playerDie', playerName);
+        });
+
         //when player update account
         socket.on('updateAcc', (username)=>{
             socket.emit('updateAcc', username);

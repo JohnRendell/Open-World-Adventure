@@ -11,7 +11,7 @@ socket.on('globalMessage', (containerID, receiver, userProfile, msg)=>{
         container.appendChild(wrapperContainer);
 
         var messageWrapper = document.createElement('div');
-        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
+        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-white m-2');
         wrapperContainer.appendChild(messageWrapper);
 
         var wrapper = document.createElement('div');
@@ -30,7 +30,7 @@ socket.on('globalMessage', (containerID, receiver, userProfile, msg)=>{
         wrapper.appendChild(sender);
 
         var textContent = document.createElement('p');
-        textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+        textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left');
         textContent.appendChild(document.createTextNode(msg));
         messageWrapper.appendChild(textContent);
 

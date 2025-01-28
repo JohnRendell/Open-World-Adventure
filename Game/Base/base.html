@@ -31,11 +31,11 @@
     }
 
     ::-webkit-scrollbar-thumb {
-        background: #0f4ac8;
+        background: #cbd5e1;
         border-style: solid;
         border-width: 5px;
         border-radius: 10px;
-        border-color: white;
+        border-color: #e2e8f0;
     }
 </style>
 
@@ -340,38 +340,37 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
                 id="globalContainerDiv">
     
-            <!--Placeholder for the message, so the tailwind wont forget about this--
-                <div class="w-full h-fit flex justify-start">
-                    <div class="w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2">
-                        <div class="flex items-center flex-row gap-2">
-                            <img src="" alt="" class="rounded-full w-[2rem] h-[2rem]">
-                            <p class="font-PixelifySans text-sm text-black text-left font-bold"></p>
+                <!--Placeholder for the message, so the tailwind wont forget about this--
+                    <div class="w-full h-fit flex justify-start">
+                        <div class="w-[10rem] h-fit p-2 rounded-lg bg-white m-2">
+                            <div class="flex items-center flex-row gap-2">
+                                <img src="" alt="" class="rounded-full w-[2rem] h-[2rem]">
+                                <p class="font-PixelifySans text-sm text-black text-left font-bold"></p>
+                            </div>
+                            <p class="font-PixelifySans text-sm text-black text-left"></p>
                         </div>
-                        <p class="font-PixelifySans text-sm text-black text-left text-wrap"></p>
                     </div>
-                </div>
-            
-                <div class="w-full h-fit flex justify-end">
-                    <div class="w-[10rem] h-fit p-2 rounded-lg bg-blue-300 m-2">
-                        <div class="flex items-center flex-row gap-2">
-                            <img src="" alt="" class="rounded-full w-[2rem] h-[2rem]">
-                            <p class="font-PixelifySans text-sm text-black text-left font-bold"></p>
+    
+                    <div class="w-full h-fit flex justify-end">
+                        <div class="w-[10rem] h-fit p-2 rounded-lg bg-slate-300 m-2">
+                            <div class="flex items-center flex-row gap-2">
+                                <img src="" alt="" class="rounded-full w-[2rem] h-[2rem]">
+                                <p class="font-PixelifySans text-sm text-black text-left font-bold"></p>
+                            </div>
+                            <p class="font-PixelifySans text-sm text-black text-left"></p>
                         </div>
-                        <p class="font-PixelifySans text-sm text-black text-left text-wrap"></p>
-                    </div>
-                </div>-->
+                    </div>-->
             </div>
     
             <!--Input message-->
             <div class="flex flex-col space-y-2 h-fit">
-                <div class="flex justify-between items-center gap-2">
+                <div class="flex justify-between items-center gap-2 w-[30rem]">
                     <textarea type="text" placeholder="Type Message"
-                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none"
-                        minlength="0" maxlength="80"
-                        oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80)"
+                        class="font-PixelifySans bg-slate-200 w-full rounded-lg p-2 text-left outline-none" minlength="0"
+                        maxlength="80" oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80)"
                         id="globalMessageInput"></textarea>
     
                     <div class="flex flex-col space-y-2 m-2">
@@ -422,7 +421,7 @@
             </div>
     
             <!--Conversation Div-->
-            <div class="rounded-lg overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
+            <div class="bg-slate-200 rounded-lg overflow-x-hidden overflow-y-auto w-[30rem] h-[20rem] scroll-smooth"
                 id="npcConversationDiv">
     
                 <!--Placeholder for the message, so the tailwind wont forget about this
@@ -441,9 +440,9 @@
     
             <!--Input message-->
             <div class="flex flex-col space-y-2 h-fit">
-                <div class="flex justify-between items-center gap-2">
+                <div class="flex justify-between items-center gap-2 w-[30rem]">
                     <textarea type="text" placeholder="Type Message"
-                        class="font-PixelifySans border-2 border-gray-500 rounded-lg p-2 text-center outline-none"
+                        class="font-PixelifySans bg-slate-200 w-full rounded-lg p-2 text-center outline-none"
                         minlength="0" maxlength="80" oninput="typeMessage('messageIncrementNPC', 'npcMessageInput', 80)"
                         id="npcMessageInput"></textarea>
                     <div class="flex flex-col space-y-2 m-2">

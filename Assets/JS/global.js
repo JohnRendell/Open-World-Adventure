@@ -9,11 +9,11 @@ function npcGreet(containerID, greetMsg){
     container.appendChild(wrapperContainer);
 
     var messageWrapper = document.createElement('div');
-    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
+    messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-white m-2');
     wrapperContainer.appendChild(messageWrapper);
 
     var textContent = document.createElement('p');
-    textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+    textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left');
     textContent.appendChild(document.createTextNode(greetMsg));
     messageWrapper.appendChild(textContent);
 
@@ -77,7 +77,7 @@ function messageSend(containerID, inputID, incrementID, max, isNPC){
             container.appendChild(wrapperContainer);
 
             var messageWrapper = document.createElement('div');
-            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-300 m-2');
+            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-slate-300 m-2');
             wrapperContainer.appendChild(messageWrapper);
 
             if(!isNPC){
@@ -100,7 +100,7 @@ function messageSend(containerID, inputID, incrementID, max, isNPC){
             }
 
             var textContent = document.createElement('p');
-            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left');
             textContent.appendChild(document.createTextNode(messageInput.value));
             messageWrapper.appendChild(textContent);
 
@@ -148,11 +148,11 @@ async function promptNPC(promptMsg, containerID, systemInstruction){
             container.appendChild(wrapperContainer);
 
             var messageWrapper = document.createElement('div');
-            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-blue-500 m-2');
+            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-white m-2');
             wrapperContainer.appendChild(messageWrapper);
 
             var textContent = document.createElement('p');
-            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
+            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left');
             textContent.appendChild(document.createTextNode(result));
             messageWrapper.appendChild(textContent);
 

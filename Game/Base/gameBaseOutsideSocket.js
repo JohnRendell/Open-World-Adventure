@@ -50,6 +50,33 @@ function sceneSocket(scene){
         });
     }
 
+    socket.on('playerDie', (username)=>{
+        //TODO: fix the death animation
+        //search player to the collection
+        scene.playerCollection.forEach((player, name) => {
+            if(name === username){
+                const { playerName, container, playerSprite } = player;
+                container.setVisible(false);
+
+                //play death animation
+                scene.deathSmoke = scene.add.sprite(container.body.x, container.body.y, "deathEffect").setOrigin(0.5).setScale(0.3);
+                scene.deathSmoke.setDepth(2);
+
+                // Play the animation
+                scene.deathSmoke.play('deathAnim');
+                
+                scene.deathSmoke.on('animationcomplete', ()=>{
+                    scene.deathSmoke.destroy();
+                    
+                    playerName.destroy();
+                    playerSprite.destroy();
+                    container.destroy();
+                    scene.playerCollection.delete(name);
+                });
+            } 
+        });
+    });
+
     socket.on('gameOutside_playerDisconnect', ()=>{
         //search player to the collection
         scene.playerCollection.forEach((player, name) => {
@@ -314,6 +341,18 @@ function sceneSocket(scene){
                         playerHealthPoints--;
 
                         if(playerHealthPoints <= 0){
+                            scene.playerContainer.setVisible(false);
+
+                            //play death animation
+                            scene.deathSmoke = scene.add.sprite(scene.playerContainer.body.x, scene.playerContainer.body.y, "deathEffect").setOrigin(0.5).setScale(0.3);
+                            scene.deathSmoke.setDepth(2);
+
+                            // Play the animation
+                            scene.deathSmoke.play('deathAnim');
+                            scene.deathSmoke.on('animationcomplete', ()=>{
+                                scene.deathSmoke.destroy();
+                            });
+                            socket.emit('playerDie', game_PlayerName);
                             modalStatus('deathModal', 'flex', 'modalAnimation');
                             playerHealthPoints = 0;
                         }

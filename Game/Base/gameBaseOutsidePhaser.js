@@ -126,6 +126,14 @@ class baseOutside extends Phaser.Scene{
             this.load.start();
         });
 
+        //death animation
+        this.anims.create({
+            key: 'deathAnim',
+            frames: this.anims.generateFrameNumbers('deathEffect', { start: 0, end: 2 }),
+            frameRate: 12,
+            repeat: 0
+        });
+
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
 

@@ -121,7 +121,6 @@ function loadPlayerInfo(scene){
             loggedIn_playerName = playerName;
 
             socket.emit('game_spawnPlayer', playerName);
-            socket.emit('game_playerConnected', playerName);
         }, 1500);
     });
 

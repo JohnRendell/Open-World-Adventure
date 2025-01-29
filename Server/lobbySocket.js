@@ -1,26 +1,9 @@
 const CryptoJS = require('crypto-js');
 
-const players = [];
-
 module.exports = (server)=>{
     //for connection established
     server.on('connect', (socket)=>{
         console.log('Connected to the socketIO: ' + socket.id);
-
-        socket.on('playerConnected', (playerName)=>{
-            let decryptPlayerName = CryptoJS.AES.decrypt(playerName, 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-            var data = { playerName: decryptPlayerName };
-
-            //add the player to the array
-            const findPlayerIndex = players.findIndex(player => decryptPlayerName == player['playerName']);
-
-            if(findPlayerIndex == -1){
-                players.push(data);
-            }
-            console.log('players:');
-            console.table(players);
-        });
 
         //player move
         socket.on('playerMove', (playerData)=>{

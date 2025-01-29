@@ -3,8 +3,6 @@ const Fetch = require('node-fetch');
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
 
-const players = [];
-
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
         //when player change profile
@@ -112,23 +110,6 @@ module.exports = (server)=>{
         }
         disconnectPlayer(socket, 'game_playerDisconnect');
         disconnectPlayer(socket, 'gameOutside_playerDisconnect');
-
-        function playerConnectedSocket(socket, socketName){
-            socket.on(socketName, (playerName)=>{
-                var data = { playerName: playerName };
-
-                //add the player to the array
-                const findPlayerIndex = players.findIndex(player => playerName == player['playerName']);
-
-                if(findPlayerIndex == -1){
-                    players.push(data);
-                }
-                console.log('players in lobby:');
-                console.table(players);
-            });   
-        }
-        playerConnectedSocket(socket, 'game_playerConnected');
-        playerConnectedSocket(socket, 'gameOutside_playerConnected');
 
         //passing player data upon loading
         socket.on('loadPlayerData', (playerName, playerProfile)=>{

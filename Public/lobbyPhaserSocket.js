@@ -24,7 +24,6 @@ socket.on('connect', ()=>{
     }
 
     socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
-    socket.emit('playerConnected', localStorage.getItem('tempPlayerName'));
     socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
     socket.emit('game_playerDisconnect');
 

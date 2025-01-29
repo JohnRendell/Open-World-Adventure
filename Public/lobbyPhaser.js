@@ -205,13 +205,14 @@ class gameLobby extends Phaser.Scene{
         //login container
         this.button_Background = this.add.graphics();
         this.button_Background.fillStyle(0x3079ff, 1);
-        this.button_Background.fillRoundedRect(checkDevice() === 'mobile' ? 45 : -75, -20, checkDevice() === 'mobile' ? 50 : 170, 40, 10);
+        this.button_Background.fillRoundedRect(-75, -20, 170, 40, 10);
 
         this.loggedInContainer = this.add.container(canvasSize.width - 110, 40, [
             this.button_Background,
             this.loggedInIcon,
+            this.loggedInLabel
         ]);
-        this.loggedInContainer.setScrollFactor(0).setDepth(5).setSize(checkDevice() === 'mobile' ? 50 : 170, 40);
+        this.loggedInContainer.setScrollFactor(0).setDepth(5).setSize(170, 40);
         this.loggedInContainer.setInteractive({ useHandCursor: true });
         this.loggedInContainer.on('pointerdown', () => {
             isTalking = true;
@@ -232,14 +233,14 @@ class gameLobby extends Phaser.Scene{
         //guest container
         this.guestButton_Background = this.add.graphics();
         this.guestButton_Background.fillStyle(0x3079ff, 1);
-        this.guestButton_Background.fillRoundedRect(checkDevice() === 'mobile' ? 45 : -75, -20, checkDevice() === 'mobile' ? 50 : 170, 40, 10);
+        this.guestButton_Background.fillRoundedRect(-75, -20, 170, 40, 10);
 
         this.guestContainer = this.add.container(canvasSize.width - 110, 100, [
             this.guestButton_Background,
             this.guestIcon,
             this.guestLabel
         ]);
-        this.guestContainer.setScrollFactor(0).setDepth(5).setSize(checkDevice() === 'mobile' ? 80 : 170, 40);
+        this.guestContainer.setScrollFactor(0).setDepth(5).setSize(170, 40);
 
         this.guestContainer.setInteractive({ useHandCursor: true });
         this.guestContainer.on('pointerdown', async () => {
@@ -254,20 +255,12 @@ class gameLobby extends Phaser.Scene{
 
                 if(decryptPlayerName){
                     socket.emit('redirectToBase', decryptPlayerName);
+                    socket.emit('playerCount', 1);
                     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
                     localStorage.removeItem('tempPlayerName');
                 }
             }
         });
-
-        if(checkDevice() === 'mobile'){
-            this.guestContainer.remove(this.guestLabel);
-            this.loggedInContainer.remove(this.loggedInLabel);
-        }
-        else{
-            this.guestContainer.add(this.guestLabel);
-            this.loggedInContainer.add(this.loggedInLabel);
-        }
 
         //call the socket scene
         sceneSocket(this);

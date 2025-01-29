@@ -29,6 +29,7 @@ function loadAssets(scene){
     scene.load.image('meatIcon', '/ImageComponents/UI/meat icon.png');
     scene.load.image('settingIcon', '/ImageComponents/UI/Setting Icon.png');
     scene.load.image('arrowIcon', '/ImageComponents/UI/Arrow Icon.png');
+    scene.load.image('zButton', '/ImageComponents/UI/Z button.png');
 
     //objects
     scene.load.image('table', '/ImageComponents/Objects/Long table.png');

@@ -50,31 +50,41 @@ function sceneSocket(scene){
         });
     }
 
+    //player count
+    socket.on('passCountData', (count)=>{
+        scene.playerCountLabel.setText('Player Count: ' + count);
+    });
+
+    socket.on('playerCount', (count)=>{
+        scene.playerCountLabel.setText('Player Count: ' + count);
+    });
+
     socket.on('playerDie', (username)=>{
-        //TODO: fix the death animation
-        //search player to the collection
-        scene.playerCollection.forEach((player, name) => {
-            if(name === username){
-                const { playerName, container, playerSprite } = player;
-                container.setVisible(false);
+        setTimeout(() => {
+            //search player to the collection
+            scene.playerCollection.forEach((player, name) => {
+                if(name === username){
+                    const { playerName, container, playerSprite } = player;
+                    container.setVisible(false);
 
-                //play death animation
-                scene.deathSmoke = scene.add.sprite(container.body.x, container.body.y, "deathEffect").setOrigin(0.5).setScale(0.3);
-                scene.deathSmoke.setDepth(2);
+                    //play death animation
+                    scene.deathSmoke = scene.add.sprite(container.body.x, container.body.y, "deathEffect").setOrigin(0.5).setScale(0.3);
+                    scene.deathSmoke.setDepth(2);
 
-                // Play the animation
-                scene.deathSmoke.play('deathAnim');
-                
-                scene.deathSmoke.on('animationcomplete', ()=>{
-                    scene.deathSmoke.destroy();
+                    // Play the animation
+                    scene.deathSmoke.play('deathAnim');
                     
-                    playerName.destroy();
-                    playerSprite.destroy();
-                    container.destroy();
-                    scene.playerCollection.delete(name);
-                });
-            } 
-        });
+                    scene.deathSmoke.on('animationcomplete', ()=>{
+                        scene.deathSmoke.destroy();
+                        
+                        playerName.destroy();
+                        playerSprite.destroy();
+                        container.destroy();
+                        scene.playerCollection.delete(name);
+                    });
+                } 
+            });
+        }, 1000);
     });
 
     socket.on('gameOutside_playerDisconnect', ()=>{
@@ -167,44 +177,48 @@ function sceneSocket(scene){
     });
 
     //for rendering player data
-    socket.on('gameOutside_existingPlayer', (playerData)=>{
+    socket.on('gameOutside_existingPlayer', (playerData, isDead)=>{
         const { playerID, playerX, playerY } = playerData;
 
         setTimeout(() => {
             if(!scene.playerCollection.has(playerID)){
-                //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setScale(0.1); 
-                scene.joinedPlayer.setVisible(true);
+                if(!isDead){
+                    //joined Player
+                    scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
+                    scene.joinedPlayer.setScale(0.1); 
+                    scene.joinedPlayer.setVisible(true);
 
-                //joined Player name
-                scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
-                    font: "16px 'Pixelify Sans'",
-                    fill: '#ffffff',
-                    align: 'center'
-                }).setOrigin(0.5);
+                    //joined Player name
+                    scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
+                        font: "16px 'Pixelify Sans'",
+                        fill: '#ffffff',
+                        align: 'center'
+                    }).setOrigin(0.5);
 
-                //joined Player container
-                scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
-                    [
-                        scene.joinedPlayerName,
-                        scene.joinedPlayer
-                    ]);
-                scene.physics.world.enable(scene.joinedPlayerContainer);
+                    //joined Player container
+                    scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
+                        [
+                            scene.joinedPlayerName,
+                            scene.joinedPlayer
+                        ]);
+                    scene.physics.world.enable(scene.joinedPlayerContainer);
 
-                scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
-                scene.joinedPlayerContainer.body.setSize(40, 70, true);
-                scene.joinedPlayerContainer.body.setOffset(-20, -35);
-                scene.joinedPlayerContainer.setDepth(3);
+                    scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
+                    scene.joinedPlayerContainer.body.setSize(40, 70, true);
+                    scene.joinedPlayerContainer.body.setOffset(-20, -35);
+                    scene.joinedPlayerContainer.setDepth(3);
 
-                //add player to the collection
-                scene.playerCollection.set(playerID, {
-                    playerName: scene.joinedPlayerName,
-                    isInsideOfRoom: false,
-                    container: scene.joinedPlayerContainer,
-                    playerSprite: scene.joinedPlayer
-                });
-
+                    //add player to the collection
+                    scene.playerCollection.set(playerID, {
+                        playerName: scene.joinedPlayerName,
+                        isInsideOfRoom: false,
+                        container: scene.joinedPlayerContainer,
+                        playerSprite: scene.joinedPlayer
+                    });
+                }
+                else{
+                    socket.on('playerDie', playerID);
+                }
                 destroyNoNameSprite(scene);
             }
         }, 1000);
@@ -341,6 +355,9 @@ function sceneSocket(scene){
                         playerHealthPoints--;
 
                         if(playerHealthPoints <= 0){
+                            isDead = true;
+                            isPanelOpen = true;
+                            isTalking = true;
                             scene.playerContainer.setVisible(false);
 
                             //play death animation
@@ -352,7 +369,7 @@ function sceneSocket(scene){
                             scene.deathSmoke.on('animationcomplete', ()=>{
                                 scene.deathSmoke.destroy();
                             });
-                            socket.emit('playerDie', game_PlayerName);
+                            socket.emit('playerDie', game_PlayerName, isDead);
                             modalStatus('deathModal', 'flex', 'modalAnimation');
                             playerHealthPoints = 0;
                         }

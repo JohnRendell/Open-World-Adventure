@@ -4,28 +4,54 @@ var userType;
 var userProfile;
 var playerHealthPoints;
 
-async function getCookie(){
-    const getUserToken = await fetch('/cookie/getCookie', {
-        method: "POST",
-        headers: {
-            "Accept": "Application/json",
-            "Content-Type": "Application/json"
-        },
-        body: JSON.stringify({ guaranteedAccess: true })
-    });
+async function countPlayer(){
+    try{
+        const count = await fetch('/gameData', {
+            method: "GET",
+            headers: {
+                "Accept": "Application/json",
+                "Content-Type": "Application/json"
+            },
+        });
 
-    const getUserToken_Data = await getUserToken.json();
+        const countData = await count.json();
 
-    if(getUserToken_Data.message === 'success'){
-        loggedInURL = getUserToken_Data.encryptPlayerName;
-        validateUser = getUserToken_Data.decryptPlayerName;
-        userType = getUserToken_Data.userType;
-
-        await loadProfile();
+        if(countData.message === 'success'){
+            socket.emit('passCountData', countData.playerCount);
+        }
     }
-    else{
-        alert('Cookie expired');
-        window.location.href = '/lobby';
+    catch(err){
+        console.log(err);
+    }
+}
+
+async function getCookie(){
+    try{
+        const getUserToken = await fetch('/cookie/getCookie', {
+            method: "POST",
+            headers: {
+                "Accept": "Application/json",
+                "Content-Type": "Application/json"
+            },
+            body: JSON.stringify({ guaranteedAccess: true })
+        });
+
+        const getUserToken_Data = await getUserToken.json();
+
+        if(getUserToken_Data.message === 'success'){
+            loggedInURL = getUserToken_Data.encryptPlayerName;
+            validateUser = getUserToken_Data.decryptPlayerName;
+            userType = getUserToken_Data.userType;
+
+            await loadProfile();
+        }
+        else{
+            alert('Cookie expired');
+            window.location.href = '/lobby';
+        }
+    }
+    catch(err){
+        console.log(err);
     }
 }
 
@@ -86,6 +112,10 @@ async function loadProfile(){
                 document.getElementById('playerDiv').style.display = userType === 'guest' ? 'none' : 'flex';
             }
             userProfile = getPlayerProfile_data.profile;
+           
+            if(getPlayerProfile_data.playerHealthPoints <= 0){
+                socket.emit('heal', getPlayerProfile_data.username);
+            }
             playerHealthPoints = getPlayerProfile_data.playerHealthPoints;
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
@@ -254,7 +284,7 @@ function healPlayer(){
 }
 
 //logout
-function logout(){
+async function logout(){
     socket.emit('gameOutside_playerDisconnect');
     socket.emit('redirectToBase', game_PlayerName);
     window.location.href = '/lobby';
@@ -262,6 +292,7 @@ function logout(){
 
 window.onload = async function(){
     await getCookie(),
+    await countPlayer(),
     checkValidUrl();
 }
         

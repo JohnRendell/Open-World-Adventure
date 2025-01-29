@@ -1,3 +1,5 @@
+const gameModel = require('./gameDataMongoose');
+
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
         socket.on('globalMessage', (containerID, sender, profile, msg)=>{
@@ -11,6 +13,46 @@ module.exports = (server)=>{
         socket.on('clearGlobalMessageCounter', ()=>{
             socket.emit('clearGlobalMessageCounter');
         });
+
+        //count logged in players
+        socket.on('playerCount', async (count) => {
+            try {
+                const updated = await gameModel.findOneAndUpdate(
+                    {}, 
+                    { $inc: { playerCount: count } },
+                    { new: true }
+                );
+
+                if (updated) {
+                    server.emit('playerCount', updated.playerCount);
+                }
+                else{
+                    await gameModel.create({ playerCount: count });
+                    server.emit('playerCount', count);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        });
+
+    socket.on('logoutPlayer', async () => {
+        try {
+            const updated = await gameModel.findOneAndUpdate(
+                {}, 
+                { $inc: { playerCount: -1 } },
+                { new: true, upsert: true }
+            );
+
+            if (updated.playerCount < 0) {
+                await gameModel.updateOne({}, { $set: { playerCount: 0 } });
+                updated.playerCount = 0;
+            }
+
+            server.emit('playerCount', updated.playerCount);
+        } catch (err) {
+            console.error(err);
+        }
+    });
 
         //for global npc prompt
         socket.on('NPCPrompt', (npcName)=>{

@@ -34,6 +34,8 @@ let isBack = false;
 let isAttackingSide = false;
 let isAttackingFront = false;
 let isAttackingBack = false;
+let isAttack = false;
+let isDead = false;
 
 class baseOutside extends Phaser.Scene{
     constructor(){
@@ -135,10 +137,18 @@ class baseOutside extends Phaser.Scene{
         //death animation
         this.anims.create({
             key: 'deathAnim',
-            frames: this.anims.generateFrameNumbers('deathEffect', { start: 0, end: 2 }),
+            frames: this.anims.generateFrameNumbers('deathEffect', { start: 0, end: 4 }),
             frameRate: 12,
             repeat: 0
         });
+
+        //player count Label
+        this.playerCountLabel = this.add.text(20, 20, "Player Count: processing...", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0).setScrollFactor(0);
+        this.playerCountLabel.setDepth(5);
 
         //tips
         this.labelTip = this.add.text(canvasSize.width / 2, 20, 'Press Z (Zebra) to attack. (Punch or use weapon).', {
@@ -146,6 +156,22 @@ class baseOutside extends Phaser.Scene{
             fill: '#ffffff',
             align: 'center'
         }).setDepth(10).setScrollFactor(0).setOrigin(0.5);
+
+        //button for attack, this is only for mobile
+        this.attackButton = this.add.image(canvasSize.width - 50, canvasSize.height - 120, 'zButton').setScale(0.2);
+        this.attackButton.setScrollFactor(0);
+        this.attackButton.setDepth(10).setVisible(checkDevice() === 'mobile');
+
+        this.attackButton.setInteractive({ useHandCursor: true });
+        this.attackButton.on('pointerdown', ()=>{
+            if(isPanelOpen === false){
+                isAttack = true;
+            }
+        });
+        this.attackButton.on('pointerup', () => isAttack = false);
+        this.attackButton.on('pointerout', () => isAttack = false);
+        this.attackButton.on('pointerupoutside', () => isAttack = false);
+        this.input.on('pointerup', () => isAttack = false);
 
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
@@ -445,7 +471,7 @@ class baseOutside extends Phaser.Scene{
                     isFront = true;
                     isBack = false;
                 }
-                if(this.Z.isDown){
+                if(this.Z.isDown || isAttack){
                     if(!isFront || !isBack){
                         isAttackingSide = true;
                     }
@@ -553,10 +579,11 @@ class baseOutside extends Phaser.Scene{
                 y: this.playerContainer.y,
                 isBack: isBack,
                 isFront: isFront,
-                spriteX: this.player.flipX
+                spriteX: this.player.flipX,
+                isDead: isDead
             }
             socket.emit('gameOutside_playerMove', playerData);
-            socket.emit('gameOutside_existingPlayer', playerData);
+            socket.emit('gameOutside_existingPlayer', playerData, isDead);
 
             socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, spriteFrontAttack, spriteBackAttack, spriteSideAttack);
         }

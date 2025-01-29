@@ -94,6 +94,11 @@ module.exports = (server)=>{
             }
         });
 
+        //pass the player count
+        socket.on('passCountData', (count)=>{
+            server.emit('passCountData', count);
+        });
+
         //load new sprite to other player
         socket.on('loadNewSpriteToClient', (playerName, sprite, query)=>{
             socket.broadcast.emit('loadNewSpriteToClient', playerName, sprite, query);
@@ -124,14 +129,6 @@ module.exports = (server)=>{
         }
         playerConnectedSocket(socket, 'game_playerConnected');
         playerConnectedSocket(socket, 'gameOutside_playerConnected');
-
-        //player counts
-        socket.on('playerCount', (count)=>{
-            socket.emit('playerCount', count);
-
-            console.log('Player in lobby count: ');
-            console.table(players);
-        });
 
         //passing player data upon loading
         socket.on('loadPlayerData', (playerName, playerProfile)=>{
@@ -168,9 +165,8 @@ module.exports = (server)=>{
 
         //spawn the existing player
         function renderPlayer(socket, socketName){
-            socket.on(socketName, (playerData)=>{
-                socket.emit('playerCount', players.length);
-                socket.broadcast.emit(socketName, playerData);
+            socket.on(socketName, (playerData, isDead)=>{
+                socket.broadcast.emit(socketName, playerData, isDead);
             });
         }
         renderPlayer(socket, 'game_existingPlayer');

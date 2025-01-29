@@ -25,6 +25,7 @@ async function validateAccount(){
 
             if(cookieStatus.status && decryptPlayerName){
                 socket.emit('redirectToBase', decryptPlayerName);
+                socket.emit('playerCount', 1);
                 window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
                 localStorage.removeItem('tempPlayerName');
             }
@@ -66,6 +67,7 @@ async function validateCreateAccount(){
             if(cookieStatus.status && decryptPlayerName){
                 document.getElementById('processingDiv').style.display = 'none';
                 socket.emit('redirectToBase', decryptPlayerName);
+                socket.emit('playerCount', 1);
                 window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
 
                 localStorage.removeItem('tempPlayerName');
@@ -79,3 +81,5 @@ async function validateCreateAccount(){
         console.log(err);
     }
 }
+
+socket.emit('logoutPlayer');

@@ -22,11 +22,6 @@ module.exports = (server)=>{
             console.table(players);
         });
 
-        //player counts
-        socket.on('playerCount', (count)=>{
-            socket.emit('playerCount', count);
-        });
-
         //player move
         socket.on('playerMove', (playerData)=>{
             socket.broadcast.emit('playerMove', playerData);
@@ -41,7 +36,6 @@ module.exports = (server)=>{
 
         //spawn the existing player
         socket.on('existingPlayer', (playerData)=>{
-            socket.emit('playerCount', players.length);
             socket.broadcast.emit('existingPlayer', playerData);
         });
 

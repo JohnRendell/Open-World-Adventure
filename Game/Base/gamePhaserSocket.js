@@ -16,6 +16,15 @@ function sceneSocket(scene){
     scene.playerCollection = new Map();
     let animationFire = false;
 
+    //player count
+    socket.on('passCountData', (count)=>{
+        scene.playerCountLabel.setText('Player Count: ' + count);
+    });
+    
+    socket.on('playerCount', (count)=>{
+        scene.playerCountLabel.setText('Player Count: ' + count);
+    });
+
     //load new player's sprite
     socket.on('loadNewSpriteToClient', (playerName, sprite, query)=>{
         scene.playerCollection.forEach((player, name)=>{
@@ -287,7 +296,7 @@ function sceneSocket(scene){
     });
 
     //for rendering player data
-    socket.on('game_existingPlayer', (playerData)=>{
+    socket.on('game_existingPlayer', (playerData, isDead)=>{
         const { playerID, playerX, playerY } = playerData;
 
         setTimeout(() => {

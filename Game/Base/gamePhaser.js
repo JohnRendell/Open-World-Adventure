@@ -88,6 +88,14 @@ class homeBase extends Phaser.Scene{
 
             this.load.start();
         });
+
+        //player count Label
+        this.playerCountLabel = this.add.text(20, 20, "Player Count: processing...", {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0).setScrollFactor(0);
+        this.playerCountLabel.setDepth(5);
         
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
@@ -462,7 +470,7 @@ class homeBase extends Phaser.Scene{
                 spriteX: this.player.flipX
             }
             socket.emit('game_playerMove', playerData);
-            socket.emit('game_existingPlayer', playerData);
+            socket.emit('game_existingPlayer', playerData, false);
             socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
         }
     }

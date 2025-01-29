@@ -74,18 +74,6 @@ function lobbyUI(scene){
     scene.moveUp.setScrollFactor(0).setDepth(10).setVisible(checkDevice() === 'mobile');
     scene.moveDown.setScrollFactor(0).setDepth(10).setVisible(checkDevice() === 'mobile');
 
-    //player count Label
-    scene.playerCountLabel = scene.add.text(20, 20, "Player Count:", {
-        font: "16px 'Pixelify Sans",
-        fill: "#ffffff",
-        align: "center"
-    }).setOrigin(0).setScrollFactor(0);
-    scene.playerCountLabel.setDepth(5);
-
-    socket.on('playerCount', (count)=>{
-        scene.playerCountLabel.setText('Player Count: ' + count);
-    });
-
     //global chat button
     scene.button_GlobalChatLabel = scene.add.text(0, 0, "Global Chat", {
         font: "16px 'Pixelify Sans'",

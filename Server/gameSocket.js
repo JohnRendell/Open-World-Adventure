@@ -45,7 +45,6 @@ module.exports = (server)=>{
 
         //for initial loading of sprites
         socket.on('loadSprites', (sprite0, sprite1, sprite2, sprite3, sprite4, sprite5)=>{
-            console.log('check is this working?')
             socket.emit('loadSprites', sprite0, sprite1, sprite2, sprite3, sprite4, sprite5);
         });
 

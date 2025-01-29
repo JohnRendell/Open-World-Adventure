@@ -243,17 +243,21 @@
     </div>
 
     <div class="bg-gray-600 w-screen h-screen justify-center items-center flex xsm:hidden">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col space-y-2">
             <canvas id="gameCanvas" class="border-4 border-gray-800 rounded-2xl"></canvas>
-            <p class="font-PixelifySans text-sm text-center text-white">Press Arrow keys or WASD for movement</p>
-            <p class="font-PixelifySans text-sm text-center text-white">Objects with mouse pointer are interactable, go near it to
-                interact</p>
+            <div class="flex flex-col items-center">
+                <p class="font-PixelifySans text-sm text-center text-white hidden lg:flex">Press Arrow keys or WASD for movement
+                </p>
+                <p class="font-PixelifySans text-sm text-center text-white hidden lg:flex">Objects with mouse pointer are
+                    interactable,
+                    go near it to interact</p>
+            </div>
         </div>
     </div>
 
     <!--For small mobile users-->
     <div class=" w-screen h-screen justify-center items-center p-4 hidden xsm:flex">
-        <p class="font-PixelifySans text-black text-sm text-center">Your phone is too small for this, im sorry</p>
+        <p class="font-PixelifySans text-black text-sm text-center">Landscape your device to play, but if you still seeing this message after landscaping your device, it means that your device is too small and not compatible im sorry</p>
     </div>
 </body>
 </html>

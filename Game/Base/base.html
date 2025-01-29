@@ -175,20 +175,40 @@
                    <div class="flex flex-row space-x-4 items-center">
                         <img src="" alt="user profile" class="border-2 border-blue-500 rounded-lg w-20 h-20" id="playerProfileID">
                         
-                        <div>
+                        <div class="flex flex-col justify-start items-center gap-2">
                             <label for="profileChangeID" class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 cursor-pointer hover:bg-blue-700" onclick="changeProfile()">Change
                                 Profile</label>
                             <input type="file" accept="Image/*" hidden id="profileChangeID">
+
+                            <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 lg:hidden">Pick
+                                in-game skins instead</button>
                         </div>
                    </div>
 
-                <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700">Pick in-game skins instead</button>
+                    <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 hidden lg:flex">Pick in-game skins instead</button>
+
+                    <div class="w-[20rem] h-[5rem] p-2 overflow-x-hidden overflow-y-auto flex-col gap-2 flex lg:hidden">
+                        <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel
+                            Template</button>
+                    
+                        <p class="font-PixelifySans text-sm text-black text-left">Instruction: Click this: <a
+                                href="https://www.piskelapp.com/p/create/sprite" target="_blank"
+                                class="text-blue-500 text-center underline">Piskel official site</a> then go to import then browse .piskel
+                            files
+                            to locate the template you downloaded, after that save it as gif and convert to sprite sheet.</p>
+                    
+                        <a href="https://ezgif.com/gif-to-sprite" target="_blank"
+                            class="font-PixelifySans text-sm text-blue-500 text-center underline">Gif to Spritesheet conversion</a>
+                    
+                        <p class="font-PixelifySans text-sm text-black text-left">Note: The sprite customization in game is on development.
+                        </p>
+                    </div>
                </div>
 
                 <!--Animation skin-->
                 <p class="font-PixelifySans text-sm text-black text-center">Your Current Sprite Skin</p>
                
-                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[10rem] lg:h-[15rem]">
+                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[15rem]">
                     <!--Walking-->
                     <div class="flex justify-between gap-4">
                         <div class="flex flex-col space-y-2 w-full items-center">
@@ -262,13 +282,20 @@
                     </div>
                 </div>
 
-                <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel Template</button>
-
-                <p class="font-PixelifySans text-sm text-black text-left">Instruction: Click this: <a href="https://www.piskelapp.com/p/create/sprite" target="_blank" class="text-blue-500 text-center underline">Piskel official site</a> then go to import then browse .piskel files to locate the template you downloaded, after that save it as gif and convert to sprite sheet.</p>
-
-                <a href="https://ezgif.com/gif-to-sprite" target="_blank" class="font-PixelifySans text-sm text-blue-500 text-center underline">Gif to Spritesheet conversion</a>
-
-                <p class="font-PixelifySans text-sm text-black text-left">Note: The sprite customization in game is on development.</p>
+                <div class="flex-col gap-2 hidden lg:flex">
+                    <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel
+                        Template</button>
+                    
+                    <p class="font-PixelifySans text-sm text-black text-left">Instruction: Click this: <a
+                            href="https://www.piskelapp.com/p/create/sprite" target="_blank"
+                            class="text-blue-500 text-center underline">Piskel official site</a> then go to import then browse .piskel files
+                        to locate the template you downloaded, after that save it as gif and convert to sprite sheet.</p>
+                    
+                    <a href="https://ezgif.com/gif-to-sprite" target="_blank"
+                        class="font-PixelifySans text-sm text-blue-500 text-center underline">Gif to Spritesheet conversion</a>
+                    
+                    <p class="font-PixelifySans text-sm text-black text-left">Note: The sprite customization in game is on development.</p>
+                </div>
             </div>
 
             <!--Guest player-->
@@ -470,16 +497,20 @@
     <div class="bg-gray-600 w-screen h-screen justify-center items-center flex xsm:hidden">
         <div class="flex flex-col space-y-2">
             <canvas id="gameCanvas" class="border-4 border-gray-800 rounded-2xl"></canvas>
-            <div class="flex flex-col">
-                <p class="font-PixelifySans text-sm text-center text-white">Press Arrow keys or WASD for movement</p>
-                <p class="font-PixelifySans text-sm text-center text-white">Objects with mouse pointer are interactable, go near it to interact</p>
+            <div class="flex justify-between items-center">
+                <p class="font-PixelifySans text-sm text-center text-white hidden lg:flex">Press Arrow keys or WASD for movement
+                </p>
+                <p class="font-PixelifySans text-sm text-center text-white hidden lg:flex">Objects with mouse pointer are
+                    interactable,
+                    go near it to interact</p>
             </div>
         </div>
     </div>
     
     <!--For small mobile users-->
     <div class=" w-screen h-screen justify-center items-center p-4 hidden xsm:flex">
-        <p class="font-PixelifySans text-black text-sm text-center">Your phone is too small for this, im sorry</p>
+        <p class="font-PixelifySans text-black text-sm text-center">Landscape your device to play, but if you still seeing this message after landscaping your device, it means that your
+        device is too small and not compatible im sorry</p>
     </div>
 </body>
 </html>

@@ -1,12 +1,12 @@
 function checkDevice() {
-    if(window.innerWidth < 1280){
+    if(window.innerWidth < 1194){
         return 'mobile'
     }
 };
 
 const canvasSize = {
-    width: checkDevice() === 'mobile' ? window.innerWidth - 200 : 1000,
-    height: checkDevice() === 'mobile' ? window.innerHeight - 100 : 500
+    width: checkDevice() === 'mobile' ? window.innerWidth - 20 : 1000,
+    height: checkDevice() === 'mobile' ? window.innerHeight - 20 : 500
 }
 
 const worldBounds = {
@@ -139,6 +139,13 @@ class baseOutside extends Phaser.Scene{
             frameRate: 12,
             repeat: 0
         });
+
+        //tips
+        this.labelTip = this.add.text(canvasSize.width / 2, 20, 'Press Z (Zebra) to attack. (Punch or use weapon).', {
+            font: "12px 'Pixelify Sans'",
+            fill: '#ffffff',
+            align: 'center'
+        }).setDepth(10).setScrollFactor(0).setOrigin(0.5);
 
         //hide the loading once the game finished load
         document.getElementById('loadingDiv').style.display = 'none';
@@ -416,24 +423,24 @@ class baseOutside extends Phaser.Scene{
             this.playerContainer.body.setVelocity(0);
 
             if(isTalking == false){
-                if(this.cursors.left.isDown || this.A.isDown){
+                if(this.cursors.left.isDown || this.A.isDown || moveLeft){
                     this.playerContainer.body.setVelocityX(-speed);
                     this.player.flipX = false;
                     isFront = false;
                     isBack = false;
                 }
-                if(this.cursors.right.isDown || this.D.isDown){
+                if(this.cursors.right.isDown || this.D.isDown || moveRight){
                     this.playerContainer.body.setVelocityX(speed);
                     this.player.flipX = true;
                     isFront = false;
                     isBack = false;
                 }
-                if(this.cursors.up.isDown || this.W.isDown){
+                if(this.cursors.up.isDown || this.W.isDown || moveUp){
                     this.playerContainer.body.setVelocityY(-speed);
                     isFront = false;
                     isBack = true;
                 }
-                if(this.cursors.down.isDown || this.S.isDown){
+                if(this.cursors.down.isDown || this.S.isDown || moveDown){
                     this.playerContainer.body.setVelocityY(speed);
                     isFront = true;
                     isBack = false;

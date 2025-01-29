@@ -1,12 +1,12 @@
 function checkDevice() {
-    if(window.innerWidth < 1280){
+    if(window.innerWidth < 1194){
         return 'mobile'
     }
 };
 
 const canvasSize = {
-    width: checkDevice() === 'mobile' ? window.innerWidth - 200 : 1000,
-    height: checkDevice() === 'mobile' ? window.innerHeight - 100 : 500
+    width: checkDevice() === 'mobile' ? window.innerWidth - 20 : 1000,
+    height: checkDevice() === 'mobile' ? window.innerHeight - 20 : 500
 }
 
 const worldBounds = {
@@ -281,24 +281,24 @@ class gameLobby extends Phaser.Scene{
         this.playerContainer.body.setVelocity(0);
 
         if(isTalking == false){
-            if(this.cursors.left.isDown || this.A.isDown){
+            if(this.cursors.left.isDown || this.A.isDown || moveLeft){
                 this.playerContainer.body.setVelocityX(-speed);
                 this.player.flipX = false;
                 isFront = false;
                 isBack = false;
             }
-            if(this.cursors.right.isDown || this.D.isDown){
+            if(this.cursors.right.isDown || this.D.isDown || moveRight){
                 this.playerContainer.body.setVelocityX(speed);
                 this.player.flipX = true;
                 isFront = false;
                 isBack = false;
             }
-            if(this.cursors.up.isDown || this.W.isDown){
+            if(this.cursors.up.isDown || this.W.isDown || moveUp){
                 this.playerContainer.body.setVelocityY(-speed);
                 isFront = false;
                 isBack = true;
             }
-            if(this.cursors.down.isDown || this.S.isDown){
+            if(this.cursors.down.isDown || this.S.isDown || moveDown){
                 this.playerContainer.body.setVelocityY(speed);
                 isFront = true;
                 isBack = false;

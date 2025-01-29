@@ -3,16 +3,6 @@ function loadAssets(scene) {
     //show loading div
     document.getElementById('loadingDiv').style.display = 'flex';
 
-    // Update text as assets are loaded
-    scene.load.on('progress', (value) => {
-        let percentage = parseInt(value * 100);
-        document.getElementById('loadingProgressText').innerText = `${percentage} %`;
-    });
-
-    scene.load.on('complete', () => {
-        document.getElementById('loadingProgressText').innerText = 'Starting game...';
-    });
-
     //objects
     scene.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
     scene.load.image('rock', '/ImageComponents/Objects/Rock.png');
@@ -25,6 +15,7 @@ function loadAssets(scene) {
     //icon
     scene.load.image('loggedIcon', '/ImageComponents/UI/Login Icon.png');
     scene.load.image('guestIcon', '/ImageComponents/UI/Guest Icon.png');
+    scene.load.image('arrowIcon', '/ImageComponents/UI/Arrow Icon.png');
 
     //player
     scene.load.spritesheet('guestPlayerIdle', 'https://i.imgur.com/4BkMHTS.png', {
@@ -46,5 +37,15 @@ function loadAssets(scene) {
     scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {
         frameWidth: 5120 / 5,
         frameHeight: 2048 / 2
+    });
+
+    // Update text as assets are loaded
+    scene.load.on('progress', (value) => {
+        let percentage = parseInt(value * 100);
+        document.getElementById('loadingProgressText').innerText = `${percentage} %`;
+    });
+
+    scene.load.on('complete', () => {
+        document.getElementById('loadingProgressText').innerText = 'Starting game...';
     });
 }

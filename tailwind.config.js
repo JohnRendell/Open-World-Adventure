@@ -11,7 +11,7 @@ module.exports = {
           "PixelifySans": ["Pixelify Sans", "Sans"]
         },
         screens: {
-          "xsm": { "max" : "320px" }
+          "xsm": { "max" : "568px" }
         }
     },
   },

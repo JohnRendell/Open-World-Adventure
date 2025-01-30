@@ -7,7 +7,7 @@ function loadAssets(scene) {
     scene.load.image('lobby', '/ImageComponents/Lobby/Lobby Island.png');
     scene.load.image('rock', '/ImageComponents/Objects/Rock.png');
     scene.load.image('tree', '/ImageComponents/Objects/Tree.png');
-    scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner effect Sprite Sheet.png', {
+    scene.load.spritesheet('spawner', '/ImageComponents/Sprite Sheets/Spawner Sprite Sheet.png', {
         frameWidth: 5280 / 5,
         frameHeight: 800 / 1
     });
@@ -34,7 +34,7 @@ function loadAssets(scene) {
     });
 
     //effect
-    scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {
+    scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect Sprite Sheet.png', {
         frameWidth: 5120 / 5,
         frameHeight: 2048 / 2
     });

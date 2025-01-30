@@ -32,6 +32,11 @@ class gameLobby extends Phaser.Scene{
     }
 
     preload = function(){
+        //effect
+        this.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {
+            frameWidth: 5120 / 5,
+            frameHeight: 2048 / 2
+        });
         loadAssets(this);
     }
 

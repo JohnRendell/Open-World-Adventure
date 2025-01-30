@@ -33,12 +33,6 @@ function loadAssets(scene) {
         frameHeight: 800 / 1
     });
 
-    //effect
-    scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {
-        frameWidth: 5120 / 5,
-        frameHeight: 2048 / 2
-    });
-
     // Update text as assets are loaded
     scene.load.on('progress', (value) => {
         let percentage = parseInt(value * 100);

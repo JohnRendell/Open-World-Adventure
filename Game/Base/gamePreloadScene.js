@@ -47,7 +47,7 @@ function loadAssets(scene){
     scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png')
 
     //effect
-    scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect sprite sheet.png', {
+    scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect Sprite Sheet.png', {
         frameWidth: 5120 / 5,
         frameHeight: 2048 / 2
     });
@@ -58,12 +58,12 @@ function loadAssets(scene){
     });
 
     //NPC
-    scene.load.spritesheet('Bob_NPC', '/ImageComponents/Sprite Sheets/Guide Robot Sprite sheet.png', {
+    scene.load.spritesheet('Bob_NPC', '/ImageComponents/Sprite Sheets/Guide Robot Sprite Sheet.png', {
         frameWidth: 4800 / 5,
         frameHeight: 960 / 1
     });
 
-    scene.load.spritesheet('BobPrototype_NPC', '/ImageComponents/Sprite Sheets/Helper Robot Sprite sheet.png', {
+    scene.load.spritesheet('BobPrototype_NPC', '/ImageComponents/Sprite Sheets/Helper Robot Sprite Sheet.png', {
         frameWidth: 4800 / 5,
         frameHeight: 960 / 1
     });

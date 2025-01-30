@@ -1,9 +1,9 @@
 window.onload = async function(){
-    const deleteCookie = await fetch('/cookie/deleteCookie', {
+    const deleteCookie: Response = await fetch('/cookie/deleteCookie', {
         method: "GET",
         headers: {
-            "Accept": "Application/json",
-            "Content-Type": "Application/json"
+            "Accept": "application/json",
+            "Content-Type": "application/json"
         }
     });
 

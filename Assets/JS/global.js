@@ -162,23 +162,6 @@ async function promptNPC(promptMsg, containerID, systemInstruction){
         if(prompt_data.message == 'success'){
             promptMessage(prompt_data.output);
         }
-        else{
-            var container = document.getElementById(containerID);
-            var wrapperContainer = document.createElement('div');
-            wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-start');
-            container.appendChild(wrapperContainer);
-
-            var messageWrapper = document.createElement('div');
-            messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-2 rounded-lg bg-blue-500 m-2');
-            wrapperContainer.appendChild(messageWrapper);
-
-            var textContent = document.createElement('p');
-            textContent.setAttribute('class', 'font-PixelifySans text-sm text-black text-left text-wrap');
-            textContent.appendChild(document.createTextNode('Let me catch my breath you dummy'));
-            messageWrapper.appendChild(textContent);
-
-            container.scrollTo(0, container.scrollHeight);
-        }
     }
     catch(err){
         console.log(err);

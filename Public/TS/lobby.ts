@@ -1,11 +1,13 @@
+import { CryptoJS, replaceSlashWithUnderscore, setCookie, socket } from "./global";
+
 //for login account
 async function validateAccount(){
-    var username = document.getElementById('login_userID');
-    var password = document.getElementById('login_passID');
-    var loginWarningText = document.getElementById('loginWarningTxt');
+    var username = document.getElementById('login_userID') as HTMLInputElement;
+    var password = document.getElementById('login_passID') as HTMLInputElement;
+    var loginWarningText = document.getElementById('loginWarningTxt') as HTMLElement;
 
     try{
-        const accountValidate = await fetch('/login', {
+        const accountValidate: Response = await fetch('/login', {
             method: "POST",
             headers: {
                 "Accept": "Application/json",
@@ -14,10 +16,10 @@ async function validateAccount(){
             body: JSON.stringify({ username: username.value, password: password.value })
         });
 
-        const accountValidate_data = await accountValidate.json();
+        const accountValidate_data: { message: string, username: string } = await accountValidate.json();
 
         if(accountValidate_data.message === 'success'){
-            document.getElementById('processingDiv').style.display = 'flex';
+            document.getElementById('processingDiv')!.style.display = 'flex';
 
             const cookieStatus = await setCookie(accountValidate_data.username, 'loggedIn');
 
@@ -40,10 +42,10 @@ async function validateAccount(){
 }
 
 async function validateCreateAccount(){
-    var username = document.getElementById('signin_userID');
-    var password = document.getElementById('signin_passID');
-    var confirmPassword = document.getElementById('signin_confirmPassID');
-    var signinWarningText = document.getElementById('signinWarningTxt');
+    var username = document.getElementById('signin_userID') as HTMLInputElement;
+    var password = document.getElementById('signin_passID') as HTMLInputElement;
+    var confirmPassword = document.getElementById('signin_confirmPassID') as HTMLInputElement;
+    var signinWarningText = document.getElementById('signinWarningTxt') as HTMLElement;
 
     try{
         const accountCreateValidate = await fetch('/signin', {
@@ -58,14 +60,14 @@ async function validateCreateAccount(){
         const accountCreateValidate_data = await accountCreateValidate.json();
 
         if(accountCreateValidate_data.message === 'success'){
-            document.getElementById('processingDiv').style.display = 'flex';
+            document.getElementById('processingDiv')!.style.display = 'flex';
 
             const cookieStatus = await setCookie(accountCreateValidate_data.username, 'loggedIn');
 
             let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
 
             if(cookieStatus.status && decryptPlayerName){
-                document.getElementById('processingDiv').style.display = 'none';
+                document.getElementById('processingDiv')!.style.display = 'none';
                 socket.emit('redirectToBase', decryptPlayerName);
                 socket.emit('playerCount', 1);
                 window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);

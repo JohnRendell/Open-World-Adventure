@@ -29,26 +29,26 @@ router.post('/', (req, res)=>{
             responseMimeType: "text/plain",
         };
 
-        try{
-            async function run() {
-            const chatSession = model.startChat({
-                generationConfig,
-                history: [
-                ],
-            });
+        async function run() {
+        const chatSession = model.startChat({
+            generationConfig,
+            history: [
+            ],
+        });
 
-            const result = await chatSession.sendMessage(sanitizeHtml(req.body.prompt));
+            try{
+                const result = await chatSession.sendMessage(sanitizeHtml(req.body.prompt));
                 const generateResult = await model.generateContent(sanitizeHtml(req.body.prompt));
                 console.log(generateResult.response.usageMetadata);
                 res.status(200).json({ message: 'success', output: result.response.text() });
             }
+            catch(err){
+                console.log(err);
+                res.status(200).json({ message: 'success', output: 'Service is unavailable :(' });
+            }
+        }
 
         run();
-        }
-        catch(err){
-            console.log(err);
-            res.status(200).json({ message: 'too many request' })
-        }
 
     }
     catch(err){

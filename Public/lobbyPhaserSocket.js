@@ -117,7 +117,7 @@ function sceneSocket(scene){
 
                 //joined Player container
                 scene.joinedPlayerContainer = scene.add.container(playerX, playerY, [scene.joinedPlayer, scene.joinedPlayerName]);
-                scene.joinedPlayerContainer.setDepth(1);
+                scene.joinedPlayerContainer.setDepth(2);
 
                 //add player to the collection
                 scene.playerCollection.set(playerID, {

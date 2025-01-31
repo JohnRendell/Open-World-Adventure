@@ -149,7 +149,7 @@ class gameLobby extends Phaser.Scene{
         this.spawner.setDisplaySize(60, 50);
         this.spawner.body.setSize(60, 20, true);
         this.spawner.body.setOffset(500, 400);
-        this.spawner.setDepth(2);
+        this.spawner.setDepth(3);
 
         this.anims.create({
             key: 'spawnerPod',        
@@ -167,10 +167,10 @@ class gameLobby extends Phaser.Scene{
         this.rockGroup = this.physics.add.staticGroup();
 
         const rock = [
-            this.rockGroup.create(300, 400, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(500, 200, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(800, 550, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2),
-            this.rockGroup.create(400, 600, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(2)
+            this.rockGroup.create(300, 400, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(3),
+            this.rockGroup.create(500, 200, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(3),
+            this.rockGroup.create(800, 550, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(3),
+            this.rockGroup.create(400, 600, 'rock').setOrigin(0.5).setDisplaySize(80,60).setDepth(3)
         ]
         
         rock.forEach(obj => {

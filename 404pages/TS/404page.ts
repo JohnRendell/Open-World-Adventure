@@ -2,6 +2,8 @@ import { socket, npcPromptInstruction } from './global';
 
 var outputElement = document.getElementById('outputText') as HTMLElement;
 
+socket.emit('NPCPrompt', 'bob404');
+
 async function finishedOutput(word: string){
     let colors = ['#3cd402', '#46ff00'];
     let colorIndex: number = 0;
@@ -60,13 +62,9 @@ async function prompt() {
     }
 }
 
-function fireFunction(){
-    socket.emit('NPCPrompt', 'bob404');
-    setTimeout(async () => {
-        await prompt();
-    }, 500);
-}
-fireFunction();
+setTimeout(async () => {
+    await prompt();
+}, 500);
 
 function goToLobby(){
     window.location.href = "/lobby";

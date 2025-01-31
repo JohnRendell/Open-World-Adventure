@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 
 var outputElement = document.getElementById('outputText');
+socket.emit('NPCPrompt', 'bob404');
 function finishedOutput(word) {
     return __awaiter(this, void 0, void 0, function* () {
         let colors = ['#3cd402', '#46ff00'];
@@ -61,13 +62,9 @@ function prompt() {
         }
     });
 }
-function fireFunction() {
-    socket.emit('NPCPrompt', 'bob404');
-    setTimeout(() => __awaiter(this, void 0, void 0, function* () {
-        yield prompt();
-    }), 500);
-}
-fireFunction();
+setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield prompt();
+}), 500);
 function goToLobby() {
     window.location.href = "/lobby";
 }

@@ -94,10 +94,18 @@ class gameLobby extends Phaser.Scene{
             repeat: -1
         });
 
-        //player name
-        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+       const decryptPlayerName = (()=>{
+            try{
+                //player name
+                let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+                return decryptPlayerName ? decryptPlayerName.toString() : 'Failed to decrypt'
+            }
+            catch(err){
+                console.log(err)
+            }
+       })
 
-        this.playerName = this.add.text(0, -50, decryptPlayerName, {
+        this.playerName = this.add.text(0, -50, decryptPlayerName(), {
             font: "16px 'Pixelify Sans'",
             fill: '#06402b',
             align: 'center'

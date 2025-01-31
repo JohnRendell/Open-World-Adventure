@@ -1,4 +1,4 @@
-import { CryptoJS, game_PlayerName, replaceSlashWithUnderscore, setCookie, socket } from "./global";
+import { CryptoJS, game_PlayerName, replaceSlashWithUnderscore, setCookie, setOutWorld, socket } from "./global";
 
 var validateUser: string;
 var loggedInURL: string;
@@ -315,8 +315,9 @@ function healPlayer(){
 
 //logout
 async function logout(){
-    socket.emit('gameOutside_playerDisconnect');
-    socket.emit('redirectToBase', game_PlayerName);
+    setOutWorld(true);
+    socket.emit('gameOutside_playerDisconnect', game_PlayerName);
+    socket.emit('game_playerDisconnect', game_PlayerName);
     window.location.href = '/lobby';
 }
 

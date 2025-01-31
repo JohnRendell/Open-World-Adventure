@@ -5,3 +5,4 @@ declare function setCookie(username: string, type: string): Promise<{ status: bo
 declare var socket: Socket;
 declare var CryptoJS: any;
 declare var game_PlayerName: any;
+declare function setOutWorld(status: boolean): any;

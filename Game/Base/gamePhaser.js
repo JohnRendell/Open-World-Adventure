@@ -26,11 +26,20 @@ let isPanelOpen = false;
 let isLoaded = false;
 let isMainPlayerGoingToRoom = false;
 var game_PlayerName, loggedIn_playerName;
+let isOutWorld = false;
 
 let spriteFront, spriteSide, spriteBack;
 
 let isFront = false;
 let isBack = false;
+
+function getOutWorld(){
+    return isOutWorld;
+}
+
+function setOutWorld(status){
+    isOutWorld = status;
+}
 
 class homeBase extends Phaser.Scene{
     constructor(){
@@ -274,7 +283,8 @@ class homeBase extends Phaser.Scene{
                         socket.emit('hidePlayersWhenGoToRoom', offsetY);
                     }
                     else{
-                        socket.emit('game_playerDisconnect');
+                        setOutWorld(true);
+                        socket.emit('game_playerDisconnect', game_PlayerName);
                         goingOutside();
                     }
                 }
@@ -470,7 +480,7 @@ class homeBase extends Phaser.Scene{
                 spriteX: this.player.flipX
             }
             socket.emit('game_playerMove', playerData);
-            socket.emit('game_existingPlayer', playerData, false);
+            socket.emit('game_existingPlayer', playerData, false, getOutWorld());
             socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
         }
     }

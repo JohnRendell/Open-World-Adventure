@@ -104,8 +104,8 @@ module.exports = (server)=>{
         
         //when player disconnected
         function disconnectPlayer(socket, socketName){
-            socket.on(socketName, ()=>{
-                socket.broadcast.emit(socketName);
+            socket.on(socketName, (playerName)=>{
+                socket.broadcast.emit(socketName, playerName);
             });
         }
         disconnectPlayer(socket, 'game_playerDisconnect');
@@ -146,8 +146,8 @@ module.exports = (server)=>{
 
         //spawn the existing player
         function renderPlayer(socket, socketName){
-            socket.on(socketName, (playerData, isDead)=>{
-                socket.broadcast.emit(socketName, playerData, isDead);
+            socket.on(socketName, (playerData, isDead, isOutWorld)=>{
+                socket.broadcast.emit(socketName, playerData, isDead, isOutWorld);
             });
         }
         renderPlayer(socket, 'game_existingPlayer');

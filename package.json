@@ -7,7 +7,7 @@
     "start": "nodemon Server/index.js",
     "build": "npx tailwindcss -i ./Assets/Styles/input.css -o ./Assets/Styles/style.css --watch",
     "uglifyLibraries": "uglifyjs ./Assets/phaser/dist/phaser.js ./Assets/webfontloader/webfontloader.js ./Assets/crypto-js/crypto-js.js -o ./Assets/MinLibrary/libraries.min.js -c -m",
-    "uglify404": "uglifyjs ./404pages/404phaser.js -o ./404pages/MinJS/404phaser.min.js -c -m",
+    "uglify404": "uglifyjs ./404pages/JS/404page.js -o ./404pages/MinJS/404page.min.js -c -m",
     "uglifyCookieJS": "uglifyjs ./Public/JS/clearCookie.js -o ./Public/MinJS/clearCookie.min.js -c -m",
     "uglifyLobbyJS": "uglifyjs ./Public/JS/lobby.js -o ./Public/MinJS/lobby.min.js -c -m",
     "uglifyLobbyPhaserJS": "uglifyjs ./Public/scenePreloadPhaser.js ./Public/lobbyPhaser.js ./Public/lobbyPhaserSocket.js -o ./Public/MinJS/lobbyPhaserUglify.min.js -c -m"

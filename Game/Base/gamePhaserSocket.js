@@ -183,17 +183,19 @@ function sceneSocket(scene){
         }
     });
 
-    socket.on('game_playerDisconnect', ()=>{
-        //search player to the collection
-        scene.playerCollection.forEach((player, name) => {
-            if(name !== game_PlayerName){
-                const { playerName, container, playerSprite } = player;
-                playerName.destroy();
-                playerSprite.destroy();
-                container.destroy();
-                scene.playerCollection.delete(name);
-            } 
-        });
+    socket.on('game_playerDisconnect', (playerName)=>{
+        setTimeout(() => {
+            //search player to the collection
+            scene.playerCollection.forEach((player, name) => {
+                if(playerName === name){
+                    const { playerName, container, playerSprite } = player;
+                    playerName.destroy();
+                    playerSprite.destroy();
+                    container.destroy();
+                    scene.playerCollection.delete(name);
+                } 
+            });
+        }, 1000);
     });
 
     socket.on('game_spawnPlayer', (playerUser) => {
@@ -300,37 +302,41 @@ function sceneSocket(scene){
         const { playerID, playerX, playerY } = playerData;
 
         setTimeout(() => {
-            if(!scene.playerCollection.has(playerID)){
-                //joined Player
-                scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
-                scene.joinedPlayer.setScale(0.1); 
-                scene.joinedPlayer.setVisible(true);
+            if(!isDead){
+                if(!scene.playerCollection.has(playerID)){
+                    //joined Player
+                    scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
+                    scene.joinedPlayer.setScale(0.1); 
+                    scene.joinedPlayer.setVisible(true);
 
-                //joined Player name
-                scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
-                    font: "16px 'Pixelify Sans'",
-                    fill: '#ffffff',
-                    align: 'center'
-                }).setOrigin(0.5).setDepth(5);
+                    //joined Player name
+                    scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
+                        font: "16px 'Pixelify Sans'",
+                        fill: '#ffffff',
+                        align: 'center'
+                    }).setOrigin(0.5).setDepth(5);
 
-                //joined Player container
-                scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
-                    [
-                        scene.joinedPlayerName,
-                        scene.joinedPlayer
-                    ]);
-                scene.joinedPlayerContainer.setDepth(1);
+                    //joined Player container
+                    scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
+                        [
+                            scene.joinedPlayerName,
+                            scene.joinedPlayer
+                        ]);
+                    scene.joinedPlayerContainer.setDepth(1);
 
-                //add player to the collection
-                scene.playerCollection.set(playerID, {
-                    playerName: scene.joinedPlayerName,
-                    isInsideOfRoom: false,
-                    container: scene.joinedPlayerContainer,
-                    playerSprite: scene.joinedPlayer
-                });
-
-                destroyNoNameSprite(scene);
+                    //add player to the collection
+                    scene.playerCollection.set(playerID, {
+                        playerName: scene.joinedPlayerName,
+                        isInsideOfRoom: false,
+                        container: scene.joinedPlayerContainer,
+                        playerSprite: scene.joinedPlayer
+                    });
+                }
             }
+            else{
+                socket.emit('game_playerDisconnect', playerID);
+            }
+            destroyNoNameSprite(scene);
         }, 1000);
     });
 

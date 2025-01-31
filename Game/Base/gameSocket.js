@@ -1,6 +1,6 @@
 function loadPlayerInfo(scene){
     socket.on('connect', ()=>{
-        socket.emit('game_playerDisconnect');
+        
     });
 
     socket.on('loadNewSprite', (imageID, sprite, query)=>{

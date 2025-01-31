@@ -278,7 +278,9 @@ function healPlayer() {
 //logout
 function logout() {
     return __awaiter(this, void 0, void 0, function* () {
-        socket.emit('gameOutside_playerDisconnect');
+        setOutWorld(true);
+        socket.emit('gameOutside_playerDisconnect', game_PlayerName);
+        socket.emit('game_playerDisconnect', game_PlayerName);
         socket.emit('redirectToBase', game_PlayerName);
         window.location.href = '/lobby';
     });

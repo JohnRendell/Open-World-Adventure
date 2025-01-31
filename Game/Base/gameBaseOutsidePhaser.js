@@ -36,6 +36,15 @@ let isAttackingFront = false;
 let isAttackingBack = false;
 let isAttack = false;
 let isDead = false;
+let isOutWorld = false;
+
+function getOutWorld(){
+    return isOutWorld;
+}
+
+function setOutWorld(status){
+    isOutWorld = status;
+}
 
 class baseOutside extends Phaser.Scene{
     constructor(){
@@ -133,6 +142,14 @@ class baseOutside extends Phaser.Scene{
 
             this.load.start();
         });
+
+        //game status
+        this.gameStatus = this.add.text(canvasSize.width / 2, canvasSize.height - 50, 'Game is on development...', {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        }).setOrigin(0.5);
+        this.gameStatus.setScrollFactor(0).setDepth(10);
 
         //death animation
         this.anims.create({
@@ -320,7 +337,8 @@ class baseOutside extends Phaser.Scene{
         this.door.setInteractive({ useHandCursor: true });
         this.door.on('pointerdown', () => {
             if (Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.door.getBounds())) {
-                socket.emit('gameOutside_playerDisconnect');
+                setOutWorld(true);
+                socket.emit('gameOutside_playerDisconnect', game_PlayerName);
                 backToBase();
             }
         });
@@ -583,7 +601,7 @@ class baseOutside extends Phaser.Scene{
                 isDead: isDead
             }
             socket.emit('gameOutside_playerMove', playerData);
-            socket.emit('gameOutside_existingPlayer', playerData, isDead);
+            socket.emit('gameOutside_existingPlayer', playerData, isDead, getOutWorld());
 
             socket.emit('gameOutside_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, spriteFrontAttack, spriteBackAttack, spriteSideAttack);
         }
@@ -601,7 +619,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
     scene: [baseOutside]

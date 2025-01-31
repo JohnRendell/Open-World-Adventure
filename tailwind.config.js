@@ -3,7 +3,8 @@ module.exports = {
   content: [
     "./Public/*.{html,js}",
     "./Game/*.{html,js}",
-    "./Game/Base/*.{html,js}"
+    "./Game/Base/*.{html,js}",
+    "./404pages/*.{html,js}"
   ],
   theme: {
     extend: {

@@ -86,17 +86,19 @@ function sceneSocket(scene){
         }, 1000);
     });
 
-    socket.on('gameOutside_playerDisconnect', ()=>{
-        //search player to the collection
-        scene.playerCollection.forEach((player, name) => {
-            if(name !== game_PlayerName){
-                const { playerName, container, playerSprite } = player;
-                playerName.destroy();
-                playerSprite.destroy();
-                container.destroy();
-                scene.playerCollection.delete(name);
-            } 
-        });
+    socket.on('gameOutside_playerDisconnect', (playerName)=>{
+        setTimeout(() => {
+            //search player to the collection
+            scene.playerCollection.forEach((player, name) => {
+                if(playerName === name){
+                    const { playerName, container, playerSprite } = player;
+                    playerName.destroy();
+                    playerSprite.destroy();
+                    container.destroy();
+                    scene.playerCollection.delete(name);
+                } 
+            });
+        }, 1000);
     });
 
     socket.on('gameOutside_spawnPlayer', (playerUser) => {
@@ -176,47 +178,52 @@ function sceneSocket(scene){
     });
 
     //for rendering player data
-    socket.on('gameOutside_existingPlayer', (playerData, isDead)=>{
+    socket.on('gameOutside_existingPlayer', (playerData, isDead, isOutWorld)=>{
         const { playerID, playerX, playerY } = playerData;
 
         setTimeout(() => {
             if(!scene.playerCollection.has(playerID)){
                 if(!isDead){
-                    //joined Player
-                    scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
-                    scene.joinedPlayer.setScale(0.1); 
-                    scene.joinedPlayer.setVisible(true);
+                    if(!isOutWorld){
+                            //joined Player
+                            scene.joinedPlayer = scene.physics.add.sprite(0,0, playerID + '_playerIdle').setOrigin(0.5);
+                            scene.joinedPlayer.setScale(0.1); 
+                            scene.joinedPlayer.setVisible(true);
 
-                    //joined Player name
-                    scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
-                        font: "16px 'Pixelify Sans'",
-                        fill: '#ffffff',
-                        align: 'center'
-                    }).setOrigin(0.5);
+                            //joined Player name
+                            scene.joinedPlayerName = scene.add.text(0, -50, playerID, {
+                                font: "16px 'Pixelify Sans'",
+                                fill: '#ffffff',
+                                align: 'center'
+                            }).setOrigin(0.5);
 
-                    //joined Player container
-                    scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
-                        [
-                            scene.joinedPlayerName,
-                            scene.joinedPlayer
-                        ]);
-                    scene.physics.world.enable(scene.joinedPlayerContainer);
+                            //joined Player container
+                            scene.joinedPlayerContainer = scene.add.container(playerX, playerY, 
+                                [
+                                    scene.joinedPlayerName,
+                                    scene.joinedPlayer
+                                ]);
+                            scene.physics.world.enable(scene.joinedPlayerContainer);
 
-                    scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
-                    scene.joinedPlayerContainer.body.setSize(40, 70, true);
-                    scene.joinedPlayerContainer.body.setOffset(-20, -35);
-                    scene.joinedPlayerContainer.setDepth(3);
+                            scene.joinedPlayerContainer.body.setCollideWorldBounds(true);
+                            scene.joinedPlayerContainer.body.setSize(40, 70, true);
+                            scene.joinedPlayerContainer.body.setOffset(-20, -35);
+                            scene.joinedPlayerContainer.setDepth(3);
 
-                    //add player to the collection
-                    scene.playerCollection.set(playerID, {
-                        playerName: scene.joinedPlayerName,
-                        isInsideOfRoom: false,
-                        container: scene.joinedPlayerContainer,
-                        playerSprite: scene.joinedPlayer
-                    });
+                            //add player to the collection
+                            scene.playerCollection.set(playerID, {
+                                playerName: scene.joinedPlayerName,
+                                isInsideOfRoom: false,
+                                container: scene.joinedPlayerContainer,
+                                playerSprite: scene.joinedPlayer
+                            });
+                    }
+                    else{
+                        socket.emit('gameOutside_playerDisconnect', game_PlayerName);
+                   }
                 }
                 else{
-                    socket.on('playerDie', playerID);
+                    socket.emit('playerDie', playerID);
                 }
                 destroyNoNameSprite(scene);
             }

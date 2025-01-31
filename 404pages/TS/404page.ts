@@ -1,7 +1,5 @@
 import { socket, npcPromptInstruction } from './global';
 
-socket.emit('NPCPrompt', 'bob404');
-
 var outputElement = document.getElementById('outputText') as HTMLElement;
 
 async function finishedOutput(word: string){
@@ -62,10 +60,13 @@ async function prompt() {
     }
 }
 
-async function fireFunction(){
-    await prompt();
+function fireFunction(){
+    socket.emit('NPCPrompt', 'bob404');
+    setTimeout(async () => {
+        await prompt();
+    }, 500);
 }
-setTimeout(fireFunction, 500);
+fireFunction();
 
 function goToLobby(){
     window.location.href = "/lobby";

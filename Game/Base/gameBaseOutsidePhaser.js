@@ -143,7 +143,7 @@ class baseOutside extends Phaser.Scene{
             this.load.start();
         });
 
-        //game status
+        //game status, NOTE: Remove when added more stuff
         this.gameStatus = this.add.text(canvasSize.width / 2, canvasSize.height - 50, 'Game is on development...', {
             font: "16px 'Pixelify Sans",
             fill: "#ffffff",

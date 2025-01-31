@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 
-socket.emit('NPCPrompt', 'bob404');
 var outputElement = document.getElementById('outputText');
 function finishedOutput(word) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -63,11 +62,12 @@ function prompt() {
     });
 }
 function fireFunction() {
-    return __awaiter(this, void 0, void 0, function* () {
+    socket.emit('NPCPrompt', 'bob404');
+    setTimeout(() => __awaiter(this, void 0, void 0, function* () {
         yield prompt();
-    });
+    }), 500);
 }
-setTimeout(fireFunction, 500);
+fireFunction();
 function goToLobby() {
     window.location.href = "/lobby";
 }

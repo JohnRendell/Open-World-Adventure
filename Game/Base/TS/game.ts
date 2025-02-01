@@ -253,21 +253,6 @@ function openAccountModal(){
     accountSettingVal.value = validateUser;
 }
 
-//opening pixel drawing div
-function openPixelDrawingDiv(){
-    var drawingContainer = document.getElementById('pixelDrawingDiv') as HTMLElement;
-        
-    for(let i: number = 0; i < 20; i++){
-        for(let j: number = 0; j < 20; j++){
-            let color: string = (i + j) % 2 === 0 ? 'bg-slate-700' : 'bg-slate-500';
-            var pixel = document.createElement('div');
-            pixel.setAttribute('class', 'flex justify-center items-center w-full h-full ' + color);
-
-            drawingContainer.appendChild(pixel);
-        }
-    }
-}
-
 //updating account
 async function updateAccount() {
     var warningTxt = document.getElementById('accSetting_warningTxt') as HTMLElement;

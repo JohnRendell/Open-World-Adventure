@@ -127,7 +127,7 @@
                     <h1 class="font-PixelifySans text-black text-center text-lg" id="containerTitle">Log in</h1>
                 </div>
                 <button class="w-fit h-fit cursor-pointer"
-                    onclick="modalStatus('loginDiv', 'none', null); playGame(null);">
+                    onclick="modalStatus('loginDiv', 'none', null); playGame(null);  isOpenLogin = false; isOpenSignin = false;">
                     <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-auto">
                 </button>
             </div>
@@ -169,7 +169,7 @@
                 <button class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700"
                     onclick="validateAccount()">Proceed</button>
             
-                <button class="font-PixelifySans text-sm text-blue-500 underlined hover:text-blue-700" onclick="togglePanel('signinPanel', 'loginPanel'); replaceTitle('containerTitle', 'Sign in')">Create Account</button>
+                <button class="font-PixelifySans text-sm text-blue-500 underlined hover:text-blue-700" onclick="togglePanel('signinPanel', 'loginPanel'); replaceTitle('containerTitle', 'Sign in'); isOpenLogin = false; isOpenSignin = true;">Create Account</button>
             </div>
             
             <!--Create Account-->
@@ -227,7 +227,7 @@
                     <button class="font-PixelifySans text-sm text-white bg-green-500 w-fit p-2 rounded-lg hover:bg-green-700"
                         onclick="validateCreateAccount()">Create New</button>
                     
-                    <button class="font-PixelifySans text-sm text-blue-500 underlined hover:text-blue-700" onclick="togglePanel('loginPanel', 'signinPanel'); replaceTitle('containerTitle', 'Log in')">Back to log in</button>
+                    <button class="font-PixelifySans text-sm text-blue-500 underlined hover:text-blue-700" onclick="togglePanel('loginPanel', 'signinPanel'); replaceTitle('containerTitle', 'Log in'); isOpenLogin = true; isOpenSignin = true;">Back to log in</button>
                 </div>
             </div>
         </div>
@@ -268,11 +268,11 @@
 <!--Global sockets-->
 <script src="/JS/globalSocket.js"></script>
 
-<!--Phasers-->
-<script src="/JS/gameUI.js"></script>
-<script src="/MinJS/lobbyPhaserUglify.min.js"></script>
-
 <!--Scripts needed-->
 <script src="/JS/global.js"></script>
 <script src="/MinJS/lobby.min.js"></script>
 <script src="/MinJS/clearCookie.min.js"></script>
+
+<!--Phasers-->
+<script src="/JS/gameUI.js"></script>
+<script src="/MinJS/lobbyPhaserUglify.min.js"></script>

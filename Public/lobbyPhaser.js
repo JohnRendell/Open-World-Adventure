@@ -225,6 +225,7 @@ class gameLobby extends Phaser.Scene{
         this.loggedInContainer.on('pointerdown', () => {
             isTalking = true;
             isPanelOpen = true;
+            isOpenLogin = true;
             modalStatus('loginDiv', 'flex', 'modalAnimation');
         });
 

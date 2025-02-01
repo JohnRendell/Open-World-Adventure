@@ -222,18 +222,6 @@ function openAccountModal() {
     const accountSettingVal = document.getElementById('accSetting_userID');
     accountSettingVal.value = validateUser;
 }
-//opening pixel drawing div
-function openPixelDrawingDiv() {
-    var drawingContainer = document.getElementById('pixelDrawingDiv');
-    for (let i = 0; i < 20; i++) {
-        for (let j = 0; j < 20; j++) {
-            let color = (i + j) % 2 === 0 ? 'bg-slate-700' : 'bg-slate-500';
-            var pixel = document.createElement('div');
-            pixel.setAttribute('class', 'flex justify-center items-center w-full h-full ' + color);
-            drawingContainer.appendChild(pixel);
-        }
-    }
-}
 //updating account
 function updateAccount() {
     return __awaiter(this, void 0, void 0, function* () {

@@ -109,7 +109,7 @@
 }
 
 /*
-! tailwindcss v3.4.16 | MIT License | https://tailwindcss.com
+! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -630,10 +630,6 @@ video {
   margin-top: 0rem;
 }
 
-.inline{
-  display: inline;
-}
-
 .flex{
   display: flex;
 }
@@ -644,10 +640,6 @@ video {
 
 .grid{
   display: grid;
-}
-
-.inline-grid{
-  display: inline-grid;
 }
 
 .hidden{
@@ -682,6 +674,10 @@ video {
   height: 2rem;
 }
 
+.h-\[30rem\]{
+  height: 30rem;
+}
+
 .h-\[5rem\]{
   height: 5rem;
 }
@@ -711,32 +707,24 @@ video {
   height: 100vh;
 }
 
-.h-\[40rem\]{
-  height: 40rem;
-}
-
-.h-\[0rem\]{
-  height: 0rem;
-}
-
-.h-\[30rem\]{
-  height: 30rem;
-}
-
 .h-\[\]{
   height: ;
 }
 
-.h-\[25rem\]{
-  height: 25rem;
+.h-\[15px\]{
+  height: 15px;
 }
 
-.h-\[35rem\]{
-  height: 35rem;
+.h-\[20px\]{
+  height: 20px;
 }
 
-.h-\[3rem\]{
-  height: 3rem;
+.h-\[30px\]{
+  height: 30px;
+}
+
+.h-\[rem\]{
+  height: rem;
 }
 
 .w-20{
@@ -775,6 +763,10 @@ video {
   width: 40rem;
 }
 
+.w-\[50\%\]{
+  width: 50%;
+}
+
 .w-fit{
   width: -moz-fit-content;
   width: fit-content;
@@ -788,48 +780,32 @@ video {
   width: 100vw;
 }
 
-.w-\[50\%\]{
-  width: 50%;
-}
-
 .w-\[\]{
   width: ;
+}
+
+.w-\[5rem\]{
+  width: 5rem;
+}
+
+.w-\[10px\]{
+  width: 10px;
+}
+
+.w-\[15px\]{
+  width: 15px;
+}
+
+.w-\[25px\]{
+  width: 25px;
 }
 
 .cursor-pointer{
   cursor: pointer;
 }
 
-.grid-cols-4{
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.grid-cols-\[\]{
-  grid-template-columns: ;
-}
-
-.grid-cols-\[30\]{
-  grid-template-columns: 30;
-}
-
-.grid-cols-\[repeat\(30\2c minmax\(0\2c 1fr\)\)\]{
-  grid-template-columns: repeat(30,minmax(0,1fr));
-}
-
 .grid-cols-\[repeat\(20\2c minmax\(0\2c 1fr\)\)\]{
   grid-template-columns: repeat(20,minmax(0,1fr));
-}
-
-.grid-rows-4{
-  grid-template-rows: repeat(4, minmax(0, 1fr));
-}
-
-.grid-rows-\[30\]{
-  grid-template-rows: 30;
-}
-
-.grid-rows-\[repeat\(30\2c minmax\(0\2c 1fr\)\)\]{
-  grid-template-rows: repeat(30,minmax(0,1fr));
 }
 
 .grid-rows-\[repeat\(20\2c minmax\(0\2c 1fr\)\)\]{
@@ -930,12 +906,25 @@ video {
   border-radius: 0.5rem;
 }
 
+.rounded-sm{
+  border-radius: 0.125rem;
+}
+
 .border-2{
   border-width: 2px;
 }
 
 .border-4{
   border-width: 4px;
+}
+
+.border-b{
+  border-bottom-width: 1px;
+}
+
+.border-black{
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
 }
 
 .border-blue-500{
@@ -953,9 +942,13 @@ video {
   border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));
 }
 
-.border-black{
+.border-blue-700{
   --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
+  border-color: rgb(29 78 216 / var(--tw-border-opacity, 1));
+}
+
+.border-transparent{
+  border-color: transparent;
 }
 
 .bg-\[\#0c9141\]{
@@ -1007,14 +1000,9 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-red-500{
+.bg-slate-500{
   --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
-}
-
-.bg-black{
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+  background-color: rgb(100 116 139 / var(--tw-bg-opacity, 1));
 }
 
 .bg-slate-700{
@@ -1022,14 +1010,14 @@ video {
   background-color: rgb(51 65 85 / var(--tw-bg-opacity, 1));
 }
 
-.bg-slate-500{
+.bg-black{
   --tw-bg-opacity: 1;
-  background-color: rgb(100 116 139 / var(--tw-bg-opacity, 1));
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
 
-.bg-blue-700{
+.bg-green-700{
   --tw-bg-opacity: 1;
-  background-color: rgb(29 78 216 / var(--tw-bg-opacity, 1));
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
 }
 
 .p-2{
@@ -1177,28 +1165,12 @@ video {
     height: 25rem;
   }
 
-  .md\:h-\[500px\]{
-    height: 500px;
-  }
-
-  .md\:h-\[5rem\]{
-    height: 5rem;
-  }
-
-  .md\:h-\[35rem\]{
-    height: 35rem;
-  }
-
-  .md\:h-\[32rem\]{
-    height: 32rem;
-  }
-
-  .md\:h-\[34rem\]{
-    height: 34rem;
-  }
-
   .md\:h-\[33rem\]{
     height: 33rem;
+  }
+
+  .md\:h-\[500px\]{
+    height: 500px;
   }
 
   .md\:w-\[300px\]{
@@ -1215,6 +1187,10 @@ video {
 
   .md\:w-\[40rem\]{
     width: 40rem;
+  }
+
+  .md\:w-\[60rem\]{
+    width: 60rem;
   }
 }
 

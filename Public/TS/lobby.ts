@@ -1,5 +1,8 @@
 import { CryptoJS, replaceSlashWithUnderscore, setCookie, socket } from "./global";
 
+let isOpenLogin: boolean = false;
+let isOpenSignin: boolean = false;
+
 //for login account
 async function validateAccount(){
     var username = document.getElementById('login_userID') as HTMLInputElement;
@@ -83,5 +86,17 @@ async function validateCreateAccount(){
         console.log(err);
     }
 }
+
+//for login
+document.addEventListener("keypress", function(event) {
+    if (event.key === 'Enter') {
+        if(isOpenLogin){
+            validateAccount();
+        }
+        if(isOpenSignin){
+            validateCreateAccount();
+        }
+    }
+});
 
 socket.emit('logoutPlayer');

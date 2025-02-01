@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 
+let isOpenLogin = false;
+let isOpenSignin = false;
 //for login account
 function validateAccount() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -81,4 +83,15 @@ function validateCreateAccount() {
         }
     });
 }
+//for login
+document.addEventListener("keypress", function (event) {
+    if (event.key === 'Enter') {
+        if (isOpenLogin) {
+            validateAccount();
+        }
+        if (isOpenSignin) {
+            validateCreateAccount();
+        }
+    }
+});
 socket.emit('logoutPlayer');

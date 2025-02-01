@@ -19,6 +19,8 @@
 
     <!--Libraries, webfontloader, phaser, crypto-->
     <script src="/MinLibrary/libraries.min.js"></script>
+
+    <script src="/html2canvas/dist/html2canvas.js"></script>
     
     <!--Web socket library-->
     <script src="/socket.io/socket.io.min.js"></script>
@@ -214,7 +216,7 @@
                 <p class="font-PixelifySans text-sm text-black text-center">Your Current Sprite Skin</p>
 
                 <!--TODO: to be delete later on-->
-                <button onclick="openPixelDrawingDiv(); modalStatus('pixelEditModal', 'flex', 'modalAnimation'); ">test button</button>
+                <button onclick="modalStatus('pixelEditModal', 'flex', 'modalAnimation'); ">test button</button>
                
                 <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[15rem]" id="spriteDiv">
                     <!--Walking-->
@@ -317,7 +319,7 @@
     <!--TODO: fix more on this one-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="pixelEditModal"
         style="display: none;">
-        <div class="border-2 border-black bg-white w-[20rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[40rem] md:h-[33rem]"
+        <div class="border-2 border-black bg-white w-[20rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[60rem] md:h-[33rem]"
             id="pixelEditModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -327,21 +329,64 @@
             </div>
     
             <div class="flex justify-between gap-2 w-full">
-                <!--Color pallete-->
-                <div class="border-2 border-black w-[20rem] h-full">
-                    this is for color pallete
+                <div class="flex flex-col gap-4 w-[40rem] h-full border-2 border-black ">
+                    <!--Color pallete-->
+                    <div class="flex flex-col gap-2 items-center p-2">
+                        <p class="font-PixelifySans text-black text-sm text-center">Picker: (Click to pick color)</p>
+                        <input type="color" class="cursor-pointer" id="colorPicker">
+                    </div>
+
+                    <!--Tools-->
+                    <div class="flex flex-col gap-2">
+                        <p class="font-PixelifySans text-center text-black text-sm">Tools: </p>
+                        <div class="flex justify-evenly gap-2">
+                            <button class="border-4 border-blue-700 bg-blue-500 rounded-lg w-fit h-fit p-2" id="penTool" onclick="pickTools('Draw')"><img src="/ImageComponents/UI/Pen Icon.png"
+                                    alt="pen icon" class="w-[25px] h-[30px]"></button>
+                            <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="eraseTool" onclick="pickTools('Erase')"><img
+                                    src="/ImageComponents/UI/Eraser Icon.png" alt="erase icon" class="w-[25px] h-[30px]"></button>
+                            <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="pickerTool"
+                                onclick="pickTools('Picker')"><img src="/ImageComponents/UI/Picker Icon.png" alt="picker icon"
+                                    class="w-[25px] h-[30px]"></button>
+                        </div>
+                    </div>
+                    
+                    <!--Frame Selector-->
+                    <div class="flex flex-col items-center gap-2">
+                        <p class="font-PixelifySans text-sm text-center text-black">Current Frame: (Frame num)</p>
+                        
+                        <img src="" alt="frame1" class="w-full h-[8rem]">
+                        
+                        <div class="flex justify-between gap-2">
+                            <button class="font-PixelifySans text-white text-sm bg-blue-500 p-2 rounded-lg hover:bg-blue-700">Frame 1</button>
+                            <button class="font-PixelifySans text-white text-sm bg-blue-500 p-2 rounded-lg hover:bg-blue-700">Frame 2</button>
+                        </div>
+                    </div>
                 </div>
 
-                <!--Pixel Div-->
-                <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] border-2 border-black w-full h-[18rem] md:h-[25rem]"
-                    id="pixelDrawingDiv">
+                <!--Drawing here-->
+                <div class="flex flex-col gap-2 w-full h-[18rem] md:h-[25rem]">
+                    <p class="font-PixelifySans text-sm text-center text-black">Drawing:</p>
+                    <!--Pixel Div-->
+                    <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] border-2 border-black w-full h-full"
+                        id="pixelDrawingDiv">
+                        <!--<div class="bg-slate-500"></div>
+                                        <div class="bg-slate-700"></div>-->
+                    </div>
+                </div>
+
+                <!--End result here-->
+                <div class="flex flex-col gap-2 w-full h-[18rem] md:h-[25rem]">
+                    <p class="font-PixelifySans text-sm text-center text-black">Output:</p>
+                    <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] w-full h-full"
+                        id="pixelContent">
+                    </div>
                 </div>
             </div>
     
             <div class="w-[50%] flex justify-evenly">
                 <button
                     class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
-                    onclick="">Save</button>
+                    onclick="savePixel();">Save</button>
                 <button
                     class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
                     onclick="modalStatus('pixelEditModal', 'none', null);">Cancel</button>
@@ -573,3 +618,4 @@
 <!--Script needed-->
 <script src="/JS/global.js"></script>
 <script src="/Base/JS/game.js"></script>
+<script src="/Base/JS/pixelDrawing.js"></script>

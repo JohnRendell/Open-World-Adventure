@@ -37,6 +37,11 @@
         border-radius: 10px;
         border-color: #e2e8f0;
     }
+
+    #spriteDiv::-webkit-scrollbar-thumb{
+        background-color: #3b82f6;
+        border-color: white;
+    }
 </style>
 
 <!--For images-->
@@ -207,8 +212,11 @@
 
                 <!--Animation skin-->
                 <p class="font-PixelifySans text-sm text-black text-center">Your Current Sprite Skin</p>
+
+                <!--TODO: to be delete later on-->
+                <button onclick="openPixelDrawingDiv(); modalStatus('pixelEditModal', 'flex', 'modalAnimation'); ">test button</button>
                
-                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[15rem]">
+                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[15rem]" id="spriteDiv">
                     <!--Walking-->
                     <div class="flex justify-between gap-4">
                         <div class="flex flex-col space-y-2 w-full items-center">
@@ -301,6 +309,42 @@
             <!--Guest player-->
             <div class="flex justify-center items-center w-full p-2" id="guestDiv">
                 <p class="font-PixelifySans text-sm text-black text-center">You are on guest mode</p>
+            </div>
+        </div>
+    </div>
+
+    <!--Pixel edit sprite modal-->
+    <!--TODO: fix more on this one-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="pixelEditModal"
+        style="display: none;">
+        <div class="border-2 border-black bg-white w-[20rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[40rem] md:h-[33rem]"
+            id="pixelEditModal_panel">
+            <!--Header-->
+            <div class="w-full h-fit flex justify-between p-2">
+                <div class="w-full h-auto">
+                    <h1 class="font-PixelifySans text-black text-center text-lg">Editing (sprite name)</h1>
+                </div>
+            </div>
+    
+            <div class="flex justify-between gap-2 w-full">
+                <!--Color pallete-->
+                <div class="border-2 border-black w-[20rem] h-full">
+                    this is for color pallete
+                </div>
+
+                <!--Pixel Div-->
+                <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] border-2 border-black w-full h-[18rem] md:h-[25rem]"
+                    id="pixelDrawingDiv">
+                </div>
+            </div>
+    
+            <div class="w-[50%] flex justify-evenly">
+                <button
+                    class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
+                    onclick="">Save</button>
+                <button
+                    class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
+                    onclick="modalStatus('pixelEditModal', 'none', null);">Cancel</button>
             </div>
         </div>
     </div>

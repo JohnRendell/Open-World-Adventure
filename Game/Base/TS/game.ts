@@ -1,4 +1,4 @@
-import { CryptoJS, game_PlayerName, replaceSlashWithUnderscore, setCookie, setOutWorld, socket } from "./global";
+import { CryptoJS, game_PlayerName, modalStatus, replaceSlashWithUnderscore, setCookie, setOutWorld, socket } from "./global";
 
 var validateUser: string;
 var loggedInURL: string;
@@ -224,6 +224,58 @@ function piskelTemp(){
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
+    }
+}
+
+async function pickDefaultSkin(skinName: string){
+    const loadingDiv = document.getElementById('validatingDiv') as HTMLElement;
+    loadingDiv.style.display = 'flex';
+
+    let skinInfo: { path: string, query: string }[] = [];
+
+    try{
+        switch(skinName){
+            case "Red Hat Guy":
+                skinInfo = [
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/front.png', query: 'front' },
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/back.png', query: 'back' },
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/side.png', query: 'side' },
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack front.png', query: 'frontAttack' },
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack back.png', query: 'backAttack' },
+                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack side.png', query: 'sideAttack' }
+                ];
+            break;
+        }
+
+        for(let i: number = 0; i < skinInfo.length; i++){
+            //convert the image to blob
+            const response = await fetch(skinInfo[i].path);
+            const blob = await response.blob();
+            const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const uploadSprites = await fetch('/changeSprite', {
+                method: "POST",
+                body: formData
+            });
+
+            const uploadSprites_data = await uploadSprites.json() as { message: string, link: string };
+
+            if(uploadSprites_data.message === 'success'){
+                localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+
+                const imageDisplay = document.getElementById('prevSprite' + i) as HTMLImageElement;
+                imageDisplay.src = uploadSprites_data.link;
+                socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query);
+            }
+        }
+        loadingDiv.style.display = 'none';
+        modalStatus('inGameSkinModal', 'none', '');
+    }
+    catch(err){
+        console.log(err);
     }
 }
 

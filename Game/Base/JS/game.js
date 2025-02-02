@@ -201,6 +201,51 @@ function piskelTemp() {
         document.body.removeChild(a);
     }
 }
+function pickDefaultSkin(skinName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const loadingDiv = document.getElementById('validatingDiv');
+        loadingDiv.style.display = 'flex';
+        let skinInfo = [];
+        try {
+            switch (skinName) {
+                case "Red Hat Guy":
+                    skinInfo = [
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/front.png', query: 'front' },
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/back.png', query: 'back' },
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/side.png', query: 'side' },
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/attack front.png', query: 'frontAttack' },
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/attack back.png', query: 'backAttack' },
+                        { path: '/imageComponents/in Game Skins/Red Hat Guy/attack side.png', query: 'sideAttack' }
+                    ];
+                    break;
+            }
+            for (let i = 0; i < skinInfo.length; i++) {
+                //convert the image to blob
+                const response = yield fetch(skinInfo[i].path);
+                const blob = yield response.blob();
+                const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
+                const formData = new FormData();
+                formData.append('image', file);
+                const uploadSprites = yield fetch('/changeSprite', {
+                    method: "POST",
+                    body: formData
+                });
+                const uploadSprites_data = yield uploadSprites.json();
+                if (uploadSprites_data.message === 'success') {
+                    localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+                    const imageDisplay = document.getElementById('prevSprite' + i);
+                    imageDisplay.src = uploadSprites_data.link;
+                    socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query);
+                }
+            }
+            loadingDiv.style.display = 'none';
+            modalStatus('inGameSkinModal', 'none', '');
+        }
+        catch (err) {
+            console.log(err);
+        }
+    });
+}
 //going base outside
 function goingOutside() {
     window.location.href = '/Game/BaseOutside/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);

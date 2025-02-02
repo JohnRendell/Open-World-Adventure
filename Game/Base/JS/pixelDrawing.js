@@ -1,5 +1,5 @@
 //TODO: dont delete but repurpose this on other stuff
-
+import html2canvas from "html2canvas";
 let currentTool = 'Draw';
 let stillDraw = false;
 let spriteFileName = 'Sprite Character';

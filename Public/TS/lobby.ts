@@ -1,7 +1,8 @@
-import { CryptoJS, replaceSlashWithUnderscore, setCookie, socket } from "./global";
+import { lobby_playerName, replaceSlashWithUnderscore, setCookie, socket } from "./global";
 
 let isOpenLogin: boolean = false;
 let isOpenSignin: boolean = false;
+let loggedIn_playerName: string;
 
 //for login account
 async function validateAccount(){
@@ -26,13 +27,10 @@ async function validateAccount(){
 
             const cookieStatus = await setCookie(accountValidate_data.username, 'loggedIn');
 
-            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-            if(cookieStatus.status && decryptPlayerName){
-                socket.emit('redirectToBase', decryptPlayerName);
+            if(cookieStatus.status){
+                socket.emit('redirectToBase', lobby_playerName);
                 socket.emit('playerCount', 1);
                 window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
-                localStorage.removeItem('tempPlayerName');
             }
         }
         else{
@@ -67,15 +65,11 @@ async function validateCreateAccount(){
 
             const cookieStatus = await setCookie(accountCreateValidate_data.username, 'loggedIn');
 
-            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-            if(cookieStatus.status && decryptPlayerName){
+            if(cookieStatus.status){
                 document.getElementById('processingDiv')!.style.display = 'none';
-                socket.emit('redirectToBase', decryptPlayerName);
+                socket.emit('redirectToBase', lobby_playerName);
                 socket.emit('playerCount', 1);
                 window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
-
-                localStorage.removeItem('tempPlayerName');
             }
         }
         else{

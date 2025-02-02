@@ -26,6 +26,8 @@ let isPanelOpen = false;
 let isFront = false;
 let isBack = false;
 
+let lobby_playerName = '';
+
 class gameLobby extends Phaser.Scene{
     constructor(){
         super("Game Lobby");
@@ -94,18 +96,7 @@ class gameLobby extends Phaser.Scene{
             repeat: -1
         });
 
-       const decryptPlayerName = (()=>{
-            try{
-                //player name
-                let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                return decryptPlayerName ? decryptPlayerName.toString() : 'Failed to decrypt'
-            }
-            catch(err){
-                console.log(err)
-            }
-       })
-
-        this.playerName = this.add.text(0, -50, decryptPlayerName(), {
+        this.playerName = this.add.text(0, -50, 'loading...', {
             font: "16px 'Pixelify Sans'",
             fill: '#06402b',
             align: 'center'
@@ -255,24 +246,20 @@ class gameLobby extends Phaser.Scene{
         this.guestContainer.on('pointerdown', async () => {
             document.getElementById('processingDiv').style.display = 'flex';
 
-            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-
-            const cookieStatus = await setCookie(decryptPlayerName, 'guest');
+            const cookieStatus = await setCookie(lobby_playerName, 'guest');
 
             if(cookieStatus.status){
                 document.getElementById('processingDiv').style.display = 'none';
 
-                if(decryptPlayerName){
-                    socket.emit('redirectToBase', decryptPlayerName);
-                    socket.emit('playerCount', 1);
-                    window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
-                    localStorage.removeItem('tempPlayerName');
-                }
+                socket.emit('redirectToBase', lobby_playerName);
+                socket.emit('playerCount', 1);
+                window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
             }
         });
 
         //call the socket scene
         sceneSocket(this);
+        loadPlayerData(this);
 
         //call the UI scene
         lobbyUI(this);
@@ -324,10 +311,8 @@ class gameLobby extends Phaser.Scene{
         }
 
         //for other player movement
-        let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-        
         const playerData = {
-            playerID: decryptPlayerName,
+            playerID: lobby_playerName,
             x: this.playerContainer.x,
             y: this.playerContainer.y,
             isBack: isBack,

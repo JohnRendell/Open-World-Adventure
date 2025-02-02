@@ -187,35 +187,27 @@
                                 Profile</label>
                             <input type="file" accept="Image/*" hidden id="profileChangeID">
 
-                            <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 lg:hidden">Pick
+                            <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 lg:hidden" onclick="modalStatus('inGameSkinModal', 'flex', 'modalAnimation');">Pick
                                 in-game skins instead</button>
                         </div>
                    </div>
 
-                    <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 hidden lg:flex">Pick in-game skins instead</button>
+                    <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 hidden lg:flex" onclick="modalStatus('inGameSkinModal', 'flex', 'modalAnimation')">Pick in-game skins instead</button>
 
                     <div class="w-[20rem] h-[5rem] p-2 overflow-x-hidden overflow-y-auto flex-col gap-2 flex lg:hidden">
-                        <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel
-                            Template</button>
+                        <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel Template</button>
                     
-                        <p class="font-PixelifySans text-sm text-black text-left">Instruction: Click this: <a
+                        <p class="font-PixelifySans text-sm text-black text-left">Instruction: Import the template to <a
                                 href="https://www.piskelapp.com/p/create/sprite" target="_blank"
-                                class="text-blue-500 text-center underline">Piskel official site</a> then go to import then browse .piskel
-                            files
-                            to locate the template you downloaded, after that save it as gif and convert to sprite sheet.</p>
-                    
-                        <a href="https://ezgif.com/gif-to-sprite" target="_blank"
-                            class="font-PixelifySans text-sm text-blue-500 text-center underline">Gif to Spritesheet conversion</a>
-                    
-                        <p class="font-PixelifySans text-sm text-black text-left">Note: The sprite customization in game is on development.
-                        </p>
+                                class="text-blue-500 text-center underline">Piskel official site</a>. Save the custom sprite as gif then convert
+                            it to sprite sheet.</p>
                     </div>
                </div>
 
                 <!--Animation skin-->
                 <p class="font-PixelifySans text-sm text-black text-center">Your Current Sprite Skin</p>
                 
-                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[15rem]" id="spriteDiv">
+                <div class="flex flex-col gap-2 p-2 overflow-x-hidden overflow-y-auto w-full h-[8rem] lg:h-[18rem]" id="spriteDiv">
                     <!--Walking-->
                     <div class="flex justify-between gap-4">
                         <div class="flex flex-col space-y-2 w-full items-center">
@@ -293,21 +285,40 @@
                     <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel
                         Template</button>
                     
-                    <p class="font-PixelifySans text-sm text-black text-left">Instruction: Click this: <a
+                    <p class="font-PixelifySans text-sm text-black text-left">Instruction: Import the template to <a
                             href="https://www.piskelapp.com/p/create/sprite" target="_blank"
-                            class="text-blue-500 text-center underline">Piskel official site</a> then go to import then browse .piskel files
-                        to locate the template you downloaded, after that save it as gif and convert to sprite sheet.</p>
-                    
-                    <a href="https://ezgif.com/gif-to-sprite" target="_blank"
-                        class="font-PixelifySans text-sm text-blue-500 text-center underline">Gif to Spritesheet conversion</a>
-                    
-                    <p class="font-PixelifySans text-sm text-black text-left">Note: The sprite customization in game is on development.</p>
+                            class="text-blue-500 text-center underline">Piskel official site</a>. Save the custom sprite as gif then convert it to sprite sheet.</p>
                 </div>
             </div>
 
             <!--Guest player-->
             <div class="flex justify-center items-center w-full p-2" id="guestDiv">
                 <p class="font-PixelifySans text-sm text-black text-center">You are on guest mode</p>
+            </div>
+        </div>
+    </div>
+
+    <!--In game skins-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="inGameSkinModal"
+        style="display: none;">
+        <div class="bg-white w-[40rem] h-[15rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 lg:h-[33rem]"
+            id="inGameSkinModal_panel">
+            <!--Header-->
+            <div class="w-full h-fit flex justify-between p-2">
+                <div class="w-full h-auto">
+                    <h1 class="font-PixelifySans text-black text-center text-lg">In Game Skins</h1>
+                </div>
+                <button class="w-fit h-fit cursor-pointer" onclick="modalStatus('inGameSkinModal', 'none', null);">
+                    <img src="/ImageComponents/UI/Close Icon.png" alt="close icon" class="w-[20px] h-[auto]">
+                </button>
+            </div>
+
+            <!--Contents-->
+            <div class="flex w-full h-full">
+                <div class="flex flex-col gap-2 items-center border-2 p-2 rounded-lg w-[10rem] h-[10rem] hover:border-blue-500" onclick="pickDefaultSkin('Red Hat Guy')">
+                    <img src="/ImageComponents/In Game Skins/Red Hat Guy/front.png" alt="front" class="w-full h-full">
+                    <p class="font-PixelifySans text-sm text-black text-center">Red Hat Guy</p>
+                </div>
             </div>
         </div>
     </div>
@@ -604,4 +615,4 @@
 <!--Script needed-->
 <script src="/JS/global.js"></script>
 <script src="/Base/JS/game.js"></script>
-<script src="/Base/JS/pixelDrawing.js"></script>
+<!--<script src="/Base/JS/pixelDrawing.js"></script>-->

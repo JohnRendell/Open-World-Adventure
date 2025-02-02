@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 
 let isOpenLogin = false;
 let isOpenSignin = false;
+let loggedIn_playerName;
 //for login account
 function validateAccount() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,12 +30,10 @@ function validateAccount() {
             if (accountValidate_data.message === 'success') {
                 document.getElementById('processingDiv').style.display = 'flex';
                 const cookieStatus = yield setCookie(accountValidate_data.username, 'loggedIn');
-                let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                if (cookieStatus.status && decryptPlayerName) {
-                    socket.emit('redirectToBase', decryptPlayerName);
+                if (cookieStatus.status) {
+                    socket.emit('redirectToBase', lobby_playerName);
                     socket.emit('playerCount', 1);
                     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
-                    localStorage.removeItem('tempPlayerName');
                 }
             }
             else {
@@ -65,13 +64,11 @@ function validateCreateAccount() {
             if (accountCreateValidate_data.message === 'success') {
                 document.getElementById('processingDiv').style.display = 'flex';
                 const cookieStatus = yield setCookie(accountCreateValidate_data.username, 'loggedIn');
-                let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
-                if (cookieStatus.status && decryptPlayerName) {
+                if (cookieStatus.status) {
                     document.getElementById('processingDiv').style.display = 'none';
-                    socket.emit('redirectToBase', decryptPlayerName);
+                    socket.emit('redirectToBase', lobby_playerName);
                     socket.emit('playerCount', 1);
                     window.location.href = '/Game/Base/' + replaceSlashWithUnderscore(cookieStatus.encryptUser);
-                    localStorage.removeItem('tempPlayerName');
                 }
             }
             else {

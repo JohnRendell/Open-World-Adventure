@@ -1,8 +1,7 @@
-let loggedIn_playerName;
 let userProfile;
 
 socket.on('connect', ()=>{
-    function guestID(length) {
+     function guestID(length) {
         let result = '';
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const charactersLength = characters.length;
@@ -16,18 +15,14 @@ socket.on('connect', ()=>{
 
     let playerName = 'Guest_' + guestID(5);
 
-    //encrypt the temporary player name
-    let encryptPlayerName = CryptoJS.AES.encrypt(playerName, 'tempPlayerName');
-    
-    if(!localStorage.getItem('tempPlayerName')){
-        localStorage.setItem('tempPlayerName', encryptPlayerName.toString());
-    }
+    setTimeout(() => {
+        socket.emit('loadPlayerName', playerName);
+        socket.emit('playerDisconnect', playerName);
+        socket.emit('spawnPlayer', playerName);
 
-    socket.emit('playerDisconnect', localStorage.getItem('tempPlayerName'));
-    socket.emit('spawnPlayer', localStorage.getItem('tempPlayerName'));
-    socket.emit('game_playerDisconnect');
+        socket.emit('game_playerDisconnect');
+    }, 1000);
 
-    loggedIn_playerName = playerName;
     userProfile = 'https://i.imgur.com/ajVzRmV.jpg';
 });
 
@@ -49,52 +44,45 @@ function sceneSocket(scene){
     });
 
     socket.on('spawnPlayer', (playerName) => {
-        try{
-            let decryptPlayerName = CryptoJS.AES.decrypt(localStorage.getItem('tempPlayerName'), 'tempPlayerName').toString(CryptoJS.enc.Utf8);
+        setTimeout(() => {
+            if(lobby_playerName !== playerName){
+                //joined Player
+                scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
+                scene.joinedPlayer.setScale(0.1); 
+                scene.joinedPlayer.setVisible(false);
 
-            setTimeout(() => {
-                if(decryptPlayerName !== playerName){
-                    //joined Player
-                    scene.joinedPlayer = scene.physics.add.sprite(0,0, 'guestPlayerIdle').setOrigin(0.5);
-                    scene.joinedPlayer.setScale(0.1); 
-                    scene.joinedPlayer.setVisible(false);
+                //joined Player name
+                scene.joinedPlayerName = scene.add.text(0, -50, playerName, {
+                    font: "16px 'Pixelify Sans'",
+                    fill: '#ffffff',
+                    align: 'center'
+                }).setOrigin(0.5);
 
-                    //joined Player name
-                    scene.joinedPlayerName = scene.add.text(0, -50, playerName, {
-                        font: "16px 'Pixelify Sans'",
-                        fill: '#ffffff',
-                        align: 'center'
-                    }).setOrigin(0.5);
+                //joined Player container
+                scene.joinedPlayerContainer = scene.add.container(centerWorld.width + 50, centerWorld.height, [scene.joinedPlayer, scene.joinedPlayerName]);
+                scene.joinedPlayerContainer.setDepth(2);
 
-                    //joined Player container
-                    scene.joinedPlayerContainer = scene.add.container(centerWorld.width + 50, centerWorld.height, [scene.joinedPlayer, scene.joinedPlayerName]);
-                    scene.joinedPlayerContainer.setDepth(2);
+                //spawn smoke
+                scene.spawnSmoke = scene.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
+                scene.spawnSmoke.setDisplaySize(2, 5);
+                scene.spawnSmoke.setDepth(1);
 
-                    //spawn smoke
-                    scene.spawnSmoke = scene.add.sprite(centerWorld.width, centerWorld.height - 50, "spawn_smoke").setOrigin(0.5);
-                    scene.spawnSmoke.setDisplaySize(2, 5);
-                    scene.spawnSmoke.setDepth(1);
+                // Play the animation
+                scene.spawnSmoke.play('spawnDust');
 
-                    // Play the animation
-                    scene.spawnSmoke.play('spawnDust');
+                scene.spawnSmoke.on('animationcomplete', ()=>{
+                    scene.spawnSmoke.destroy();
+                    scene.joinedPlayer.setVisible(true);
+                });
 
-                    scene.spawnSmoke.on('animationcomplete', ()=>{
-                        scene.spawnSmoke.destroy();
-                        scene.joinedPlayer.setVisible(true);
-                    });
-
-                    //add player to the collection
-                    scene.playerCollection.set(playerName, {
-                        playerName: scene.joinedPlayerName,
-                        container: scene.joinedPlayerContainer,
-                        playerSprite: scene.joinedPlayer
-                    });
-                }
-            }, 1000);
-        }
-        catch(err){
-            console.log(err);
-        }
+                //add player to the collection
+                scene.playerCollection.set(playerName, {
+                    playerName: scene.joinedPlayerName,
+                    container: scene.joinedPlayerContainer,
+                    playerSprite: scene.joinedPlayer
+                });
+            }
+        }, 1000);
     });
 
     //for rendering player data
@@ -165,5 +153,14 @@ function sceneSocket(scene){
             container.destroy();
             scene.playerCollection.delete(playerName);
         }
+    });
+}
+
+function loadPlayerData(scene){
+    //load playername
+    socket.on('loadPlayerName', (playerName)=>{
+        loggedIn_playerName = playerName;
+        lobby_playerName = playerName;
+        scene.playerName.setText(playerName);
     });
 }

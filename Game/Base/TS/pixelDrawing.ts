@@ -2,6 +2,7 @@ import html2canvas from "html2canvas";
 
 let currentTool: string = 'Draw';
 let stillDraw: boolean = false;
+let spriteFileName: string = 'Sprite Character';
 
 //opening pixel drawing div
 function openPixelDrawingDiv(){
@@ -10,8 +11,8 @@ function openPixelDrawingDiv(){
 
     let id: number = 0;
         
-    for(let i: number = 0; i < 20; i++){
-        for(let j: number = 0; j < 20; j++){
+    for(let i: number = 0; i < 25; i++){
+        for(let j: number = 0; j < 25; j++){
             id++;
             let color: string = (i + j) % 2 === 0 ? 'bg-slate-700' : 'bg-slate-500';
             let pixelMaskColor: string = (i + j) % 2 === 0 ? '#334155' : '#64748b'
@@ -116,10 +117,18 @@ function savePixel() {
     div.style.background = "none";
 
     html2canvas(div, { backgroundColor: null }).then((canvas) => {
-        let imgURL = canvas.toDataURL("image/png"); // Transparent PNG
+        let resizedCanvas = document.createElement('canvas') as HTMLCanvasElement;
+        let ctx = resizedCanvas.getContext("2d") as CanvasRenderingContext2D;
+
+        resizedCanvas.width = 1600; //800
+        resizedCanvas.height = 800; //400
+
+        ctx.drawImage(canvas, 0, 0, resizedCanvas.width, resizedCanvas.height);
+        
+        let imgURL = resizedCanvas.toDataURL("image/png"); // Transparent PNG
         let link = document.createElement("a");
         link.href = imgURL;
-        link.download = "pixel-art.png";
+        link.download = `${spriteFileName}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -137,3 +146,36 @@ document.addEventListener('mousedown', ()=>{
 document.addEventListener('mouseup', ()=>{
     stillDraw = false;
 });
+
+//TODO: continue this one
+async function test(){
+    var pixelDrawingDiv = document.getElementById('pixelDrawingDiv') as HTMLElement;
+    var childColor: string[] = [];
+
+    Array.from(pixelDrawingDiv.childNodes).forEach(child => {
+        var pixelBackground = child as HTMLElement;
+
+        //childColor.push(pixelBackground.style.backgroundColor);
+        console.log(pixelBackground.style.backgroundColor);
+    });
+    /*
+    try{
+        const setSkinToDefault = await fetch('/gameData/setSkinToDefault', {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ skinType: "Front" })
+        });
+
+        const setSkinToDefault_data = await setSkinToDefault.json() as { message: string }
+
+        if(setSkinToDefault_data.message === 'success'){
+            alert('done');
+        }
+    }
+    catch(err){
+        console.log(err);
+    }*/
+}

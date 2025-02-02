@@ -318,8 +318,8 @@
     <!--Pixel edit sprite modal-->
     <!--TODO: fix more on this one-->
     <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="pixelEditModal"
-        style="display: none;">
-        <div class="border-2 border-black bg-white w-[20rem] h-[30rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0 md:w-[60rem] md:h-[33rem]"
+        style="display: flex;">
+        <div class="border-2 border-black bg-white w-[40rem] h-[20rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-0rem] opacity-1 lg:w-[60rem] lg:h-[33rem]"
             id="pixelEditModal_panel">
             <!--Header-->
             <div class="w-full h-fit flex justify-between p-2">
@@ -328,68 +328,84 @@
                 </div>
             </div>
     
-            <div class="flex justify-between gap-2 w-full">
-                <div class="flex flex-col gap-4 w-[40rem] h-full border-2 border-black ">
-                    <!--Color pallete-->
-                    <div class="flex flex-col gap-2 items-center p-2">
-                        <p class="font-PixelifySans text-black text-sm text-center">Picker: (Click to pick color)</p>
-                        <input type="color" class="cursor-pointer" id="colorPicker">
-                    </div>
-
-                    <!--Tools-->
-                    <div class="flex flex-col gap-2">
-                        <p class="font-PixelifySans text-center text-black text-sm">Tools: </p>
-                        <div class="flex justify-evenly gap-2">
-                            <button class="border-4 border-blue-700 bg-blue-500 rounded-lg w-fit h-fit p-2" id="penTool" onclick="pickTools('Draw')"><img src="/ImageComponents/UI/Pen Icon.png"
-                                    alt="pen icon" class="w-[25px] h-[30px]"></button>
-                            <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="eraseTool" onclick="pickTools('Erase')"><img
-                                    src="/ImageComponents/UI/Eraser Icon.png" alt="erase icon" class="w-[25px] h-[30px]"></button>
-                            <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="pickerTool"
-                                onclick="pickTools('Picker')"><img src="/ImageComponents/UI/Picker Icon.png" alt="picker icon"
-                                    class="w-[25px] h-[30px]"></button>
+            <div class="flex justify-between gap-2 w-full h-full">
+                <div class="flex justify-between gap-4 w-[30rem] h-full border-2 border-black lg:flex-col lg:w-[40rem]">
+                    <div class="flex flex-col gap-4 w-full">
+                        <!--Color pallete-->
+                        <div class="flex flex-col gap-2 items-center p-2">
+                            <p class="font-PixelifySans text-black text-sm text-center">Picker: (Click to pick color)</p>
+                            <input type="color" class="cursor-pointer" id="colorPicker">
+                        </div>
+                        
+                        <!--Tools-->
+                        <div class="flex flex-col gap-2">
+                            <p class="font-PixelifySans text-center text-black text-sm">Tools: </p>
+                            <div class="flex justify-evenly gap-2 w-full">
+                                <button class="border-4 border-blue-700 bg-blue-500 rounded-lg w-fit h-fit p-2" id="penTool"
+                                    onclick="pickTools('Draw')"><img src="/ImageComponents/UI/Pen Icon.png" alt="pen icon"
+                                        class="w-[25px] h-[30px]"></button>
+                                <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="eraseTool"
+                                    onclick="pickTools('Erase')"><img src="/ImageComponents/UI/Eraser Icon.png" alt="erase icon"
+                                        class="w-[25px] h-[30px]"></button>
+                                <button class="border-4 border-transparent bg-blue-500 rounded-lg w-fit h-fit p-2" id="pickerTool"
+                                    onclick="pickTools('Picker')"><img src="/ImageComponents/UI/Picker Icon.png" alt="picker icon"
+                                        class="w-[25px] h-[30px]"></button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <!--Frame Selector-->
-                    <div class="flex flex-col items-center gap-2">
-                        <p class="font-PixelifySans text-sm text-center text-black">Current Frame: (Frame num)</p>
-                        
-                        <img src="" alt="frame1" class="w-full h-[8rem]">
-                        
-                        <div class="flex justify-between gap-2">
-                            <button class="font-PixelifySans text-white text-sm bg-blue-500 p-2 rounded-lg hover:bg-blue-700">Frame 1</button>
-                            <button class="font-PixelifySans text-white text-sm bg-blue-500 p-2 rounded-lg hover:bg-blue-700">Frame 2</button>
+
+                    <!--Preview-->
+                    <div class="flex flex-col gap-2 items-center w-full">
+                        <p class="font-PixelifySans text-sm text-black text-center">Preview</p>
+                        <div class="w-[8rem] h-[8rem] border-2 border-black lg:w-[10rem] lg:h-[10rem]">
+                            <div class="grid grid-cols-[repeat(25,minmax(0,1fr))] grid-rows-[repeat(25,minmax(0,1fr))] w-full h-full"
+                                id="pixelContent">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!--Drawing here-->
-                <div class="flex flex-col gap-2 w-full h-[18rem] md:h-[25rem]">
-                    <p class="font-PixelifySans text-sm text-center text-black">Drawing:</p>
-                    <!--Pixel Div-->
-                    <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] border-2 border-black w-full h-full"
-                        id="pixelDrawingDiv">
-                        <!--<div class="bg-slate-500"></div>
-                                        <div class="bg-slate-700"></div>-->
-                    </div>
-                </div>
-
-                <!--End result here-->
-                <div class="flex flex-col gap-2 w-full h-[18rem] md:h-[25rem]">
-                    <p class="font-PixelifySans text-sm text-center text-black">Output:</p>
-                    <div class="grid grid-cols-[repeat(20,minmax(0,1fr))] grid-rows-[repeat(20,minmax(0,1fr))] w-full h-full"
-                        id="pixelContent">
-                    </div>
+                <!--Pixel Div-->
+                <div class="grid grid-cols-[repeat(25,minmax(0,1fr))] grid-rows-[repeat(25,minmax(0,1fr))] border-2 border-black w-[12rem] h-[12rem] md:w-full md:h-full" id="pixelDrawingDiv">
+                    <!--<div class="bg-slate-500"></div>
+                       <div class="bg-slate-700"></div>-->
                 </div>
             </div>
     
             <div class="w-[50%] flex justify-evenly">
                 <button
-                    class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
-                    onclick="savePixel();">Save</button>
+                    class="font-PixelifySans bg-red-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-red-700"
+                    onclick="modalStatus('resetWarningModal', 'flex', 'modalAnimation')">Reset to default</button>
                 <button
                     class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
-                    onclick="modalStatus('pixelEditModal', 'none', null);">Cancel</button>
+                    onclick="savePixel()">Save</button>
+                <button
+                    class="font-PixelifySans bg-blue-500 text-white text-center text-sm w-fit h-fit p-2 rounded-lg hover:bg-blue-700"
+                    onclick="modalStatus('pixelEditModal', 'none', null); test();">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!--Warning for reset skin-->
+    <div class="absolute w-screen h-screen backdrop-blur-sm flex justify-center items-center" id="resetWarningModal"
+        style="display: none;">
+        <div class="border-2 border-black bg-white w-[14rem] h-[15rem] rounded-2xl flex flex-col space-y-2 items-center p-2 mt-[-60rem] opacity-0"
+            id="resetWarningModal_panel">
+            <!--Header-->
+            <div class="w-full h-fit flex justify-between p-2">
+                <div class="w-full h-auto">
+                    <h1 class="font-PixelifySans text-black text-center text-lg">Are you sure?</h1>
+                </div>
+            </div>
+    
+            <!--Content Div-->
+            <div class="flex flex-col gap-2 w-full h-full">
+                <p class="font-PixelifySans text-sm text-black text-center">You are about to reset your current skin, this cannot be undone.</p>
+
+                <div class="flex flex-col items-center gap-2 w-full">
+                    <button class="font-PixelifySans text-white text-center text-sm bg-red-500 rounded-lg p-2 w-fit h-fit hover:bg-red-700" onclick="resetToDefault()">I understand</button>
+                    <button class="font-PixelifySans text-white text-center text-sm bg-blue-500 rounded-lg p-2 w-fit h-fit hover:bg-blue-700" onclick="modalStatus('resetWarningModal', 'none', null)">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { CryptoJS, game_PlayerName, replaceSlashWithUnderscore, setCookie, setOutWorld, socket } from "./global";
+
 var validateUser;
 var loggedInURL;
 var userType;

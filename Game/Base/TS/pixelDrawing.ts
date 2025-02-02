@@ -1,3 +1,5 @@
+//TODO: dont delete but repurpose this on other stuff
+
 import html2canvas from "html2canvas";
 
 let currentTool: string = 'Draw';
@@ -15,7 +17,7 @@ function openPixelDrawingDiv(){
         for(let j: number = 0; j < 25; j++){
             id++;
             let color: string = (i + j) % 2 === 0 ? 'bg-slate-700' : 'bg-slate-500';
-            let pixelMaskColor: string = (i + j) % 2 === 0 ? '#334155' : '#64748b'
+            let pixelMaskColor: string = (i + j) % 2 === 0 ? '#334155' : '#64748b';
             
             var pixel = document.createElement('div');
             pixel.setAttribute('class', 'flex justify-center items-center w-full h-full ' + color);
@@ -31,7 +33,7 @@ function openPixelDrawingDiv(){
             drawingContainer.appendChild(pixel);
 
             //for output
-            var pixel_output = document.createElement('div');
+            var pixel_output = document.createElement('div'); 
             pixel_output.setAttribute('class', 'flex justify-center items-center w-full h-full bg-transparent');
             pixel_output.setAttribute('id', 'output_pixel-' + id);
 
@@ -82,7 +84,7 @@ function paintPixel(pixelID: string){
     if(currentTool === 'Erase'){
         var pixelMask = pixel.children[0] as HTMLInputElement;
         pixel.style.backgroundColor = pixelMask.value;
-        output_pixel.style.backgroundColor = 'transparent';
+        output_pixel.style.backgroundColor = 'transparent';;
     }
     if(currentTool === 'Picker'){
         var currColor: string = pixel.style.backgroundColor;
@@ -146,36 +148,3 @@ document.addEventListener('mousedown', ()=>{
 document.addEventListener('mouseup', ()=>{
     stillDraw = false;
 });
-
-//TODO: continue this one
-async function test(){
-    var pixelDrawingDiv = document.getElementById('pixelDrawingDiv') as HTMLElement;
-    var childColor: string[] = [];
-
-    Array.from(pixelDrawingDiv.childNodes).forEach(child => {
-        var pixelBackground = child as HTMLElement;
-
-        //childColor.push(pixelBackground.style.backgroundColor);
-        console.log(pixelBackground.style.backgroundColor);
-    });
-    /*
-    try{
-        const setSkinToDefault = await fetch('/gameData/setSkinToDefault', {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ skinType: "Front" })
-        });
-
-        const setSkinToDefault_data = await setSkinToDefault.json() as { message: string }
-
-        if(setSkinToDefault_data.message === 'success'){
-            alert('done');
-        }
-    }
-    catch(err){
-        console.log(err);
-    }*/
-}

@@ -1,12 +1,4 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
+//TODO: dont delete but repurpose this on other stuff
 
 let currentTool = 'Draw';
 let stillDraw = false;
@@ -78,6 +70,7 @@ function paintPixel(pixelID) {
         var pixelMask = pixel.children[0];
         pixel.style.backgroundColor = pixelMask.value;
         output_pixel.style.backgroundColor = 'transparent';
+        ;
     }
     if (currentTool === 'Picker') {
         var currColor = pixel.style.backgroundColor;
@@ -127,35 +120,3 @@ document.addEventListener('mousedown', () => {
 document.addEventListener('mouseup', () => {
     stillDraw = false;
 });
-//TODO: continue this one
-function test() {
-    return __awaiter(this, void 0, void 0, function* () {
-        var pixelDrawingDiv = document.getElementById('pixelDrawingDiv');
-        var childColor = [];
-        Array.from(pixelDrawingDiv.childNodes).forEach(child => {
-            var pixelBackground = child;
-            //childColor.push(pixelBackground.style.backgroundColor);
-            console.log(pixelBackground.style.backgroundColor);
-        });
-        /*
-        try{
-            const setSkinToDefault = await fetch('/gameData/setSkinToDefault', {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ skinType: "Front" })
-            });
-    
-            const setSkinToDefault_data = await setSkinToDefault.json() as { message: string }
-    
-            if(setSkinToDefault_data.message === 'success'){
-                alert('done');
-            }
-        }
-        catch(err){
-            console.log(err);
-        }*/
-    });
-}

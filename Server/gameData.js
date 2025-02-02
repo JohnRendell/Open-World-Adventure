@@ -12,31 +12,4 @@ router.get('/', async (req, res)=>{
     }
 });
 
-router.post('/setSkinToDefault', async (req, res)=>{
-    try{
-        const skinType = req.body.skinType;
-        //const 
-
-        switch(skinType){
-            case "Front":
-                const setDefault = await gameModel.findOneAndUpdate(
-                    {},
-                    { backgroundColor: ''}
-                );
-
-                if(setDefault){
-
-                }
-                else{
-
-                }
-                res.status(200).json({ message: 'success' });
-            break;
-        }
-    }
-    catch(err){
-        console.log(err);
-    }
-});
-
 module.exports = router;

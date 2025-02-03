@@ -86,7 +86,7 @@
                 <div class="flex justify-between items-center gap-2 w-[18rem] md:w-[30rem]">
                     <textarea type="text" placeholder="Type Message"
                         class="font-PixelifySans bg-slate-200 w-full rounded-lg p-2 text-left outline-none"
-                        minlength="0" maxlength="80" oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80)"
+                        minlength="0" maxlength="80" oninput="typeMessage('globalMessageIncrement', 'globalMessageInput', 80); whileWaitingForMessage()"
                         id="globalMessageInput"></textarea>
                     
                     <div class="flex flex-col space-y-2 m-2">

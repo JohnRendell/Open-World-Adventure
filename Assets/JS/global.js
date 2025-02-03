@@ -2,6 +2,33 @@ function replaceSlashWithUnderscore(inputString) {
     return inputString.replace(/\//g, '_');
 }
 
+function whileTyping(containerID, tempID){
+    if(document.getElementById(tempID) === null){
+        var container = document.getElementById(containerID);
+        var wrapperContainer = document.createElement('div');
+        wrapperContainer.setAttribute('id', tempID);
+        wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-start');
+        container.appendChild(wrapperContainer);
+
+        var messageWrapper = document.createElement('div');
+        messageWrapper.setAttribute('class', 'w-[10rem] h-fit p-4 rounded-lg bg-white m-2');
+        wrapperContainer.appendChild(messageWrapper);
+
+        var loadingWrapper = document.createElement('div');
+        loadingWrapper.setAttribute('class', 'typing-indicator');
+
+        for(let i = 0; i < 3; i++){
+            var span = document.createElement('span');
+            loadingWrapper.appendChild(span);
+        }
+        messageWrapper.appendChild(loadingWrapper);
+    }
+}
+
+function whileWaitingForMessage(){
+    socket.emit('userTyping', loggedIn_playerName);
+}
+
 function npcGreet(containerID, greetMsg){
     var container = document.getElementById(containerID);
     var wrapperContainer = document.createElement('div');
@@ -105,6 +132,7 @@ function messageSend(containerID, inputID, incrementID, max, isNPC){
             messageWrapper.appendChild(textContent);
 
             if(isNPC){
+                whileTyping(containerID, 'tempMessage');
                 promptNPC(messageInput.value, container.id, npcPromptInstruction);
             }
 
@@ -160,6 +188,7 @@ async function promptNPC(promptMsg, containerID, systemInstruction){
         }
 
         if(prompt_data.message == 'success'){
+            document.getElementById('tempMessage').remove();
             promptMessage(prompt_data.output);
         }
     }

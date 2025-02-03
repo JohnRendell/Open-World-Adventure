@@ -6,6 +6,9 @@ socket.on('globalMessage', (containerID, receiver, userProfile, msg)=>{
     var container = document.getElementById(containerID);
 
     if(container){
+        if(document.getElementById(receiver + '_tempMessage')){
+            document.getElementById(receiver + '_tempMessage').remove();
+        }
         var wrapperContainer = document.createElement('div');
         wrapperContainer.setAttribute('class', 'w-full h-fit flex justify-start');
         container.appendChild(wrapperContainer);
@@ -43,4 +46,9 @@ socket.on('globalMessage', (containerID, receiver, userProfile, msg)=>{
 //passing the prompt
 socket.on('NPCPrompt', (prompt)=>{
     npcPromptInstruction = prompt;
+});
+
+//while user is typing
+socket.on('userTyping', (user)=>{
+    whileTyping('globalContainerDiv', user + '_tempMessage');
 });

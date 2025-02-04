@@ -776,20 +776,20 @@ video {
   cursor: pointer;
 }
 
-.grid-cols-\[repeat\(25\2c minmax\(0\2c 1fr\)\)\]{
-  grid-template-columns: repeat(25,minmax(0,1fr));
-}
-
 .grid-cols-5{
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.grid-rows-\[repeat\(25\2c minmax\(0\2c 1fr\)\)\]{
-  grid-template-rows: repeat(25,minmax(0,1fr));
+.grid-cols-\[repeat\(25\2c minmax\(0\2c 1fr\)\)\]{
+  grid-template-columns: repeat(25,minmax(0,1fr));
 }
 
 .grid-rows-5{
   grid-template-rows: repeat(5, minmax(0, 1fr));
+}
+
+.grid-rows-\[repeat\(25\2c minmax\(0\2c 1fr\)\)\]{
+  grid-template-rows: repeat(25,minmax(0,1fr));
 }
 
 .flex-row{

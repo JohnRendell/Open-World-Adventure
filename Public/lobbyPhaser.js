@@ -203,7 +203,7 @@ class gameLobby extends Phaser.Scene{
 
         //login container
         this.button_Background = this.add.graphics();
-        this.button_Background.fillStyle(0x3079ff, 1);
+        this.button_Background.fillStyle(0x3b82f6, 1);
         this.button_Background.fillRoundedRect(-75, -20, 170, 40, 10);
 
         this.loggedInContainer = this.add.container(canvasSize.width - 110, 40, [
@@ -232,7 +232,7 @@ class gameLobby extends Phaser.Scene{
 
         //guest container
         this.guestButton_Background = this.add.graphics();
-        this.guestButton_Background.fillStyle(0x3079ff, 1);
+        this.guestButton_Background.fillStyle(0x3b82f6, 1);
         this.guestButton_Background.fillRoundedRect(-75, -20, 170, 40, 10);
 
         this.guestContainer = this.add.container(canvasSize.width - 110, 100, [

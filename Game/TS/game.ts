@@ -141,15 +141,23 @@ function changeProfile(){
     var profileFileID = document.getElementById('profileChangeID') as HTMLInputElement;
 
     profileFileID.addEventListener('change', async (event: Event)=>{
-        document.getElementById('validatingDiv')!.style.display = 'flex';
-
         const file = (event.target as HTMLInputElement).files?.[0];
         const formData = new FormData();
 
         if (!file) {
-            console.error('No file selected');
+            alert('No file selected');
             return;
         }
+
+        const fileExtension: string = file.name.split('.').pop()!;
+        const allowedImage: string []= ["png", "jpg", "jpeg"];
+
+        if(!allowedImage.includes(fileExtension)){
+            alert('image should be png, jpeg, and jpg only');
+            return;
+        }
+
+        document.getElementById('validatingDiv')!.style.display = 'flex';
 
         formData.append('image', file);
 
@@ -229,8 +237,6 @@ function piskelTemp(){
 
 async function pickDefaultSkin(skinName: string){
     const loadingDiv = document.getElementById('validatingDiv') as HTMLElement;
-    loadingDiv.style.display = 'flex';
-
     let skinInfo: { path: string, query: string }[] = [];
 
     try{
@@ -244,28 +250,34 @@ async function pickDefaultSkin(skinName: string){
         ];
 
         for(let i: number = 0; i < skinInfo.length; i++){
-            //convert the image to blob
-            const response = await fetch(skinInfo[i].path);
-            const blob = await response.blob();
-            const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
 
-            const formData = new FormData();
-            formData.append('image', file);
+            if(skinInfo[i].path){
+                loadingDiv.style.display = 'flex';
 
-            const uploadSprites = await fetch('/changeSprite', {
-                method: "POST",
-                body: formData
-            });
+                //convert the image to blob
+                const response = await fetch(skinInfo[i].path);
+                const blob = await response.blob();
+                const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
 
-            const uploadSprites_data = await uploadSprites.json() as { message: string, link: string, spriteID: string };
+                const formData = new FormData();
+                formData.append('image', file);
 
-            if(uploadSprites_data.message === 'success'){
-                localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+                const uploadSprites = await fetch('/changeSprite', {
+                    method: "POST",
+                    body: formData
+                });
 
-                const imageDisplay = document.getElementById('prevSprite' + i) as HTMLImageElement;
-                imageDisplay.src = uploadSprites_data.link;
-                socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query, uploadSprites_data.spriteID);
+                const uploadSprites_data = await uploadSprites.json() as { message: string, link: string, spriteID: string };
+
+                if(uploadSprites_data.message === 'success'){
+                    localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+
+                    const imageDisplay = document.getElementById('prevSprite' + i) as HTMLImageElement;
+                    imageDisplay.src = uploadSprites_data.link;
+                    socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query, uploadSprites_data.spriteID);
+                }
             }
+            
         }
         loadingDiv.style.display = 'none';
         modalStatus('inGameSkinModal', 'none', '');

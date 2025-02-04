@@ -133,13 +133,19 @@ function changeProfile() {
     var profileFileID = document.getElementById('profileChangeID');
     profileFileID.addEventListener('change', (event) => __awaiter(this, void 0, void 0, function* () {
         var _a;
-        document.getElementById('validatingDiv').style.display = 'flex';
         const file = (_a = event.target.files) === null || _a === void 0 ? void 0 : _a[0];
         const formData = new FormData();
         if (!file) {
-            console.error('No file selected');
+            alert('No file selected');
             return;
         }
+        const fileExtension = file.name.split('.').pop();
+        const allowedImage = ["png", "jpg", "jpeg"];
+        if (!allowedImage.includes(fileExtension)) {
+            alert('image should be png, jpeg, and jpg only');
+            return;
+        }
+        document.getElementById('validatingDiv').style.display = 'flex';
         formData.append('image', file);
         const uploadProfile = yield fetch('/changeProfile', {
             method: "POST",
@@ -204,7 +210,6 @@ function piskelTemp() {
 function pickDefaultSkin(skinName) {
     return __awaiter(this, void 0, void 0, function* () {
         const loadingDiv = document.getElementById('validatingDiv');
-        loadingDiv.style.display = 'flex';
         let skinInfo = [];
         try {
             skinInfo = [
@@ -216,22 +221,25 @@ function pickDefaultSkin(skinName) {
                 { path: '/imageComponents/in Game Skins/' + skinName + '/attack side.png', query: 'sideAttack' }
             ];
             for (let i = 0; i < skinInfo.length; i++) {
-                //convert the image to blob
-                const response = yield fetch(skinInfo[i].path);
-                const blob = yield response.blob();
-                const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
-                const formData = new FormData();
-                formData.append('image', file);
-                const uploadSprites = yield fetch('/changeSprite', {
-                    method: "POST",
-                    body: formData
-                });
-                const uploadSprites_data = yield uploadSprites.json();
-                if (uploadSprites_data.message === 'success') {
-                    localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
-                    const imageDisplay = document.getElementById('prevSprite' + i);
-                    imageDisplay.src = uploadSprites_data.link;
-                    socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query, uploadSprites_data.spriteID);
+                if (skinInfo[i].path) {
+                    loadingDiv.style.display = 'flex';
+                    //convert the image to blob
+                    const response = yield fetch(skinInfo[i].path);
+                    const blob = yield response.blob();
+                    const file = new File([blob], `sprite-${i}.png`, { type: 'image/png' });
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    const uploadSprites = yield fetch('/changeSprite', {
+                        method: "POST",
+                        body: formData
+                    });
+                    const uploadSprites_data = yield uploadSprites.json();
+                    if (uploadSprites_data.message === 'success') {
+                        localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
+                        const imageDisplay = document.getElementById('prevSprite' + i);
+                        imageDisplay.src = uploadSprites_data.link;
+                        socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query, uploadSprites_data.spriteID);
+                    }
                 }
             }
             loadingDiv.style.display = 'none';

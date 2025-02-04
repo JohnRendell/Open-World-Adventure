@@ -134,7 +134,7 @@ function loadPlayerInfo(scene){
             scene.textures.remove('playerProfile');
         }
         scene.load.image('playerProfile', profile);
-
+        
         scene.profileBorder.destroy();
         scene.playerProfile.destroy();
         scene.heartIcon.destroy();
@@ -145,7 +145,10 @@ function loadPlayerInfo(scene){
         scene.playerHunger.destroy();
         scene.playerInventory.destroy();
         scene.playerSetting.destroy();
-        scene.playerUIContainer.destroy();
+       
+        setTimeout(() => {
+            scene.playerUIContainer.destroy();
+        }, 800);
 
         setTimeout(() => {
             homeBaseUI(scene);

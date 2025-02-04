@@ -40,7 +40,7 @@
         border-color: #e2e8f0;
     }
 
-    #spriteDiv::-webkit-scrollbar-thumb{
+    #spriteDiv::-webkit-scrollbar-thumb, #mobileLabelInstructionDiv::-webkit-scrollbar-thumb{
         background-color: #3b82f6;
         border-color: white;
     }
@@ -194,7 +194,7 @@
 
                     <button class="font-PixelifySans text-sm text-center bg-blue-500 text-white rounded-lg p-2 hover:bg-blue-700 hidden lg:flex" onclick="modalStatus('inGameSkinModal', 'flex', 'modalAnimation')">Pick in-game skins instead</button>
 
-                    <div class="w-[20rem] h-[5rem] p-2 overflow-x-hidden overflow-y-auto flex-col gap-2 flex lg:hidden">
+                    <div class="w-[20rem] h-[5rem] p-2 overflow-x-hidden overflow-y-auto flex-col gap-2 flex lg:hidden" id="mobileLabelInstructionDiv">
                         <button onclick="piskelTemp()" class="font-PixelifySans text-sm text-blue-500 text-center underline">Download Piskel Template</button>
                     
                         <p class="font-PixelifySans text-sm text-black text-left">For Custom Sprite: Import the template to <a
@@ -314,9 +314,14 @@
             </div>
 
             <!--Contents-->
-            <div class="flex w-full h-full">
+            <div class="flex w-full h-full overflow-y-auto grid-rows-5 grid-cols-5 gap-2">
                 <div class="flex flex-col gap-2 items-center border-2 p-2 rounded-lg w-[10rem] h-[10rem] hover:border-blue-500" onclick="pickDefaultSkin('Red Hat Guy')">
                     <img src="/ImageComponents/In Game Skins/Red Hat Guy/front.png" alt="front" class="w-full h-full">
+                    <p class="font-PixelifySans text-sm text-black text-center">Red Hat Guy</p>
+                </div>
+                <div class="flex flex-col gap-2 items-center border-2 p-2 rounded-lg w-[10rem] h-[10rem] hover:border-blue-500"
+                    onclick="pickDefaultSkin('Black Suit')">
+                    <img src="/ImageComponents/In Game Skins/Black Suit/front.png" alt="front" class="w-full h-full">
                     <p class="font-PixelifySans text-sm text-black text-center">Red Hat Guy</p>
                 </div>
             </div>

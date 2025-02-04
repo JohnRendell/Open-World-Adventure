@@ -26,7 +26,10 @@ function whileTyping(containerID, tempID){
 }
 
 function whileWaitingForMessage(){
-    socket.emit('userTyping', loggedIn_playerName);
+    var inputType = document.getElementById('globalMessageInput');
+    let inputValueCount = inputType.value.length;
+    
+    socket.emit('userTyping', loggedIn_playerName, inputValueCount);
 }
 
 function npcGreet(containerID, greetMsg){

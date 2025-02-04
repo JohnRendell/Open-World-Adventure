@@ -6,29 +6,27 @@ require('dotenv').config({ path: path.resolve(__dirname, '../keys.env') });
 module.exports = (server)=>{
     server.on('connect', (socket)=>{
         //when player change profile
-        socket.on('updateProfile', async (profile, deleteHash, playerName)=>{
+        socket.on('updateProfile', async (profile, deleteID, playerName)=>{
             try{
                 //delete old profile
                 const findPlayer = await accountModel.findOne({ username: playerName });
 
                 if(findPlayer){
                     //if the profile is not null, it will only null if the profile is default
-                    if(findPlayer.profileHash){
-
-                        //TODO: fix this not able to delete the image
-                        const deleteProfile = await Fetch('https://api.imgur.com/3/image/' + findPlayer.profileHash, {
+                    if(findPlayer.profile.spriteID){
+                        const deleteProfile = await Fetch('https://api.imgur.com/3/image/' + findPlayer.profile.spriteID, {
                             method: "DELETE",
-                            Authorize: `Bearer ${process.env.IMGUR_TOKEN}`
+                            headers: { Authorization: `Bearer ${process.env.IMGUR_TOKEN}`},
                         });
 
-                        if(!deleteProfile){
+                        if(!deleteProfile.ok){
                             console.log('Old Profile Can\'t delete');
                         }
                     }
                 }
                 const changeProfile = await accountModel.findOneAndUpdate(
                     { username: playerName },
-                    { $set: { profile: profile, profileHash: deleteHash } },
+                    { $set: { "profile.sprite": profile, "profile.spriteID": deleteID } },
                     { new: true }
                 )
 
@@ -47,36 +45,61 @@ module.exports = (server)=>{
         });
 
         //when player upload new sprite
-        socket.on('loadNewSprite', async (playerName, imageID, sprite, query)=>{
+        socket.on('loadNewSprite', async (playerName, imageID, sprite, query, spriteID)=>{
             const updateQuery = {};
+            let querySprite;
 
             switch(query){
                 case 'front':
-                    updateQuery.frontSprite = sprite;
+                    updateQuery.frontSprite = {sprite, spriteID};
+                    querySprite = "frontSprite";
                 break;
 
                 case 'back':
-                    updateQuery.backSprite = sprite;
+                    updateQuery.backSprite = {sprite, spriteID};
+                    querySprite = "backSprite";
                 break;
 
                 case 'side':
-                    updateQuery.sideSprite = sprite;
+                    updateQuery.sideSprite = {sprite, spriteID};
+                    querySprite = "sideSprite";
                 break;
 
                 case 'frontAttack':
-                    updateQuery.attackFrontSprite = sprite;
+                    updateQuery.attackFrontSprite = {sprite, spriteID};
+                    querySprite = "attackFrontSprite";
                 break;
 
                 case 'backAttack':
-                    updateQuery.attackBackSprite = sprite;
+                    updateQuery.attackBackSprite = {sprite, spriteID};
+                    querySprite = "attackBackSprite";
                 break;
 
                 case 'sideAttack':
-                    updateQuery.attackSideSprite = sprite;
+                    updateQuery.attackSideSprite = {sprite, spriteID};
+                    querySprite = "attackSideSprite";
                 break;
             }
 
             try{
+                //delete old spriteID
+                const findPlayer = await accountModel.findOne({ username: playerName });
+
+                if(findPlayer){
+                    //if the spriteID is not null, it will only null if the spriteID is default
+                    if(findPlayer[querySprite]['spriteID']){
+
+                        const deleteOldSprite = await Fetch('https://api.imgur.com/3/image/' + findPlayer[querySprite]['spriteID'], {
+                            method: "DELETE",
+                            headers: { Authorization: `Bearer ${process.env.IMGUR_TOKEN}`},
+                        });
+
+                        if(!deleteOldSprite.ok){
+                            console.log('Old Sprite Can\'t delete');
+                        }
+                    }
+                }
+
                 const changeSprites = await accountModel.findOneAndUpdate(
                     { username: playerName },
                     { $set: updateQuery },

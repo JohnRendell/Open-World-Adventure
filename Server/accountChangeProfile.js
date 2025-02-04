@@ -27,8 +27,8 @@ router.post('/', upload.single('image'), async (req, res)=>{
         const uploadImageImgur_data = await uploadImageImgur.json();
 
         if(uploadImageImgur_data.success){
-            let deleteHash = uploadImageImgur_data.data.deletehash;
-            res.status(200).json({ message: 'success', deleteHash: deleteHash, link: uploadImageImgur_data.data.link });
+            let deleteID = uploadImageImgur_data.data.id;
+            res.status(200).json({ message: 'success', deleteID: deleteID, link: uploadImageImgur_data.data.link });
         }
     }
     catch(err){

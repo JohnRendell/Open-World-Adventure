@@ -158,14 +158,14 @@ function changeProfile(){
             body: formData
         });
 
-        const uploadProfile_data = await uploadProfile.json() as { message: string, link: string, deleteHash: string };
+        const uploadProfile_data = await uploadProfile.json() as { message: string, link: string, deleteID: string };
 
         if(uploadProfile_data.message === 'success'){
             document.getElementById('validatingDiv')!.style.display = 'none';
 
             var profilePlayerID = document.getElementById('playerProfileID') as HTMLImageElement;
             profilePlayerID.src = uploadProfile_data.link;
-            socket.emit('updateProfile', uploadProfile_data.link, uploadProfile_data.deleteHash, game_PlayerName);
+            socket.emit('updateProfile', uploadProfile_data.link, uploadProfile_data.deleteID, game_PlayerName);
         }
     });
 }
@@ -192,7 +192,7 @@ function changeSkin(id: string, imageID: string, query: string){
             body: formData
         });
 
-        const uploadSprites_data = await uploadSprites.json() as { message: string, link: string };
+        const uploadSprites_data = await uploadSprites.json() as { message: string, link: string, spriteID: string };
 
         if(uploadSprites_data.message === 'success'){
             localStorage.setItem(imageID, uploadSprites_data.link);
@@ -201,7 +201,7 @@ function changeSkin(id: string, imageID: string, query: string){
             imageDisplay.src = uploadSprites_data.link;
 
             loadingDiv.style.display = 'none';
-            socket.emit('loadNewSprite', game_PlayerName, imageID, localStorage.getItem(imageID), query);
+            socket.emit('loadNewSprite', game_PlayerName, imageID, localStorage.getItem(imageID), query, uploadSprites_data.spriteID);
         }
     });
 }
@@ -234,18 +234,14 @@ async function pickDefaultSkin(skinName: string){
     let skinInfo: { path: string, query: string }[] = [];
 
     try{
-        switch(skinName){
-            case "Red Hat Guy":
-                skinInfo = [
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/front.png', query: 'front' },
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/back.png', query: 'back' },
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/side.png', query: 'side' },
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack front.png', query: 'frontAttack' },
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack back.png', query: 'backAttack' },
-                    { path: '/imageComponents/in Game Skins/Red Hat Guy/attack side.png', query: 'sideAttack' }
-                ];
-            break;
-        }
+        skinInfo = [
+            { path: '/imageComponents/in Game Skins/' + skinName + '/front.png', query: 'front' },
+            { path: '/imageComponents/in Game Skins/' + skinName + '/back.png', query: 'back' },
+            { path: '/imageComponents/in Game Skins/' + skinName + '/side.png', query: 'side' },
+            { path: '/imageComponents/in Game Skins/' + skinName + '/attack front.png', query: 'frontAttack' },
+            { path: '/imageComponents/in Game Skins/' + skinName + '/attack back.png', query: 'backAttack' },
+            { path: '/imageComponents/in Game Skins/' + skinName + '/attack side.png', query: 'sideAttack' }
+        ];
 
         for(let i: number = 0; i < skinInfo.length; i++){
             //convert the image to blob
@@ -261,14 +257,14 @@ async function pickDefaultSkin(skinName: string){
                 body: formData
             });
 
-            const uploadSprites_data = await uploadSprites.json() as { message: string, link: string };
+            const uploadSprites_data = await uploadSprites.json() as { message: string, link: string, spriteID: string };
 
             if(uploadSprites_data.message === 'success'){
                 localStorage.setItem('prevSprite' + i, uploadSprites_data.link);
 
                 const imageDisplay = document.getElementById('prevSprite' + i) as HTMLImageElement;
                 imageDisplay.src = uploadSprites_data.link;
-                socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query);
+                socket.emit('loadNewSprite', game_PlayerName, 'prevSprite' + i, localStorage.getItem('prevSprite' + i), skinInfo[i].query, uploadSprites_data.spriteID);
             }
         }
         loadingDiv.style.display = 'none';

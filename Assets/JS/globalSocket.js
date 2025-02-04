@@ -49,6 +49,15 @@ socket.on('NPCPrompt', (prompt)=>{
 });
 
 //while user is typing
-socket.on('userTyping', (user)=>{
-    whileTyping('globalContainerDiv', user + '_tempMessage');
+socket.on('userTyping', (user, inputValueCount)=>{
+    if(inputValueCount > 0){
+        whileTyping('globalContainerDiv', user + '_tempMessage');
+    }
+    else{
+        var tempDiv = document.getElementById(user + '_tempMessage');
+
+        if(tempDiv){
+            tempDiv.remove();
+        }
+    }
 });

@@ -15,14 +15,14 @@ router.post('/playerProfile', async (req, res)=>{
 
         if(findUser){
             playerUser = findUser.username;
-            playerProfile = findUser.profile;
+            playerProfile = findUser.profile.sprite;
             playerHealthPoints = findUser.healthPoints,
-            frontSprite = findUser.frontSprite;
-            backSprite = findUser.backSprite;
-            sideSprite = findUser.sideSprite;
-            attackSideSprite = findUser.attackSideSprite;
-            attackFrontSprite = findUser.attackFrontSprite;
-            attackBackSprite = findUser.attackBackSprite;
+            frontSprite = findUser.frontSprite.sprite;
+            backSprite = findUser.backSprite.sprite;
+            sideSprite = findUser.sideSprite.sprite;
+            attackSideSprite = findUser.attackSideSprite.sprite;
+            attackFrontSprite = findUser.attackFrontSprite.sprite;
+            attackBackSprite = findUser.attackBackSprite.sprite;
         }
         else{
             playerUser = playerName;

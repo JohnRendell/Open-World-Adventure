@@ -6,8 +6,8 @@ module.exports = (server)=>{
             socket.broadcast.emit('globalMessage', containerID, sender, profile, msg);
         });
 
-        socket.on('userTyping', (user)=>{
-            socket.broadcast.emit('userTyping', user);
+        socket.on('userTyping', (user, inputValueCount)=>{
+            socket.broadcast.emit('userTyping', user, inputValueCount);
         });
 
         socket.on('incrementGlobalMessage', (count)=>{

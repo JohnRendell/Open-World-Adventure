@@ -51,7 +51,31 @@ router.post('/', async (req, res)=>{
                     res.status(200).json({ message: 'username already exists.' });
                 }
                 else{
-                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: 'https://i.imgur.com/ajVzRmV.jpg', healthPoints: 100, profileHash: null, frontSprite: 'https://i.imgur.com/Qq3Yedn.png', backSprite: 'https://i.imgur.com/xhU6u5B.png', sideSprite: 'https://i.imgur.com/4BkMHTS.png', attackSideSprite: 'https://i.imgur.com/jVS0NeM.png', attackFrontSprite: 'https://i.imgur.com/ebhD511.png', attackBackSprite: 'https://i.imgur.com/z1jmKkm.png' });
+                    const profile = {
+                        sprite: 'https://i.imgur.com/ajVzRmV.jpg', spriteID: null
+                    }
+
+                    const frontSprite = {
+                        sprite: 'https://i.imgur.com/Qq3Yedn.png', spriteID: null
+                    }
+                    const backSprite = {
+                        sprite: 'https://i.imgur.com/xhU6u5B.png', spriteID: null
+                    }
+                    const sideSprite = {
+                        sprite: 'https://i.imgur.com/4BkMHTS.png', spriteID: null
+                    }
+
+                    const attackFrontSprite = {
+                        sprite: 'https://i.imgur.com/ebhD511.png', spriteID: null
+                    }
+                    const attackBackSprite = {
+                        sprite: 'https://i.imgur.com/z1jmKkm.png', spriteID: null
+                    }
+                    const attackSideSprite = {
+                        sprite: 'https://i.imgur.com/jVS0NeM.png', spriteID: null
+                    }
+
+                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: profile, healthPoints: 100, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite });
 
                     if(createAcc){
                         res.status(200).json({ message: 'success', username: username });

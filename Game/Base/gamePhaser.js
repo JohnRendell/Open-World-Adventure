@@ -483,7 +483,7 @@ class homeBase extends Phaser.Scene{
                 socket.emit('game_existingPlayer', playerData, false, getOutWorld());
                 socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
             } catch(err){
-                alert(err);
+                console.log(err);
                 window.location.reload();
             }
         }

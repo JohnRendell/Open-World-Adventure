@@ -215,12 +215,12 @@ function pickDefaultSkin(skinName) {
         let skinInfo = [];
         try {
             skinInfo = [
-                { path: '/imageComponents/in Game Skins/' + skinName + '/front.png', query: 'front' },
-                { path: '/imageComponents/in Game Skins/' + skinName + '/back.png', query: 'back' },
-                { path: '/imageComponents/in Game Skins/' + skinName + '/side.png', query: 'side' },
-                { path: '/imageComponents/in Game Skins/' + skinName + '/attack front.png', query: 'frontAttack' },
-                { path: '/imageComponents/in Game Skins/' + skinName + '/attack back.png', query: 'backAttack' },
-                { path: '/imageComponents/in Game Skins/' + skinName + '/attack side.png', query: 'sideAttack' }
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/front.png', query: 'front' },
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/back.png', query: 'back' },
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/side.png', query: 'side' },
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/attack front.png', query: 'frontAttack' },
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/attack back.png', query: 'backAttack' },
+                { path: '/ImageComponents/In Game Skins/' + skinName + '/attack side.png', query: 'sideAttack' }
             ];
             for (let i = 0; i < skinInfo.length; i++) {
                 if (skinInfo[i].path) {

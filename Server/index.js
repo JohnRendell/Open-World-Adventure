@@ -26,6 +26,9 @@ async function run() {
 }
 run().catch(console.dir);
 
+//alow cors origin
+const cors = require('cors');
+app.use(cors({ origin: '*' }));
 
 //serve the static folders
 app.use(express.static(path.join(__dirname, '../Public')));

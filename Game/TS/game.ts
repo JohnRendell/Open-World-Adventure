@@ -5,6 +5,7 @@ var loggedInURL: string;
 var userType: string;
 var userProfile: string;
 var playerHealthPoints: number;
+var playerGem: number;
 
 async function countPlayer(){
     try{
@@ -91,7 +92,7 @@ async function loadProfile(){
             body: JSON.stringify({ playerName: validateUser })
         });
 
-        const getPlayerProfile_data = await getPlayerProfile.json() as { username: string, message: string, profile: string, frontSprite: string, backSprite: string, sideSprite: string, attackFrontSprite: string, attackBackSprite: string, attackSideSprite: string, playerHealthPoints: number };
+        const getPlayerProfile_data = await getPlayerProfile.json() as { username: string, message: string, profile: string, frontSprite: string, backSprite: string, sideSprite: string, attackFrontSprite: string, attackBackSprite: string, attackSideSprite: string, playerHealthPoints: number, playerGem: number };
 
         if(getPlayerProfile_data.message === 'success'){
 
@@ -126,6 +127,7 @@ async function loadProfile(){
                 socket.emit('heal', getPlayerProfile_data.username);
             }
             playerHealthPoints = getPlayerProfile_data.playerHealthPoints;
+            playerGem = getPlayerProfile_data.playerGem;
 
             socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
             socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);

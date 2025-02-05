@@ -75,7 +75,7 @@ router.post('/', async (req, res)=>{
                         sprite: 'https://i.imgur.com/jVS0NeM.png', spriteID: null
                     }
 
-                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: profile, healthPoints: 100, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite });
+                    const createAcc = await accountModel.create({ username: username, password: hashPass(password), profile: profile, healthPoints: 100, gem: 0, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite });
 
                     if(createAcc){
                         res.status(200).json({ message: 'success', username: username });

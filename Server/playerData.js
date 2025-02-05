@@ -12,6 +12,7 @@ router.post('/playerProfile', async (req, res)=>{
         let frontSprite, backSprite, sideSprite;
         let attackSideSprite, attackFrontSprite, attackBackSprite;
         let playerHealthPoints;
+        let playerGem;
 
         if(findUser){
             playerUser = findUser.username;
@@ -23,6 +24,7 @@ router.post('/playerProfile', async (req, res)=>{
             attackSideSprite = findUser.attackSideSprite.sprite;
             attackFrontSprite = findUser.attackFrontSprite.sprite;
             attackBackSprite = findUser.attackBackSprite.sprite;
+            playerGem = findUser.gem;
         }
         else{
             playerUser = playerName;
@@ -34,8 +36,9 @@ router.post('/playerProfile', async (req, res)=>{
             attackSideSprite = 'https://i.imgur.com/jVS0NeM.png';
             attackFrontSprite = 'https://i.imgur.com/ebhD511.png';
             attackBackSprite = 'https://i.imgur.com/z1jmKkm.png';
+            playerGem = 0;
         }
-        res.status(200).json({ message: 'success', username: playerUser, profile: playerProfile, playerHealthPoints: playerHealthPoints, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite });
+        res.status(200).json({ message: 'success', username: playerUser, profile: playerProfile, playerHealthPoints: playerHealthPoints, playerGem: playerGem, frontSprite: frontSprite, backSprite: backSprite, sideSprite: sideSprite, attackSideSprite: attackSideSprite, attackFrontSprite: attackFrontSprite, attackBackSprite: attackBackSprite });
     }
     catch(err){
         console.log(err);

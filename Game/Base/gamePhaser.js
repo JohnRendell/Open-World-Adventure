@@ -408,80 +408,84 @@ class homeBase extends Phaser.Scene{
     // Update function (for game logic and updates every frame)
     update = function() {
         if(isLoaded){
-            this.playerContainer.body.setVelocity(0);
+            try{
+                this.playerContainer.body.setVelocity(0);
 
-            if(isTalking == false){
-                if(this.cursors.left.isDown || this.A.isDown || moveLeft){
-                    this.playerContainer.body.setVelocityX(-speed);
-                    this.player.flipX = false;
-                    isFront = false;
-                    isBack = false;
+                if(isTalking || isPanelOpen){
+                    this.input.keyboard.disableGlobalCapture();
                 }
-                if(this.cursors.right.isDown || this.D.isDown || moveRight){
-                    this.playerContainer.body.setVelocityX(speed);
-                    this.player.flipX = true;
-                    isFront = false;
-                    isBack = false;
+
+                if(isTalking == false){
+                    if(this.cursors.left.isDown || this.A.isDown || moveLeft){
+                        this.playerContainer.body.setVelocityX(-speed);
+                        this.player.flipX = false;
+                        isFront = false;
+                        isBack = false;
+                    }
+                    if(this.cursors.right.isDown || this.D.isDown || moveRight){
+                        this.playerContainer.body.setVelocityX(speed);
+                        this.player.flipX = true;
+                        isFront = false;
+                        isBack = false;
+                    }
+                    if(this.cursors.up.isDown || this.W.isDown || moveUp){
+                        this.playerContainer.body.setVelocityY(-speed);
+                        isFront = false;
+                        isBack = true;
+                    }
+                    if(this.cursors.down.isDown || this.S.isDown || moveDown){
+                        this.playerContainer.body.setVelocityY(speed);
+                        isFront = true;
+                        isBack = false;
+                    }
                 }
-                if(this.cursors.up.isDown || this.W.isDown || moveUp){
-                    this.playerContainer.body.setVelocityY(-speed);
-                    isFront = false;
-                    isBack = true;
+                if(isFront){
+                    this.player.play('playerFront', true);
                 }
-                if(this.cursors.down.isDown || this.S.isDown || moveDown){
-                    this.playerContainer.body.setVelocityY(speed);
-                    isFront = true;
-                    isBack = false;
+
+                if(isBack){
+                    this.player.play('playerBack', true);
                 }
-            }
 
-            if(isTalking || isPanelOpen){
-                this.input.keyboard.disableGlobalCapture();
-            }
+                if(!isFront && !isBack){
+                    this.player.play('playerIdle', true);
+                }
 
-            if(isFront){
-                this.player.play('playerFront', true);
-            }
+                //exiting door
+                if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.frontDoor.getBounds())) {
+                    this.frontDoor_label.setVisible(false);
+                }
 
-            if(isBack){
-                this.player.play('playerBack', true);
-            }
+                if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.roomDoor.getBounds())) {
+                    this.roomDoor_label.setVisible(false);
+                }
 
-            if(!isFront && !isBack){
-                this.player.play('playerIdle', true);
-            }
+                //leaving chest
+                if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
+                    this.chestLabel.setVisible(false);
+                }
 
-            //exiting door
-            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.frontDoor.getBounds())) {
-                this.frontDoor_label.setVisible(false);
-            }
+                // on exit for NPCs
+                if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
+                    this.bobText.setVisible(false);
+                }
 
-            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.roomDoor.getBounds())) {
-                this.roomDoor_label.setVisible(false);
+                //for other player movement        
+                const playerData = {
+                    playerID: game_PlayerName,
+                    x: this.playerContainer.x,
+                    y: this.playerContainer.y,
+                    isBack: isBack,
+                    isFront: isFront,
+                    spriteX: this.player.flipX
+                }
+                socket.emit('game_playerMove', playerData);
+                socket.emit('game_existingPlayer', playerData, false, getOutWorld());
+                socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
+            } catch(err){
+                alert(err);
+                window.location.reload();
             }
-
-            //leaving chest
-            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.chest.getBounds())) {
-                this.chestLabel.setVisible(false);
-            }
-
-            // on exit for NPCs
-            if (!Phaser.Geom.Intersects.RectangleToRectangle(this.playerContainer.getBounds(), this.bob.getBounds())) {
-                this.bobText.setVisible(false);
-            }
-
-            //for other player movement        
-            const playerData = {
-                playerID: game_PlayerName,
-                x: this.playerContainer.x,
-                y: this.playerContainer.y,
-                isBack: isBack,
-                isFront: isFront,
-                spriteX: this.player.flipX
-            }
-            socket.emit('game_playerMove', playerData);
-            socket.emit('game_existingPlayer', playerData, false, getOutWorld());
-            socket.emit('game_loadPlayerSprite', game_PlayerName, spriteFront, spriteBack, spriteSide, null, null, null);
         }
     }
 }

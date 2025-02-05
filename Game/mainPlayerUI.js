@@ -40,6 +40,13 @@ function homeBaseUI(scene){
         }
     });
 
+    //player gem
+    scene.playerGem = scene.add.text(20, 60, 'Gem: ' + playerGem, {
+            font: "16px 'Pixelify Sans",
+            fill: "#ffffff",
+            align: "center"
+        });
+
     //player settings
     scene.playerSetting = scene.add.sprite(checkDevice() === 'mobile' ? canvasSize.width - 150 : 850, 0, 'settingIcon').setDisplaySize(80,80).setScrollFactor(0);
     scene.playerSetting.setInteractive({ useHandCursor: true });
@@ -64,6 +71,7 @@ function homeBaseUI(scene){
             scene.meatIcon,
             scene.playerHungerContainer,
             scene.playerHunger,
+            scene.playerGem,
             scene.playerSetting,
             scene.playerInventory
         ]).setDepth(5).setScrollFactor(0);

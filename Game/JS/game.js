@@ -13,6 +13,7 @@ var loggedInURL;
 var userType;
 var userProfile;
 var playerHealthPoints;
+var playerGem;
 function countPlayer() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -119,6 +120,7 @@ function loadProfile() {
                     socket.emit('heal', getPlayerProfile_data.username);
                 }
                 playerHealthPoints = getPlayerProfile_data.playerHealthPoints;
+                playerGem = getPlayerProfile_data.playerGem;
                 socket.emit('loadSprites', getPlayerProfile_data.frontSprite, getPlayerProfile_data.backSprite, getPlayerProfile_data.sideSprite, getPlayerProfile_data.attackSideSprite, getPlayerProfile_data.attackFrontSprite, getPlayerProfile_data.attackBackSprite);
                 socket.emit('loadPlayerData', getPlayerProfile_data.username, getPlayerProfile_data.profile);
             }

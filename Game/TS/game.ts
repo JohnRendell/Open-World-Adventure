@@ -294,6 +294,11 @@ function goingOutside(){
     window.location.href = '/Game/BaseOutside/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
 }
 
+//going to playground
+function goingPlayground(){
+    window.location.href = '/Game/Playground/' + replaceSlashWithUnderscore(loggedInURL ? loggedInURL : validateUser);
+}
+
 //going back to base
 function backToBase(){
     if(playerHealthPoints <= 0){

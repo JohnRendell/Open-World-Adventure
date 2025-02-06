@@ -1,8 +1,4 @@
 function loadPlayerInfo(scene){
-    socket.on('connect', ()=>{
-        
-    });
-
     socket.on('loadNewSprite', (imageID, sprite, query)=>{
         isLoaded = false;
         alert(query + ' sprite updated');

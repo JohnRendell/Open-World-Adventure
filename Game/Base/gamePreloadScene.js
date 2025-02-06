@@ -44,7 +44,7 @@ function loadAssets(scene){
         frameHeight: 800 / 1
     });
     scene.load.image('front_Wall', '/ImageComponents/Objects/Wooden Wall.png');
-    scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png')
+    scene.load.image('gate', '/ImageComponents/Objects/Wooden Gate.png');
 
     //effect
     scene.load.spritesheet('spawnEffect', '/ImageComponents/Sprite Sheets/Spawn effect Sprite Sheet.png', {

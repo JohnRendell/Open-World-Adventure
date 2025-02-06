@@ -438,7 +438,8 @@ class baseOutside extends Phaser.Scene{
         this.gate.body.setOffset(435, 420);
 
         this.physics.add.collider(this.gate, this.playerContainer, ()=>{
-            alert('going places')
+            setOutWorld(true);
+            goingPlayground();
         });
 
         //river
